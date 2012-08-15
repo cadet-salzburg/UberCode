@@ -1,0 +1,1 @@
+* app crashes when u close the bundle view and click on the empty area
