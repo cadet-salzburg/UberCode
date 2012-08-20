@@ -44,6 +44,8 @@ xcuserdata
 ipch/
 obj/
 
+build/
+
 # Visual C++ cache files
 ipch/
 *.aps
