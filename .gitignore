@@ -43,7 +43,7 @@ xcuserdata
 *.sdf
 ipch/
 obj/
-build/*
+build/vc10/GeneratedFiles/
 
 
 # Visual C++ cache files
