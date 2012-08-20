@@ -43,8 +43,8 @@ xcuserdata
 *.sdf
 ipch/
 obj/
+build/*
 
-build/
 
 # Visual C++ cache files
 ipch/
