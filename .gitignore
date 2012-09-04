@@ -1,3 +1,8 @@
+#Ubercode Specific
+/build/vc10/EngineLog.txt
+/build/vc10/data/
+
+
 #SVN Files
 .svn
 
@@ -9,6 +14,7 @@
 *.swp
 *~.nib
 */DerivedData/
+
 build/osx/DerivedData
 *.pbxuser
 *.perspective
@@ -23,8 +29,11 @@ xcuserdata
 *.exe
 *.pdb
 *.user
+*.vcxproj.user
 *.aps
 *.pch
+
+
 
 *.vspscc
 *.vssscc
@@ -39,14 +48,12 @@ xcuserdata
 *.ilk
 *.log
 *.lib
+*.exp
+*.dll
 *.sbr
 *.sdf
 ipch/
 obj/
-build/vc10/GeneratedFiles/*
-build/vc10/EngineLog.txt
-build/vc10/data
-
 
 # Visual C++ cache files
 ipch/
@@ -58,8 +65,6 @@ ipch/
 *.psess
 *.vsp
 
-
-[Bb]in
 Ankh.NoLoad
 
 #Common Files
