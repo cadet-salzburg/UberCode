@@ -19,18 +19,24 @@ MainWindow::MainWindow()
 
 	m_SettingsDialog = new SettingsDialog;
 
-	// block navigation
+	// Block Navigation
 	m_BlockNavigationTreeWidget = new BlockNavigationTreeWidget();
 	m_UiBuilderWindow->dockWidget->setWidget(m_BlockNavigationTreeWidget);
-	// workbench
+	// Workbench
 	m_WorkbenchGraphicsView = new QGraphicsView();
+	m_WorkbenchGraphicsView->setViewport(new QGLWidget( QGLFormat( QGL::SampleBuffers ) ) );
+	m_WorkbenchGraphicsView->setViewportUpdateMode( QGraphicsView::FullViewportUpdate);
+    m_WorkbenchGraphicsView->setScene(new OpenGLScene);
+        view.show();
+
+
 	m_WorkbenchGraphicsView->setRenderHint(QPainter::Antialiasing);
 	QGraphicsScene* s = DataflowEngineManager::getInstance()->addComposition()->getGraphicsScene();
 	m_WorkbenchGraphicsView->setScene( s );
 	UbLinkController::getInstance()->setScene( s );
 	m_UiBuilderWindow->workbenchLayout->addWidget(m_WorkbenchGraphicsView);
 
-	// connect slots
+	// Connect Slots
 	QObject::connect( m_UiBuilderWindow->actionOptions, SIGNAL(activated()), m_SettingsDialog, SLOT(show()));
 }
 
