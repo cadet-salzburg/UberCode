@@ -1,17 +1,17 @@
+#include <iostream>
 #include <QLabel>
 #include <QPen>
 #include <QPainter>
 #include <QSizePolicy>
-#include <iostream>
+#include <QGRoupBox>
+#include <QLineEdit>
+#include <QHBoxLayout>
 #include "UbIOBlock.h"
 #include "_2RealDatatypes.h"
 #include "UbInletNode.h"
 #include "UbOutletNode.h"
+#include "UbImage.h"
 
-
-#include <QGRoupBox>
-#include <QLineEdit>
-#include <QHBoxLayout>
 
 using namespace std;
 using namespace _2Real;
@@ -22,6 +22,7 @@ UbIOBlock::UbIOBlock( QGraphicsItem *parent )
 	,m_Height(70)
 	,m_CornerRadius(8)
 	,m_Node(NULL)
+	,m_IsInputBlock(false)
 {
 	constructPath();
 }
@@ -30,11 +31,12 @@ UbIOBlock::~UbIOBlock(void)
 {
 
 }
+
 void UbIOBlock::receiveData(_2Real::app::AppData const& data)
 {
 	//keep the data around as long as it and it's underlying pointers are needed, it is internally a share_ptr !!!!!
 	emit sendData( data );			// since a copy of the incoming data is emitted
-	// it does not matter how much time passes 
+	// it does not matter how much time passes
 	// between this and 'updateData':
 	// the data will for sure be alive when the pixmap is updated
 }
@@ -60,61 +62,36 @@ void UbIOBlock::constructPath()
 	QPointF ppos = m_Node->pos();
 	setFlag(QGraphicsItem::ItemIsMovable);
 	setFlag(QGraphicsItem::ItemIsSelectable);
-
-
 }
+
 void UbIOBlock::setInputNode( const _2Real::app::OutletHandle& handle )
 {
-	//if ( m_Node )
-	//	delete m_Node;
 	m_Node = new UbOutletNode( this, handle );
 	m_Node->setPos( m_Pos );
 	try
 	{
-		//if(handle.getTypename().find("skeleton")!=string::npos )
-		//{
-		//	m_ValueWidget = new QGlSkeletonWidget();
-		//	dynamic_cast<QGlSkeletonWidget*>(m_ValueWidget)->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-		//	dynamic_cast<QGlSkeletonWidget*>(m_ValueWidget)->setMinimumSize(80, 60);
-		//}
-		//else if(handle.getTypename() == "image")
-		//{
-		//	m_ValueWidget = new QGlTextureImage();
-		//	dynamic_cast<QGlTextureImage*>(m_ValueWidget)->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-		//	dynamic_cast<QGlTextureImage*>(m_ValueWidget)->setMinimumSize(80, 60);
-		//}
-		//else if(handle.getTypename().find("vector")!=string::npos || m_OutletHandle.getTypename().find("list")!=string::npos)
-		//{
-		//	m_ValueWidget = new QTextBrowser();
-		//}
-		//else
+		if ( handle.getTypename() == "int" )
 		{
 			m_ValueWidget = new QLabel();
-			//m_ProxyWidget->setWidget( dynamic_cast<QLabel*>(m_ValueWidget) );
 			dynamic_cast<QLabel*>(m_ValueWidget)->setText("Something");
-			 //QGroupBox *groupBox = new QGroupBox("Contact Details");
 			 QWidget *widget = new QWidget;
-			 //QLabel *numberLabel = new QLabel("Telephone number");
-			 //QLineEdit *numberEdit = new QLineEdit;
 			 QHBoxLayout *layout = new QHBoxLayout;
 			 layout->addWidget( dynamic_cast<QLabel*>(m_ValueWidget));
 			 widget->setLayout(layout);
-			 //QGraphicsScene scene;
-			// QGraphicsProxyWidget *proxy = new  QGraphicsProxyWidget(this);
-			 //proxy->setLayout(layout);
 			 m_ProxyWidget->setWidget( widget );
-			 //QGraphicsView view(&scene);
-			 // view.show();
 
-
-
-
-
+		} else if ( handle.getTypename() == "number image" )
+		{
+			m_ValueWidget = new UbImage();
+			dynamic_cast<UbImage*>(m_ValueWidget)->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+			//dynamic_cast<UbImage*>(m_ValueWidget)->setMinimumSize(80, 60);
+			QWidget *widget = new QWidget();
+			QHBoxLayout *layout = new QHBoxLayout;
+			layout->addWidget( dynamic_cast<UbImage*>(m_ValueWidget));
+			widget->setLayout(layout);
+			m_ProxyWidget->setWidget( widget );
 		}
-
-		// register data callback for _2Real Framework
 		handle.registerToNewData( *this, &UbIOBlock::receiveData );
-
 		// note that the moc is quite pedantic with regards to namespaces:
 		// you must use the full symbol name here & in the function implementations
 		// data between threads has to be sent around through signal and slots in QT !!!!
@@ -128,84 +105,27 @@ void UbIOBlock::setInputNode( const _2Real::app::OutletHandle& handle )
 }
 void UbIOBlock::setOutputNode(const  _2Real::app::InletHandle& handle )
 {
-	//if ( m_Node )
-	//	delete m_Node;
-	m_Node = new UbInletNode( this, handle );
-	m_Node->setPos( m_Pos );
-	try
-	{
-		//if(handle.getTypename().find("skeleton")!=string::npos )
-		//{
-		//	m_ValueWidget = new QGlSkeletonWidget();
-		//	dynamic_cast<QGlSkeletonWidget*>(m_ValueWidget)->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-		//	dynamic_cast<QGlSkeletonWidget*>(m_ValueWidget)->setMinimumSize(80, 60);
-		//}
-		//else if(handle.getTypename() == "image")
-		//{
-		//	m_ValueWidget = new QGlTextureImage();
-		//	dynamic_cast<QGlTextureImage*>(m_ValueWidget)->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-		//	dynamic_cast<QGlTextureImage*>(m_ValueWidget)->setMinimumSize(80, 60);
-		//}
-		//else if(handle.getTypename().find("vector")!=string::npos || m_OutletHandle.getTypename().find("list")!=string::npos)
-		//{
-		//	m_ValueWidget = new QTextBrowser();
-		//}
-		//else
-		{
-			m_ValueWidget = new QLabel();
-			m_ProxyWidget->setWidget( dynamic_cast<QLabel*>(m_ValueWidget) );
-			m_ProxyWidget->setMinimumSize(140, 80);
-			m_ProxyWidget->setPos(0,0);
-			 dynamic_cast<QLabel*>(m_ValueWidget)->setText("Something");
-			 //QSizePolicy sizePolicy;
-			 //sizePolicy.setHorData(QSizePolicy::Minimum);
-			 dynamic_cast<QLabel*>(m_ValueWidget)->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
-			 dynamic_cast<QLabel*>(m_ValueWidget)->setMinimumSize(80, 60);
-		}
-
-
-
-
-
-
-		// register data callback for _2Real Framework
-		//handle.registerToNewData( *this, &UbOutputBlock::receiveData );
-
-		// note that the moc is quite pedantic with regards to namespaces:
-		// you must use the full symbol name here & in the function implementations
-		// data between threads has to be sent around through signal and slots in QT !!!!
-		//qRegisterMetaType< _2Real::app::AppData >( "_2Real::app::AppData" );
-		//connect( this, SIGNAL( sendData( _2Real::app::AppData ) ), this, SLOT( updateData( _2Real::app::AppData ) ) );
-	}
-	catch(Exception& e)
-	{
-		cout << e.message() << e.what() << std::endl;
-	}
-
-
+	m_IsInputBlock = true;
+	std::cout << "Setting an output node is not implemented yet" << std::endl;
+	return;
 }
+
 void UbIOBlock::updateData(_2Real::app::AppData data) 
 {
 	if ( m_Node && m_Node->type() == QGraphicsItem::UserType + UberCodeItemType::OutputNodeType )
 	{
 		UbOutletNode *m_OutletNode = 0;
 		m_OutletNode =  dynamic_cast<UbOutletNode*>(m_Node);
-		//UbInletNode  *m_InletNode = 0;
-		//if ( m_Node->type() == MainWindow::InputNodeType )
-		//{
-		//	m_InletNode =  dynamic_cast<UbInletNode*>(m_Node);
-		//} 
-		//else if ( m_Node->type() == MainWindow::OutputNodeType )
-		//{
-		//	m_OutletNode =  dynamic_cast<UbOutletNode*>(m_Node);
-		//}
+
 
 		try
 		{
-			if( m_OutletNode->getHandle().getTypename() == "image" )
+			if( m_OutletNode->getHandle().getTypename() == "number image" )
 			{
-				//Image const& img = data.getData< Image >();
-				//dynamic_cast<QGlTextureImage*>(m_ValueWidget)->updateTexture( img.getWidth(), img.getHeight(), img.getNumberOfChannels(), img.getImageType(), img.getData() );
+				Image const& img = data.getData< Image >();
+				QImage q( img.getData(), img.getWidth(), img.getHeight(), 3*img.getWidth(), QImage::Format_RGB888 );
+				dynamic_cast<UbImage*>(m_ValueWidget)->setImage(q);
+						m_ProxyWidget->update();
 			}
 			else if( m_OutletNode->getHandle().getTypename() == "short" ||  m_OutletNode->getHandle().getTypename() == "unsigned short" ||			// handle numeric types all the same and display the number as string '1234'
 				m_OutletNode->getHandle().getTypename() == "int" ||    m_OutletNode->getHandle().getTypename() == "unsigned int" || 
@@ -250,15 +170,20 @@ void UbIOBlock::updateData(_2Real::app::AppData data)
 		}
 	}
 }
+
 void UbIOBlock::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+//	update();
 	Q_UNUSED(option)
-		Q_UNUSED(widget)
-
+	Q_UNUSED(widget)
 	QPen pen;
 	pen.setWidthF(1.f);
 	pen.setBrush(Qt::black);	
 	painter->setPen(pen);
 	painter->setBrush(QColor(69,82,80));
 	painter->drawPath( m_Path );
+}
+bool UbIOBlock::isInputBlock()
+{
+	return m_IsInputBlock;
 }

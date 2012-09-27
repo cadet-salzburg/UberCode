@@ -96,12 +96,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_WorkbenchGraphicsScene.cpp">
       <Filter>Generierte Dateien\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UbOutputBlock.cpp">
-      <Filter>Generierte Dateien\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UbOutputBlock.cpp">
-      <Filter>Generierte Dateien\Release</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\SettingsManager.cpp">
       <Filter>source</Filter>
     </ClCompile>
@@ -132,11 +126,23 @@
     <ClCompile Include="..\..\src\UbIOBlock.cpp">
       <Filter>source\dataflow management\blocks</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\UbOutputBlock.cpp">
-      <Filter>source\dataflow management\blocks</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Composition.cpp">
       <Filter>source\dataflow management</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UbImage.cpp">
+      <Filter>source\dataflow management\blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="UbGraphicsView.cpp">
+      <Filter>source\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UbOutputBlockk.cpp">
+      <Filter>source\dataflow management\blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UbOutputBlockk.cpp">
+      <Filter>Generierte Dateien\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UbOutputBlockk.cpp">
+      <Filter>Generierte Dateien\Release</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -164,7 +170,7 @@
     <CustomBuild Include="..\..\src\UbIOBlock.h">
       <Filter>source\dataflow management\blocks</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\..\src\UbOutputBlock.h">
+    <CustomBuild Include="..\..\src\UbOutputBlockk.h">
       <Filter>source\dataflow management\blocks</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -198,6 +204,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Composition.h">
       <Filter>source\dataflow management</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\UbImage.h">
+      <Filter>source\dataflow management\blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="UbGraphicsView.h">
+      <Filter>source\widgets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

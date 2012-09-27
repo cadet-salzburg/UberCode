@@ -8,32 +8,30 @@ public:
 	UbLink(QGraphicsItem *parent = 0,  QGraphicsScene *scene = 0);
 	virtual	~UbLink();
 
-	void		updatePath();
-	void		paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget );
-	void		setDragPos( QPointF pos);
-	void		setStartNode( UbNode* start );
-	void		setEndNode( UbNode* end );
+	void	updatePath();
+	void	paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget );
+	void	setDragPos( QPointF pos);
+	void	setStartNode( UbNode* start );
+	void	setEndNode( UbNode* end );
 
-	UbNode*		getStartNode() const;
-	UbNode*		getEndNode() const;
+	UbNode*	getStartNode() const;
+	UbNode*	getEndNode() const;
 
-	//
-	void		setStartPos( QPointF start );
-	void		setEndPos( QPointF end );
-	//
-	void		setNodes( UbNode* start, UbNode* end );
-
-	void		startedChanging();
-	void		finishedChanging();
-	bool		isChanging() const;
-
+	void	setStartPos( QPointF start );
+	void	setEndPos( QPointF end );
+	void	setNodes( UbNode* start, UbNode* end );
+	void	startedChanging();
+	void	finishedChanging();
+	bool	isChanging() const;
+protected:
+	void	mousePressEvent ( QGraphicsSceneMouseEvent * event );
 private:
-
-
-	bool		m_IsSet;
-	bool		m_IsChanging;
-	UbNode*		m_StartNode;
-	UbNode*		m_EndNode;
-	QPointF		m_StartPos;
-	QPointF		m_EndPos;
+	bool	m_IsSet;
+	bool	m_IsChanging;
+	UbNode*	m_StartNode;
+	UbNode*	m_EndNode;
+	QPointF	m_StartPos;
+	QPointF	m_EndPos;
+	bool	isSoftLink();
+	bool	isHardLink();
 };

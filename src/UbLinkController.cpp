@@ -156,7 +156,7 @@ bool UbLinkController::eventFilter( QObject *obj, QEvent *e )
 						{
 							if ( startNode->type() == QGraphicsItem::UserType + UberCodeItemType::OutputNodeType )
 							{
-								QGraphicsObject *obj = startNode->parentObject();
+								QGraphicsObject *obj = endNode->parentObject();
 								UbOutletNode *_node =  dynamic_cast<UbOutletNode*>(startNode);
 								dynamic_cast<UbIOBlock*>(obj)->setInputNode(_node->getHandle());
 							}

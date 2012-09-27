@@ -27,12 +27,12 @@ void UbLink::updatePath()
 	QPointF endPos	 = isChanging() ? m_EndPos	 : m_EndNode->scenePos();
 
 	QPainterPath bezierPath;
-    bezierPath.moveTo( startPos );
+	bezierPath.moveTo( startPos );
 	qreal dist   = endPos.x() - startPos.x();
 	qreal offset = 0.5f*dist; 
 	QPointF cpA  = startPos + QPointF( offset, 0 );
 	QPointF cpB  = endPos   - QPointF( offset, 0 );
-    bezierPath.cubicTo( cpA, cpB, endPos );
+	bezierPath.cubicTo( cpA, cpB, endPos );
 	QPainterPathStroker outliner;
 	outliner.setWidth(4.f);
 	outliner.setCapStyle( Qt::RoundCap );
@@ -102,4 +102,31 @@ void UbLink::paint( QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 	painter->setPen(pen);
 	painter->setBrush(QColor(177,189,180));
 	painter->drawPath(path());
+}
+
+void UbLink::mousePressEvent( QGraphicsSceneMouseEvent * event )
+{
+	if ( event->button() == Qt::RightButton )
+	{
+		// There are 2 cases that need to be handled differently. i) The link can be a framework link between 2 (framework ) blocks.
+		// ii) The link can be between a UbIOBlock and a framework block.
+		if ( isSoftLink() )
+		{
+			
+		} 
+		else if ( isHardLink() )
+		{
+
+		}
+	}
+}
+
+bool UbLink::isSoftLink()
+{
+	return false;
+}
+
+bool UbLink::isHardLink()
+{
+	return false;
 }

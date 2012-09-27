@@ -17,7 +17,7 @@ enum  {
 		InputBlockType    = 6,
 		OutputBlockType   = 7,
 		IOBlockType   = 8
-    };
+	};
 };
 
 typedef std::pair<QString, _2Real::app::BundleHandle>	BlockInstancingInfo;
@@ -41,6 +41,6 @@ private:
 
 	static DataflowEngineManager*			m_pInstance;
 	_2Real::app::Engine&					m_Engine;
- 	BlockInstancingInfos					m_BlockInstancingInfos;
+	BlockInstancingInfos					m_BlockInstancingInfos;
 	std::vector<Composition*>				m_Compositions;
 };

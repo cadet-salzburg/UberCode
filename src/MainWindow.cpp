@@ -38,5 +38,8 @@ MainWindow::~MainWindow(void)
 {
 }
 
-
+bool MainWindow::event( QEvent * e )
+{
+	return QMainWindow::event(e);
+}
 

@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UberCode", "UberCode.vcxproj", "{94CCFD32-6DB5-4F15-BA4A-82CA8B12F827}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9C9B2D9E-8B99-45C2-8A3A-CB4CDEDE5745}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_2RealFramework", "..\..\_2RealFramework\kernel\build\vc10\_2RealFramework.vcxproj", "{91102D4C-49DE-485F-8AAD-A1216B09C070}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -17,6 +21,14 @@ Global
 		{94CCFD32-6DB5-4F15-BA4A-82CA8B12F827}.Release|Win32.ActiveCfg = Release|Win32
 		{94CCFD32-6DB5-4F15-BA4A-82CA8B12F827}.Release|Win32.Build.0 = Release|Win32
 		{94CCFD32-6DB5-4F15-BA4A-82CA8B12F827}.Release|x64.ActiveCfg = Release|Win32
+		{91102D4C-49DE-485F-8AAD-A1216B09C070}.Debug|Win32.ActiveCfg = Debug|Win32
+		{91102D4C-49DE-485F-8AAD-A1216B09C070}.Debug|Win32.Build.0 = Debug|Win32
+		{91102D4C-49DE-485F-8AAD-A1216B09C070}.Debug|x64.ActiveCfg = Debug|x64
+		{91102D4C-49DE-485F-8AAD-A1216B09C070}.Debug|x64.Build.0 = Debug|x64
+		{91102D4C-49DE-485F-8AAD-A1216B09C070}.Release|Win32.ActiveCfg = Release|Win32
+		{91102D4C-49DE-485F-8AAD-A1216B09C070}.Release|Win32.Build.0 = Release|Win32
+		{91102D4C-49DE-485F-8AAD-A1216B09C070}.Release|x64.ActiveCfg = Release|x64
+		{91102D4C-49DE-485F-8AAD-A1216B09C070}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

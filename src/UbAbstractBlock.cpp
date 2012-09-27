@@ -13,7 +13,6 @@ UbAbstractBlock::~UbAbstractBlock(void)
 {
 
 }
-
 QRectF	UbAbstractBlock::boundingRect() const
 {
 	return QRectF( QPointF(-m_Width/2., -m_Width/2.), QPointF( m_Width/2.,m_Width/2.) );

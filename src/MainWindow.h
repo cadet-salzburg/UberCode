@@ -17,6 +17,8 @@ class MainWindow  : public QMainWindow
 public:
 	MainWindow( );
 	~MainWindow(void);
+protected:
+	bool event ( QEvent * event );
 
 private:
 	int										m_iInstances;

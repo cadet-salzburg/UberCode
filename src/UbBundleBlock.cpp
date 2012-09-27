@@ -49,10 +49,10 @@ void UbBundleBlock::addNodes()
 		int outletIdx  = 0;
 
 		//Create Inlets
-		BlockInfo::ParameterInfos inlets = m_BlockHandle.getBlockInfo().getInlets();
+		BlockInfo::InletInfos inlets = m_BlockHandle.getBlockInfo().inlets;
 		for(auto it = inlets.begin(); it != inlets.end(); it++)
 		{
-			UbInletNode *node = new UbInletNode(this, m_BlockHandle.getInletHandle(it->getName()));
+			UbInletNode *node = new UbInletNode(this, m_BlockHandle.getInletHandle(it->name));
 			//m_Inputs.append( node );
 			QPointF pos = QPointF(-m_Width/2.f, -m_Height/2.f) + node->getRadius()*QPointF(1.f,1.f) + QPointF(m_CornerRadius, m_CornerRadius);
 			node->setPos( pos + inletIdx*(2*node->getRadius()+nodeSpacing)*QPointF(1.f, 0.f));
@@ -60,10 +60,10 @@ void UbBundleBlock::addNodes()
 		}
 
 		//Create Outlets
-		BlockInfo::ParameterInfos outlets = m_BlockHandle.getBlockInfo().getOutlets();
+		BlockInfo::OutletInfos outlets = m_BlockHandle.getBlockInfo().outlets;
 		for(auto it = outlets.begin(); it != outlets.end(); it++)
 		{
-			UbOutletNode *node = new UbOutletNode(this, m_BlockHandle.getOutletHandle(it->getName()));
+			UbOutletNode *node = new UbOutletNode(this, m_BlockHandle.getOutletHandle(it->name));
 			//m_Outputs.append( node );
 			QPointF pos = -QPointF(-m_Width/2.f, -m_Height/2.f) - node->getRadius()*QPointF(1.f,1.f) - QPointF(m_CornerRadius, m_CornerRadius);
 			node->setPos( pos - outletIdx*(2*node->getRadius()+nodeSpacing)*QPointF(1.f, 0.f));

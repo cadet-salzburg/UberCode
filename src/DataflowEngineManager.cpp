@@ -64,12 +64,12 @@ QStringList DataflowEngineManager::loadBundles()
 			std::string path = iter->toStdString();
 			BundleHandle bundleHandle = m_Engine.loadBundle(path);
 			BundleInfo bundleInfo = bundleHandle.getBundleInfo();
-			BundleInfo::BlockInfos blocks = bundleInfo.getExportedBlocks();
+			BundleInfo::BlockInfos blocks = bundleInfo.exportedBlocks;
 
 			BundleInfo::BlockInfos::const_iterator iter = blocks.begin();
 			for ( ; iter!= blocks.end(); ++iter )
 			{
-				QString blockName = QString::fromStdString( iter->getName() );
+				QString blockName = QString::fromStdString( iter->name );
 				if(blockName != "contextblock")		// don't show or use context blocks in ubercode
 				{
 					validBundleNames << blockName;
