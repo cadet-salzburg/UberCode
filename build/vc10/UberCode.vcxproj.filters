@@ -144,6 +144,12 @@
     <ClCompile Include="GeneratedFiles\Release\moc_UbOutputBlockk.cpp">
       <Filter>Generierte Dateien\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UbGraphicsView.cpp">
+      <Filter>Generierte Dateien\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UbGraphicsView.cpp">
+      <Filter>Generierte Dateien\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\src\uberCode.ui">
@@ -173,11 +179,11 @@
     <CustomBuild Include="..\..\src\UbOutputBlockk.h">
       <Filter>source\dataflow management\blocks</Filter>
     </CustomBuild>
+    <CustomBuild Include="UbGraphicsView.h">
+      <Filter>source\widgets</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GeneratedFiles\ui_uberCode.h">
-      <Filter>Generierte Dateien</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\DataflowEngineManager.h">
       <Filter>source\dataflow management</Filter>
     </ClInclude>
@@ -208,8 +214,8 @@
     <ClInclude Include="..\..\src\UbImage.h">
       <Filter>source\dataflow management\blocks</Filter>
     </ClInclude>
-    <ClInclude Include="UbGraphicsView.h">
-      <Filter>source\widgets</Filter>
+    <ClInclude Include="GeneratedFiles\ui_uberCode.h">
+      <Filter>Generierte Dateien</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

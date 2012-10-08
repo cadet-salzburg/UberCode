@@ -63,5 +63,6 @@ void BlockNavigationTreeWidget::addBlockNames()
 		QTreeWidgetItem *block = new QTreeWidgetItem( this);
 		block->setText(0, *iter );
 	}
+
 }
 

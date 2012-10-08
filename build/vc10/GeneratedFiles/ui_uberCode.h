@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'uberCode.ui'
 **
-** Created: Wed 26. Sep 16:50:46 2012
+** Created: Fri 5. Oct 14:45:04 2012
 **      by: Qt User Interface Compiler version 4.8.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -49,7 +49,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(966, 753);
+        MainWindow->resize(1113, 853);
         MainWindow->setStyleSheet(QString::fromUtf8(""));
         actionAbout = new QAction(MainWindow);
         actionAbout->setObjectName(QString::fromUtf8("actionAbout"));
@@ -76,7 +76,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 966, 21));
+        menubar->setGeometry(QRect(0, 0, 1113, 21));
         menuFile = new QMenu(menubar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuHelp = new QMenu(menubar);

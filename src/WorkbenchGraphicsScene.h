@@ -13,14 +13,13 @@ public:
 	~WorkbenchGraphicsScene();
 
 	void addBlock(QString strBlockName);
-
 protected:
 	void dragEnterEvent(QGraphicsSceneDragDropEvent* event);
 	void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
 	void dropEvent(QGraphicsSceneDragDropEvent* event);
 
 private:
-	
+	void initialize();
 };
 
 #endif // WorkbenchGraphicsScene_H

@@ -20,7 +20,6 @@ WorkbenchGraphicsScene* Composition::getGraphicsScene()
 	return m_WorkbenchGraphicsScene;
 }
 
-
 void Composition::addBlock(QString strBlockName)
 {
 	BlockInstancingInfos blockInfos = DataflowEngineManager::getInstance()->getBlockInstancingInfos();
@@ -37,7 +36,4 @@ void Composition::addBlock(QString strBlockName)
 		}
 		++it;
 	}
-
-	UbIOBlock *IOBlock = new UbIOBlock(0);
-	m_WorkbenchGraphicsScene->addItem(IOBlock);
 }

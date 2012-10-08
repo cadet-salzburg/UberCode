@@ -14,5 +14,4 @@ public:
 
 private:
 	WorkbenchGraphicsScene*					m_WorkbenchGraphicsScene;
-
 };
