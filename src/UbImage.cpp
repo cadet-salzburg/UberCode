@@ -18,9 +18,7 @@ void UbImage::setImage(const QImage& image)
 }
 void UbImage::paintEvent(QPaintEvent*)
 {
-	std::cout << "Paint Event of UbImage is called" << std::endl;
-	makeCurrent();
-	
+	makeCurrent();	
 	QPainter p( this );
     p.setRenderHint( QPainter::SmoothPixmapTransform, 1 );
     p.drawImage( 0, 0, m_Image );

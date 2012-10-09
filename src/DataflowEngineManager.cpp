@@ -77,13 +77,13 @@ QStringList DataflowEngineManager::loadBundles()
 				}
 			}
 		}
-		catch ( NotFoundException& )
+		catch ( NotFoundException& e)
 		{
-			std::cout << iter->toStdString() << " is not a _2Real bundle" << std::endl;
+			std::cout << e.what() << " " << e.message() << std::endl;
 		}
-		catch ( AlreadyExistsException& )
+		catch ( AlreadyExistsException& e)
 		{
-			std::cout << iter->toStdString() << " has already been loaded." << std::endl;
+			std::cout << e.what()  << " " << e.message() << std::endl;
 		}
 		catch ( ... )
 		{

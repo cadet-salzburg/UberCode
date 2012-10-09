@@ -32,6 +32,5 @@ private:
 	UbNode*	m_EndNode;
 	QPointF	m_StartPos;
 	QPointF	m_EndPos;
-	bool	isSoftLink();
 	bool	isHardLink();
 };

@@ -2,7 +2,8 @@
 #include <iostream>
 #include "UbLink.h"
 #include "UbNode.h"
-
+#include "UbInletNode.h"
+#include "UbOutletNode.h"
 
 UbLink::UbLink( QGraphicsItem *parent,  QGraphicsScene *scene )
 :QGraphicsPathItem(parent, scene),
@@ -84,6 +85,24 @@ void UbLink::startedChanging()
 void UbLink::finishedChanging()
 {
 	m_IsChanging = false;
+	if ( isHardLink() )
+	{
+		UbOutletNode *nodeA;
+		UbInletNode *nodeB;
+		if ( m_StartNode->type() ==  QGraphicsItem::UserType + UberCodeItemType::OutputNodeType )
+		{
+			nodeA =  dynamic_cast<UbOutletNode*>(m_StartNode);
+			nodeB =  dynamic_cast<UbInletNode*>(m_EndNode);
+		} else 
+		{
+			nodeA =  dynamic_cast<UbOutletNode*>(m_EndNode);
+			nodeB =  dynamic_cast<UbInletNode*>(m_StartNode);
+		}
+		_2Real::app::OutletHandle hOutlet = nodeA->getHandle();
+		_2Real::app::InletHandle hInlet = nodeB->getHandle();
+		hOutlet.link(hInlet);
+//		nodeA->getHandle().link(nodeB->getHandle());
+	}
 }
 
 bool UbLink::isChanging() const
@@ -110,23 +129,17 @@ void UbLink::mousePressEvent( QGraphicsSceneMouseEvent * event )
 	{
 		// There are 2 cases that need to be handled differently. i) The link can be a framework link between 2 (framework ) blocks.
 		// ii) The link can be between a UbIOBlock and a framework block.
-		if ( isSoftLink() )
-		{
-			
-		} 
-		else if ( isHardLink() )
-		{
+		//if ( isSoftLink() )
+		//{
+		//	
+		//} 
+		//else if ( isHardLink() )
+		//{
 
-		}
+		//}
 	}
 }
-
-bool UbLink::isSoftLink()
-{
-	return false;
-}
-
 bool UbLink::isHardLink()
 {
-	return false;
+	return !( (m_StartNode->type() == QGraphicsItem::UserType + UberCodeItemType::NodeType) || (m_EndNode->type() == QGraphicsItem::UserType + UberCodeItemType::NodeType) ); 
 }
