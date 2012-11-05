@@ -43,7 +43,7 @@ void UbIOBlock::receiveData(_2Real::app::AppData const& data)
 
 QRectF	UbIOBlock::boundingRect() const
 {
-	return QRectF( QPointF(-m_Width/2., -m_Width/2.), QPointF( m_Width/2.,m_Width/2.) );
+	return QRectF( QPointF(-m_Width/2., -m_Height/2.), QPointF( m_Width/2.,m_Height/2.) );
 }
 
 void UbIOBlock::constructPath()
@@ -112,7 +112,7 @@ void UbIOBlock::setOutputNode(const  _2Real::app::InletHandle& handle )
 
 void UbIOBlock::updateData(_2Real::app::AppData data) 
 {
-	if ( m_Node && m_Node->type() == QGraphicsItem::UserType + UberCodeItemType::OutputNodeType )
+	if ( m_Node && m_Node->type() == Uber::OutputNodeType )
 	{
 		UbOutletNode *m_OutletNode = 0;
 		m_OutletNode =  dynamic_cast<UbOutletNode*>(m_Node);

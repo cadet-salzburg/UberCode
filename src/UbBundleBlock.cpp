@@ -1,6 +1,9 @@
+#include <exception>
 #include "UbBundleBlock.h"
 #include "UbInletNode.h"
 #include "UbOutletNode.h"
+#include "app/_2RealEngine.h"
+
 using namespace _2Real;
 using namespace _2Real::app;
 using namespace std;
@@ -8,21 +11,10 @@ using namespace std;
 
 UbBundleBlock::UbBundleBlock(QGraphicsItem *parent,  _2Real::app::BundleHandle handle, QString blockName)
 	:UbAbstractBlock(parent)
-	,m_BundleHandle(handle)
-	,m_BlockName(blockName)
-{
-	setup();
-}
-UbBundleBlock::~UbBundleBlock(void)
-{
-
-}
-
-void UbBundleBlock::setup()
 {
 	try
 	{
-		m_BlockHandle = m_BundleHandle.createBlockInstance( m_BlockName.toStdString() );
+		m_BlockHandle = handle.createBlockInstance( blockName.toStdString() );
 		m_fDefaultFps = 30.0;
 		m_BlockHandle.setUpdateRate( m_fDefaultFps );
 		m_BlockHandle.setup();
@@ -34,10 +26,35 @@ void UbBundleBlock::setup()
 	}
 	constructPath();
 }
-//void UbBundleBlock::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-//{
-//
-//}
+
+UbBundleBlock::UbBundleBlock( QGraphicsItem *parent,  QString blockInstanceId )
+	:UbAbstractBlock(parent)
+{
+	Engine::BlockHandles blockHandles = Engine::instance().getCurrentBlocks();
+	Engine::BlockHandleIterator iter = blockHandles.begin();
+	for ( ; iter!= blockHandles.end(); ++iter )
+	{
+		if ( iter->getIdAsString() == blockInstanceId.toUtf8().constData() )
+		{
+			std::cout << "found " << std::endl;
+			break;
+		}
+	}
+
+	if ( iter != blockHandles.end() )
+	{
+		m_BlockHandle	= *iter;
+	} else
+	{
+		throw std::exception("Cannot find any block instance with the specified Id.");
+	}
+	constructPath();
+}
+
+UbBundleBlock::~UbBundleBlock(void)
+{
+
+}
 
 void UbBundleBlock::addNodes()
 {

@@ -25,9 +25,10 @@ private:
 	static UbLinkController*	m_Instance;
 	static QGraphicsScene*		m_Scene;
 	UbLink*						m_CurrentLink;
-	bool						itemIs( QGraphicsItem * item, int type );
+	//bool						itemIs( QGraphicsItem * item, int type );
 	bool						processStartLink( QGraphicsSceneMouseEvent * e );
 	bool						processUpdateLink( QGraphicsSceneMouseEvent * e );
 	bool						processEndLink( QGraphicsSceneMouseEvent *e );
+	bool						eventHappenedAtNode( QGraphicsSceneMouseEvent * e );
 	//QList<UbLink*>			m_Links;
 };

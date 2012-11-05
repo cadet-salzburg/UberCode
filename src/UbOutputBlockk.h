@@ -10,7 +10,7 @@ class UbOutputBlock : public QGraphicsObject
 {
 	Q_OBJECT
 public:
-	enum { Type = QGraphicsItem::UserType + UberCodeItemType::OutputBlockType };
+	enum { Type = Uber::OutputBlockType };
 	UbOutputBlock( QGraphicsItem *parent );
 	~UbOutputBlock(void);
 	QRectF						boundingRect() const;

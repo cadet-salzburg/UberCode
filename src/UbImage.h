@@ -12,7 +12,7 @@ public:
 		return QSize(320, 240);
 	}
 protected:
-    void paintEvent(QPaintEvent*);
+	void paintEvent(QPaintEvent*);
 private:
 	QImage m_Image;
 };

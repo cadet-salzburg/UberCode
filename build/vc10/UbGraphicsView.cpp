@@ -14,10 +14,13 @@ UbGraphicsView::UbGraphicsView( QGraphicsScene * scene, QWidget * parent )
 {
 	initialize();
 }
+
 void UbGraphicsView::initialize()
 {
-	setAlignment(Qt::AlignLeft | Qt::AlignTop);
-	setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
+	setAlignment(Qt::AlignCenter );
+	//setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
+	setAcceptDrops(true);
+	setSceneRect(0,0,640,480);
 }
 void UbGraphicsView::resizeEvent( QResizeEvent * event )
 {

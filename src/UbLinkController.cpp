@@ -9,7 +9,6 @@
 #include "UbOutletNode.h"
 #include "UbIOBlock.h"
 
-
 UbLinkController*	UbLinkController::m_Instance = 0;
 QGraphicsScene*		UbLinkController::m_Scene	 = 0;
 
@@ -69,14 +68,15 @@ QGraphicsItem*	UbLinkController::itemAt(const QPointF &pos)
 		if (item->type() > QGraphicsItem::UserType)
 			return item;
 
-	return 0;
+	return nullptr;
 }
 
-bool UbLinkController::itemIs( QGraphicsItem * item, int type )
-{
-	bool res = item && item->type() == type;
-	return  res;
-}
+//bool UbLinkController::itemIs( QGraphicsItem * item, int type )
+//{
+//	bool res = item && item->type() == type;
+//	return  res;
+//}
+
 bool UbLinkController::processStartLink(QGraphicsSceneMouseEvent *e)
 {
 	QGraphicsItem *item = itemAt(e->scenePos());
@@ -85,7 +85,7 @@ bool UbLinkController::processStartLink(QGraphicsSceneMouseEvent *e)
 			if(item)
 			{
 				int t = item->type();
-				if ( itemIs(item, UbNode::Type ) || itemIs(item, UbInletNode::Type) || itemIs(item, UbOutletNode::Type ) )
+				if ( ( item->type() == UbNode::Type ) || ( item->type() == UbInletNode::Type ) || ( item->type() == UbOutletNode::Type ) )
 					//if (item && item->type() == UbNode::Type)
 				{
 					m_CurrentLink = new UbLink( 0, m_Scene );
@@ -124,7 +124,7 @@ bool UbLinkController::processEndLink( QGraphicsSceneMouseEvent *e )
 	if ( m_CurrentLink && e->button() == Qt::LeftButton)
 	{
 		QGraphicsItem *item = itemAt(e->scenePos());
-		if ( itemIs(item, UbNode::Type ) || itemIs(item, UbInletNode::Type) || itemIs(item, UbOutletNode::Type ) )
+		if ( eventHappenedAtNode( e ) )
 		{
 			UbNode *startNode = m_CurrentLink->getStartNode();
 			UbNode *endNode	  = (UbNode*) item;
@@ -132,28 +132,47 @@ bool UbLinkController::processEndLink( QGraphicsSceneMouseEvent *e )
 			{
 				if ( startNode->type() != endNode->type() )
 				{
-					if ( (startNode->type() == QGraphicsItem::UserType + UberCodeItemType::NodeType ) && ( endNode->type() == QGraphicsItem::UserType + UberCodeItemType::OutputNodeType ) )
+					if ( (startNode->type() == Uber::NodeType ) && ( endNode->type() == Uber::OutputNodeType ) )
 					{
 						QGraphicsObject *obj = startNode->parentObject();
 						UbOutletNode *_node =  dynamic_cast<UbOutletNode*>(endNode);
 						dynamic_cast<UbIOBlock*>(obj)->setInputNode(_node->getHandle());
-					} else if ( ( startNode->type() == QGraphicsItem::UserType + UberCodeItemType::OutputNodeType ) && (endNode->type() == QGraphicsItem::UserType + UberCodeItemType::NodeType ) )
+						m_CurrentLink->setEndNode(endNode);
+						m_CurrentLink->finishedChanging();
+						m_CurrentLink->updatePath();
+						return true;
+					} else if ( ( startNode->type() == Uber::OutputNodeType ) && (endNode->type() == Uber::NodeType ) )
 					{
 						QGraphicsObject *obj = endNode->parentObject();
 						UbOutletNode *_node =  dynamic_cast<UbOutletNode*>(startNode);
 						dynamic_cast<UbIOBlock*>(obj)->setInputNode(_node->getHandle());
-					} else if ( (startNode->type() == QGraphicsItem::UserType + UberCodeItemType::OutputNodeType ) && ( endNode->type() == QGraphicsItem::UserType + UberCodeItemType::InputNodeType) )
+						m_CurrentLink->setEndNode(endNode);
+						m_CurrentLink->finishedChanging();
+						m_CurrentLink->updatePath();
+						return true;
+					} else if ( (startNode->type() == Uber::OutputNodeType ) && ( endNode->type() == Uber::InputNodeType) )
 					{
-
-					} else if ( (startNode->type() == QGraphicsItem::UserType + UberCodeItemType::InputNodeType ) && ( endNode->type() == QGraphicsItem::UserType + UberCodeItemType::OutputNodeType) )
+						if ( dynamic_cast<UbOutletNode*>(startNode)->getHandle().getTypename() == dynamic_cast<UbInletNode*>(endNode)->getHandle().getTypename() )
+						{
+							m_CurrentLink->setStartNode(endNode);
+							m_CurrentLink->setEndNode(startNode);
+							m_CurrentLink->finishedChanging();
+							m_CurrentLink->updatePath();
+							return true;
+						}
+					} else if ( ( startNode->type() == Uber::InputNodeType ) && ( endNode->type() == Uber::OutputNodeType ) )
 					{
-
+						if ( dynamic_cast<UbInletNode*>(startNode)->getHandle().getTypename() == dynamic_cast<UbOutletNode*>(endNode)->getHandle().getTypename() )
+						{
+							m_CurrentLink->setStartNode(startNode);
+							m_CurrentLink->setEndNode(endNode);
+							m_CurrentLink->finishedChanging();
+							m_CurrentLink->updatePath();
+							return true;
+						}
 					}
 				}
-				m_CurrentLink->setEndNode(endNode);
-				m_CurrentLink->finishedChanging();
-				m_CurrentLink->updatePath();
-				return true;
+
 
 
 				//if ( startNode->type() == QGraphicsItem::UserType + UberCodeItemType::NodeType )
@@ -185,8 +204,17 @@ bool UbLinkController::processEndLink( QGraphicsSceneMouseEvent *e )
 			delete m_CurrentLink;
 		}
 		m_CurrentLink = 0;
-		return true;
+		return false;
 	}
+}
+bool UbLinkController::eventHappenedAtNode( QGraphicsSceneMouseEvent * e )
+{
+	QGraphicsItem *item = itemAt(e->scenePos());
+	if ( item != nullptr ){
+		return ( item->type() == UbNode::Type || item->type() == UbInletNode::Type || item->type() == UbInletNode::Type )?true:false;
+	}
+	return false;
+	
 }
 
 bool UbLinkController::eventFilter( QObject *obj, QEvent *e )

@@ -6,6 +6,7 @@ class UbLink : public QGraphicsPathItem
 {
 public:
 	UbLink(QGraphicsItem *parent = 0,  QGraphicsScene *scene = 0);
+
 	virtual	~UbLink();
 
 	void	updatePath();

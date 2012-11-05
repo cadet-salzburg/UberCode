@@ -8,7 +8,7 @@ class UbLink;
 class UbNode :public QGraphicsObject
 {
 public:
-	enum { Type = QGraphicsItem::UserType + UberCodeItemType::NodeType  };
+	enum { Type = Uber::NodeType  };
 	UbNode( QGraphicsItem *parent = 0 );
 	void				constructPath();
 	void				paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);

@@ -6,7 +6,7 @@ class UbOutletNode :
 	public UbNode
 {
 public:
-	enum { Type = QGraphicsItem::UserType + UberCodeItemType::OutputNodeType  };
+	enum { Type = Uber::OutputNodeType  };
 	UbOutletNode(  QGraphicsItem *parent,const _2Real::app::OutletHandle& handle );
 	virtual ~UbOutletNode(void);
 	virtual int type() const { return Type; }

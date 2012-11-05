@@ -17,10 +17,7 @@ public:
 	~MainWindow(void);
 protected:
 	bool event ( QEvent * event );
-
 private:
-	int										m_iInstances;
-	std::string								m_strBlockName;
 	Ui_MainWindow*							m_UiBuilderWindow;
 	SettingsDialog*						    m_SettingsDialog;
 	BlockNavigationTreeWidget*				m_BlockNavigationTreeWidget;

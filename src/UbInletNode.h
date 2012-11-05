@@ -5,7 +5,7 @@
 class UbInletNode :public UbNode
 {
 public:
-	enum { Type = QGraphicsItem::UserType + UberCodeItemType::InputNodeType  };
+	enum { Type = Uber::InputNodeType  };
 	UbInletNode( QGraphicsItem *parent,const  _2Real::app::InletHandle& handle );
 	virtual ~UbInletNode(void);
 	virtual int type() const { return Type; }

@@ -89,7 +89,7 @@ void UbLink::finishedChanging()
 	{
 		UbOutletNode *nodeA;
 		UbInletNode *nodeB;
-		if ( m_StartNode->type() ==  QGraphicsItem::UserType + UberCodeItemType::OutputNodeType )
+		if ( m_StartNode->type() == Uber::OutputNodeType )
 		{
 			nodeA =  dynamic_cast<UbOutletNode*>(m_StartNode);
 			nodeB =  dynamic_cast<UbInletNode*>(m_EndNode);
@@ -141,5 +141,5 @@ void UbLink::mousePressEvent( QGraphicsSceneMouseEvent * event )
 }
 bool UbLink::isHardLink()
 {
-	return !( (m_StartNode->type() == QGraphicsItem::UserType + UberCodeItemType::NodeType) || (m_EndNode->type() == QGraphicsItem::UserType + UberCodeItemType::NodeType) ); 
+	return !( (m_StartNode->type() == Uber::NodeType) || (m_EndNode->type() == Uber::NodeType) ); 
 }

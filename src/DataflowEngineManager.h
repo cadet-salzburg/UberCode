@@ -1,22 +1,20 @@
 #pragma once
-#include "_2RealApplication.h"
-#include "Composition.h"
-
 #include <vector>
-
 #include <QStringList>
+#include <QGraphicsItem>
+#include "_2RealApplication.h"
+#include "UbComposition.h"
 
-
-namespace UberCodeItemType {
+namespace Uber {
 enum  {
-		NodeType = 1,
-		InputNodeType = 2,
-		OutputNodeType = 3,
-		AbstractBlockType = 4,
-		BundleBlockType	  = 5,
-		InputBlockType    = 6,
-		OutputBlockType   = 7,
-		IOBlockType   = 8
+		NodeType = QGraphicsItem::UserType + 1,
+		InputNodeType = QGraphicsItem::UserType + 2,
+		OutputNodeType = QGraphicsItem::UserType + 3,
+		AbstractBlockType = QGraphicsItem::UserType + 4,
+		BundleBlockType	  = QGraphicsItem::UserType + 5,
+		InputBlockType    = QGraphicsItem::UserType + 6,
+		OutputBlockType   = QGraphicsItem::UserType + 7,
+		IOBlockType   = QGraphicsItem::UserType + 8
 	};
 };
 
@@ -29,12 +27,12 @@ public:
 	~DataflowEngineManager();
 	static DataflowEngineManager*		getInstance();
 	QStringList							loadBundles();
-	Composition*						addComposition();
-	void								removeComposition(Composition* comp);
-	Composition*						getComposition();
+	UbComposition*						addComposition();
+	void								removeComposition(UbComposition* comp);
+	UbComposition*						getComposition();
 
 	const BlockInstancingInfos&			getBlockInstancingInfos(); 
-
+	_2Real::app::Engine&				getEngine();
 private:
 	DataflowEngineManager();
 	QStringList findBundlesInDirectory();
@@ -42,5 +40,5 @@ private:
 	static DataflowEngineManager*			m_pInstance;
 	_2Real::app::Engine&					m_Engine;
 	BlockInstancingInfos					m_BlockInstancingInfos;
-	std::vector<Composition*>				m_Compositions;
+	std::vector<UbComposition*>				m_UbCompositions;
 };

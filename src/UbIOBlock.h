@@ -9,7 +9,7 @@ class UbIOBlock : public QGraphicsObject
 {
 	Q_OBJECT
 public:
-	enum { Type = QGraphicsItem::UserType + UberCodeItemType::IOBlockType };
+	enum { Type = Uber::IOBlockType };
 	
 	UbIOBlock( QGraphicsItem *parent );
 	~UbIOBlock(void);
@@ -37,6 +37,20 @@ private:
 	QPixmap					m_Pixmap;
 	QGraphicsProxyWidget*	m_ProxyWidget;
 	QPointF					m_Pos;
+	QPointF					m_CurrentPoint;
+	QPointF					m_PreviousPoint;
+protected:
+	virtual void mousePressEvent ( QGraphicsSceneMouseEvent * e )
+	{
+		m_CurrentPoint = m_PreviousPoint =  e->scenePos();  
+	};
+	virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * e )
+	{
+		m_CurrentPoint = e->scenePos();
+		QPointF diff = m_CurrentPoint - m_PreviousPoint;
+		setPos(pos() + diff );
+		m_PreviousPoint = m_CurrentPoint;
+	};
 public slots:
 	void		updateData(_2Real::app::AppData data);
 signals:

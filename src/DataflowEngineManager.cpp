@@ -93,28 +93,33 @@ QStringList DataflowEngineManager::loadBundles()
 	return validBundleNames;
 }
 
-Composition* DataflowEngineManager::addComposition()
+UbComposition* DataflowEngineManager::addComposition()
 {
-	m_Compositions.push_back(new Composition());
-	return m_Compositions.back();
+	m_UbCompositions.push_back(new UbComposition());
+	return m_UbCompositions.back();
 }
 
-Composition* DataflowEngineManager::getComposition()
+UbComposition* DataflowEngineManager::getComposition()
 {
-	return m_Compositions.back();	// last one, this has to be changed when we want multiple compositions to be useable
+	return m_UbCompositions.back();	// last one, this has to be changed when we want multiple UbCompositions to be useable
 }
 
-void DataflowEngineManager::removeComposition(Composition* comp)
+void DataflowEngineManager::removeComposition(UbComposition* comp)
 {
-	std::vector<Composition*>::iterator it = std::find(m_Compositions.begin(), m_Compositions.end(), comp);
-	if(it != m_Compositions.end())
+	std::vector<UbComposition*>::iterator it = std::find(m_UbCompositions.begin(), m_UbCompositions.end(), comp);
+	if(it != m_UbCompositions.end())
 	{
 		delete (*it);
-		m_Compositions.erase(it);
+		m_UbCompositions.erase(it);
 	}
 }
 
 const std::vector<BlockInstancingInfo>&	DataflowEngineManager::getBlockInstancingInfos()
 {
 	return m_BlockInstancingInfos;
+}
+
+_2Real::app::Engine& DataflowEngineManager::getEngine()
+{
+	return m_Engine;
 }
