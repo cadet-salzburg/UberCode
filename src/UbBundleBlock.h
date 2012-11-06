@@ -15,6 +15,9 @@ namespace Uber {
 
 		virtual int					type() const { return Type; }
 		_2Real::app::BlockHandle	getHandle(){ return m_BlockHandle;}
+		QString						getBlockId(){ return m_BlockId; }
+
+
 	protected:
 		virtual void				mousePressEvent ( QGraphicsSceneMouseEvent * e )
 		{
@@ -33,5 +36,6 @@ namespace Uber {
 		_2Real::app::BlockHandle	m_BlockHandle;
 		QPointF						m_CurrentPoint;
 		QPointF						m_PreviousPoint;
+		QString						m_BlockId;
 	};
 }

@@ -113,6 +113,7 @@ namespace Uber {
 
 	void UbIOBlock::updateData(_2Real::app::AppData data) 
 	{
+		m_Data = data;
 		if ( m_Node && m_Node->type() == Uber::OutputNodeType )
 		{
 			UbOutletNode *m_OutletNode = 0;
@@ -123,8 +124,9 @@ namespace Uber {
 			{
 				if( m_OutletNode->getHandle().getTypename() == "number image" )
 				{
-					Image const& img = data.getData< Image >();
+					Image const& img = m_Data.getData< Image >();
 					QImage q( img.getData(), img.getWidth(), img.getHeight(), 3*img.getWidth(), QImage::Format_RGB888 );
+					//QImage q2 = q.copy();
 					dynamic_cast<UbImage*>(m_ValueWidget)->setImage(q);
 					m_ProxyWidget->update();
 				}
@@ -135,24 +137,24 @@ namespace Uber {
 					m_OutletNode->getHandle().getTypename() == "number" || m_OutletNode->getHandle().getTypename() == "point" ||  
 					m_OutletNode->getHandle().getTypename() == "string")
 				{
-					dynamic_cast<QLabel*>(m_ValueWidget)->setText(QString::fromStdString(data.getDataAsString()));
+					dynamic_cast<QLabel*>(m_ValueWidget)->setText(QString::fromStdString(m_Data.getDataAsString()));
 				}
 				else if( m_OutletNode->getHandle().getTypename() == "char")
 				{
 					stringstream strTmp;
-					strTmp << data.getDataAsString() << " : " << data.getData<char>();
+					strTmp << m_Data.getDataAsString() << " : " << m_Data.getData<char>();
 					dynamic_cast<QLabel*>(m_ValueWidget)->setText(QString::fromStdString( strTmp.str()));
 				}
 				else if(m_OutletNode->getHandle().getTypename() == "unsigned char")
 				{
 					stringstream strTmp;
-					strTmp << data.getDataAsString() << " : " << data.getData<unsigned char>();
+					strTmp << m_Data.getDataAsString() << " : " << m_Data.getData<unsigned char>();
 					dynamic_cast<QLabel*>(m_ValueWidget)->setText(QString::fromStdString( strTmp.str()));
 				}
 				else if( m_OutletNode->getHandle().getTypename() == "bool" )
 				{
 					stringstream strTmp;
-					bool bTmp =  data.getData<bool>();
+					bool bTmp =  m_Data.getData<bool>();
 					if(bTmp)
 					{
 						strTmp << bTmp << " : true";

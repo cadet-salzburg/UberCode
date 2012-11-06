@@ -13,6 +13,7 @@ DataflowEngineManager* DataflowEngineManager::m_pInstance = nullptr;
 
 DataflowEngineManager::DataflowEngineManager() : m_Engine( Engine::instance() )
 {
+
 }
 
 DataflowEngineManager::~DataflowEngineManager()

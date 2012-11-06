@@ -40,6 +40,7 @@ namespace Uber {
 		QPointF					m_Pos;
 		QPointF					m_CurrentPoint;
 		QPointF					m_PreviousPoint;
+		_2Real::app::AppData	m_Data;
 	protected:
 		virtual void			mousePressEvent ( QGraphicsSceneMouseEvent * e )
 		{
@@ -52,9 +53,9 @@ namespace Uber {
 			setPos(pos() + diff );
 			m_PreviousPoint = m_CurrentPoint;
 		};
-		public slots:
-			void				updateData(_2Real::app::AppData data);
-		signals:
-			void				sendData(_2Real::app::AppData data);
+	public slots:
+		void				updateData(_2Real::app::AppData data);
+	signals:
+		void				sendData(_2Real::app::AppData data);
 	};
 }

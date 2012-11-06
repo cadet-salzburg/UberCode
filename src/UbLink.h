@@ -8,6 +8,7 @@ namespace Uber {
 	{
 	public:
 		UbLink(QGraphicsItem *parent = 0,  QGraphicsScene *scene = 0);
+		//UbLink(QGraphicsItem *parent,  QGraphicsScene *scene, );
 		virtual	~UbLink();
 
 		void			updatePath();

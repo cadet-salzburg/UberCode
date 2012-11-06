@@ -20,6 +20,7 @@ namespace Uber {
 			m_BlockHandle.setUpdateRate( m_fDefaultFps );
 			m_BlockHandle.setup();
 			m_BlockHandle.start();
+			m_BlockId = QString::fromUtf8( m_BlockHandle.getIdAsString().c_str() );
 		}
 		catch ( Exception &e )
 		{
@@ -45,6 +46,7 @@ namespace Uber {
 		if ( iter != blockHandles.end() )
 		{
 			m_BlockHandle	= *iter;
+			m_BlockId = QString::fromUtf8( m_BlockHandle.getIdAsString().c_str() );
 		} else
 		{
 			throw std::exception("Cannot find any block instance with the specified Id.");

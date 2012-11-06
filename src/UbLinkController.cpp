@@ -29,6 +29,8 @@ namespace Uber {
 	{
 		UbLink *link = new UbLink( 0, m_Scene );
 		link->setNodes( start, end );
+		if ( m_Scene )
+			m_Scene->addItem( link );
 	}
 
 	void UbLinkController::addLink( UbLink * link )

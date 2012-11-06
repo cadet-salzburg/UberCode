@@ -7,6 +7,7 @@
 #include "UbLinkController.h"
 #include "UbXMLWriter.h"
 #include "UbXMLReader.h"
+#include "UbLink.h"
 #include "helpers/_2RealException.h"
 
 using namespace Uber;
@@ -52,7 +53,8 @@ void MainWindow::open()
 		std::string file = fileName.toUtf8().constData();
 		DataflowEngineManager::getInstance()->getEngine().loadConfig( file );
 		Ubercode::xml::UbXMLReader* xmlLoader = new Ubercode::xml::UbXMLReader(fileName);
-		QMap<QString, QPoint> data = xmlLoader->getData();
+		//Add Blocks
+		QMap<QString, QPoint> data = xmlLoader->getBlockData();
 		QMap<QString, QPoint>::const_iterator it = data.constBegin();
 		while ( it!= data.constEnd() )
 		{
@@ -61,6 +63,74 @@ void MainWindow::open()
 			DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(block);
 			++it;
 		}
+		//Add Links
+		QList<Ubercode::xml::LinkData> linkData = xmlLoader->getLinkData();
+		QList<Ubercode::xml::LinkData>::iterator iter = linkData.begin();
+		for ( ;iter!=linkData.end(); ++iter )
+		{
+			QString outletBlockId = iter->first.first;
+			QString outletId = iter->first.second;
+
+			QString inletBlockId = iter->second.first;
+			QString inletId = iter->second.second;
+			//Get Blocks
+			QList<Uber::UbBundleBlock*>	 blockList = DataflowEngineManager::getInstance()->getBundleBlocks();
+			QList<Uber::UbBundleBlock*>::iterator iter = blockList.begin();
+
+			UbBundleBlock* outBlock = 0;
+			UbBundleBlock* inBlock = 0;
+
+			for (;iter!=blockList.end();++iter)
+			{
+				if ( outBlock && inBlock )
+					break;
+				if ( (*iter)->getBlockId() == outletBlockId )
+					outBlock = *iter;
+				if ( (*iter)->getBlockId() == inletBlockId )
+					inBlock = *iter;
+			}
+
+			if ( outBlock!=0 && inBlock!=0 )
+			{
+				UbNode *outletNode = 0;
+				UbNode *inletNode = 0;
+
+				QList<Uber::UbInletNode*> inletList  = DataflowEngineManager::getInstance()->getInlets( inBlock );
+				QList<Uber::UbOutletNode*> outletList = DataflowEngineManager::getInstance()->getOutlets( outBlock );
+
+				QList<Uber::UbInletNode*>::iterator iterInlet = inletList.begin();
+				for (;iterInlet!=inletList.end();++iterInlet)
+				{
+					if ( (*iterInlet)->getName() == inletId )
+					{
+						inletNode = *iterInlet;
+						break;
+					}
+				}
+
+				QList<Uber::UbOutletNode*>::iterator iterOutlet = outletList.begin();
+				for (;iterOutlet!=outletList.end();++iter)
+				{
+					if ( (*iterOutlet)->getName() == outletId )
+					{
+						outletNode = *iterOutlet;
+						break;
+					}
+				}
+				if ( outletNode && inletNode )
+				{
+					//We found the nodes, lets add the link
+					UbLinkController::getInstance()->addLink(outletNode, inletNode);
+
+					//UbLink* theLink = new UbLink();
+					//theLink->setNodes(outletNode, inletNode );
+
+
+				}
+			}
+		}
+
+
 		delete xmlLoader;
 	}
 

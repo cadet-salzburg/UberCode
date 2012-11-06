@@ -13,7 +13,7 @@ namespace Uber {
 		m_EndNode( NULL ),
 		m_StartPos(QPointF(0.f, 0.f)),
 		m_EndPos(QPointF(0.f, 0.f)),
-		m_IsChanging(true)
+		m_IsChanging(false)
 	{
 
 	}

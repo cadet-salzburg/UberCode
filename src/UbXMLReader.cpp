@@ -29,6 +29,7 @@ namespace Ubercode {
 				return;
 			}
 			m_Root = m_DomDocument.documentElement();
+			//Get Block Data
 			QDomNode ubercodeData	= m_Root.namedItem("ubercode_data");
 			QDomNode blockInstances = ubercodeData.namedItem("block_instances");
 
@@ -57,10 +58,32 @@ namespace Ubercode {
 				m_BlockData.insert( blockInstIdString, blockInstPos );
 				currentBlockInstance = currentBlockInstance.nextSiblingElement("block_instance");
 			}
+			//Get Link Data
+			QDomNode links	= m_Root.namedItem("links");
+			QDomNode currentLink = links.firstChildElement("link");
+			while ( !currentLink.isNull() )
+			{
+				QDomNode inlet = currentLink.namedItem("inlet");
+				QDomNode outlet = currentLink.namedItem("outlet");
+				QDomNode inletId = inlet.namedItem("inlet_id");
+				QDomNode inletBlockId = inlet.namedItem("block_instance_id");
+				QDomNode outletId = outlet.namedItem("outlet_id");
+				QDomNode outletBlockId = outlet.namedItem("block_instance_id");
+				QPair<QString, QString> inletData(inletBlockId.toElement().text(),inletId.toElement().text());
+				QPair<QString, QString> outletData(outletBlockId.toElement().text(),outletId.toElement().text());
+				LinkData linkData(outletData,inletData);
+				m_LinkData.push_back(linkData);
+				currentLink = currentLink.nextSiblingElement("link");
+			}
 		}
-		QMap<QString, QPoint> UbXMLReader::getData()
+
+		QMap<QString, QPoint> UbXMLReader::getBlockData()
 		{
 			return m_BlockData;
+		}
+		QList<LinkData> UbXMLReader::getLinkData()
+		{
+			return m_LinkData;
 		}
 	} // namespace xml
 } // namespace Ubercode

@@ -6,8 +6,7 @@
 
 namespace Uber {
 	class UbAbstractBlock :public QGraphicsObject
-	{
-		
+	{	
 	public:
 		UbAbstractBlock( QGraphicsItem *parent );
 		virtual ~UbAbstractBlock( void );
