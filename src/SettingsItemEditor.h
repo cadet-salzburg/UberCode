@@ -16,6 +16,6 @@ private:
 	QToolButton*	m_Button;
 	void			init();
 
-private slots:
-	void openFileDialog();
+	private slots:
+		void openFileDialog();
 };

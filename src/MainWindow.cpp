@@ -9,9 +9,10 @@
 #include "UbXMLReader.h"
 #include "helpers/_2RealException.h"
 
+using namespace Uber;
 MainWindow::MainWindow()
 	: m_SettingsDialog( nullptr ),
-	  m_UiBuilderWindow( nullptr )
+	m_UiBuilderWindow( nullptr )
 {
 	QApplication::setOrganizationName("CADET");
 	QApplication::setOrganizationDomain("cadet.at");
@@ -30,7 +31,7 @@ MainWindow::MainWindow()
 	m_WorkbenchGraphicsView->setRenderHint(QPainter::Antialiasing);
 	QGraphicsScene* s = DataflowEngineManager::getInstance()->addComposition()->getGraphicsScene();
 	m_WorkbenchGraphicsView->setScene( s );
-	UbLinkController::getInstance()->setScene( s );
+	Uber::UbLinkController::getInstance()->setScene( s );
 	m_UiBuilderWindow->workbenchLayout->addWidget(m_WorkbenchGraphicsView);
 	// connect slots
 	QObject::connect( m_UiBuilderWindow->actionOptions, SIGNAL(activated()), m_SettingsDialog, SLOT(show()));
@@ -55,7 +56,7 @@ void MainWindow::open()
 		QMap<QString, QPoint>::const_iterator it = data.constBegin();
 		while ( it!= data.constEnd() )
 		{
-			UbBundleBlock *block = new UbBundleBlock( 0, it.key() );
+			Uber::UbBundleBlock *block = new Uber::UbBundleBlock( 0, it.key() );
 			block->setPos( it.value() );
 			DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(block);
 			++it;
@@ -83,7 +84,7 @@ void MainWindow::save()
 	{
 		fileNames = dialog.selectedFiles();
 		DataflowEngineManager::getInstance()->getEngine().safeConfig(fileNames.at(0).toUtf8().constData());
-		Ubercode::xml::UbXMLWriter* ubXML = new Ubercode::xml::UbXMLWriter(fileNames.at(0));
+		Uber::xml::UbXMLWriter* ubXML = new Uber::xml::UbXMLWriter(fileNames.at(0));
 
 		QList<QGraphicsItem *> items = DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->items();
 		QList<QGraphicsItem *>::iterator iter;

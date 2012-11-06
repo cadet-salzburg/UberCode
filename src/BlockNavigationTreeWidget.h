@@ -10,8 +10,8 @@ class BlockNavigationTreeWidget : public QTreeWidget
 {
 	Q_OBJECT
 
-public slots:
-	void	onDoubleClickAddBlock( QTreeWidgetItem*, int);
+		public slots:
+			void	onDoubleClickAddBlock( QTreeWidgetItem*, int);
 
 public:
 	BlockNavigationTreeWidget(QWidget *parent=0);

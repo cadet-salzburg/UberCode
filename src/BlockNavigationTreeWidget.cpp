@@ -67,7 +67,7 @@ void BlockNavigationTreeWidget::addBlockNames()
 
 	//QTreeWidgetItem* category = new QTreeWidgetItem(this);
 	//category->setText( 0, QString("Bundles") );
-	
+
 	QList<QTreeWidgetItem *> blockItems;
 	for( QStringList::const_iterator iter = list.constBegin(); iter != list.constEnd(); ++iter )
 	{
@@ -81,7 +81,7 @@ void BlockNavigationTreeWidget::addBlockNames()
 	QStringList columnName;
 	columnName  << "Elements";
 	setHeaderLabels(columnName);
-	
+
 	//QList<QTreeWidgetItem *> ubercodeItems;
 	//QTreeWidgetItem *block = new QTreeWidgetItem( this);
 

@@ -21,8 +21,8 @@ private:
 	Ui_MainWindow*							m_UiBuilderWindow;
 	SettingsDialog*						    m_SettingsDialog;
 	BlockNavigationTreeWidget*				m_BlockNavigationTreeWidget;
-	UbGraphicsView*							m_WorkbenchGraphicsView;
-public slots:
-	void open();
-	void save();
+	Uber::UbGraphicsView*					m_WorkbenchGraphicsView;
+	public slots:
+		void open();
+		void save();
 };

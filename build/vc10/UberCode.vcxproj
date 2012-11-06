@@ -19,6 +19,7 @@
     <ClCompile Include="..\..\src\BlockNavigationTreeWidget.cpp" />
     <ClCompile Include="..\..\src\UbBundleBlock.cpp" />
     <ClCompile Include="..\..\src\MainWindow.cpp" />
+    <ClCompile Include="..\..\src\UbGraphicsView.cpp" />
     <ClCompile Include="..\..\src\UbImage.cpp" />
     <ClCompile Include="..\..\src\UbInletNode.cpp" />
     <ClCompile Include="..\..\src\UbIOBlock.cpp" />
@@ -26,10 +27,11 @@
     <ClCompile Include="..\..\src\UbLinkController.cpp" />
     <ClCompile Include="..\..\src\UbNode.cpp" />
     <ClCompile Include="..\..\src\UbOutletNode.cpp" />
-    <ClCompile Include="..\..\src\UbOutputBlockk.cpp" />
     <ClCompile Include="..\..\src\SettingsDialog.cpp" />
     <ClCompile Include="..\..\src\SettingsItemEditor.cpp" />
     <ClCompile Include="..\..\src\UbGraphicsScene.cpp" />
+    <ClCompile Include="..\..\src\UbXMLReader.cpp" />
+    <ClCompile Include="..\..\src\UbXMLWriter.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_BlockNavigationTreeWidget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -52,9 +54,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_UbLinkController.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UbOutputBlockk.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_BlockNavigationTreeWidget.cpp">
@@ -81,12 +80,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_UbLinkController.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UbOutputBlockk.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="UbGraphicsView.cpp" />
-    <ClCompile Include="UbXMLReader.cpp" />
-    <ClCompile Include="UbXMLWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\src\uberCode.ui">
@@ -102,18 +95,19 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="UbXMLReader.h" />
-    <ClInclude Include="UbXMLWriter.h" />
-    <CustomBuild Include="UbGraphicsView.h">
+    <CustomBuild Include="..\..\src\UbGraphicsView.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing UbGraphicsView.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I.\..\..\src" "-ID:\Work\Cadet\UberCode\_2RealFramework\kernel\src" "-I$(_2REAL_DEPENDENCIES_DIR)\poco\Foundation\include" "-I$(_2REAL_DEPENDENCIES_DIR)\eigen" "-I$(QTDIR)\include\QtXml"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I.\..\..\src" "-ID:\Work\Cadet\UberCode\_2RealFramework\kernel\src" "-I$(_2REAL_DEPENDENCIES_DIR)\poco\Foundation\include" "-I$(_2REAL_DEPENDENCIES_DIR)\eigen" "-I$(QTDIR)\include\QtXml"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing UbGraphicsView.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I.\..\..\src" "-I$(_2REAL_DIR)\kernel\src" "-I$(_2REAL_DEPENDENCIES_DIR)\poco\Foundation\include" "-I$(_2REAL_DEPENDENCIES_DIR)\eigen" "-I$(QTDIR)\include\QtXml"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I.\..\..\src" "-I$(_2REAL_DIR)\kernel\src" "-I$(_2REAL_DEPENDENCIES_DIR)\poco\Foundation\include" "-I$(_2REAL_DEPENDENCIES_DIR)\eigen" "-I$(QTDIR)\include\QtXml"</Command>
     </CustomBuild>
+    <ClInclude Include="..\..\src\UbXMLReader.h" />
+    <ClInclude Include="..\..\src\UbXMLWriter.h" />
+    <ClInclude Include="UbTypes.h" />
     <CustomBuild Include="..\..\src\UbIOBlock.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing UbIOBlock.h...</Message>
@@ -174,16 +168,6 @@
     </CustomBuild>
     <ClInclude Include="..\..\src\UbNode.h" />
     <ClInclude Include="..\..\src\UbOutletNode.h" />
-    <CustomBuild Include="..\..\src\UbOutputBlockk.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing UbOutputBlockk.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I.\..\..\src" "-ID:\Work\Cadet\UberCode\_2RealFramework\kernel\src" "-I$(_2REAL_DEPENDENCIES_DIR)\poco\Foundation\include" "-I$(_2REAL_DEPENDENCIES_DIR)\eigen" "-I$(QTDIR)\include\QtXml"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing UbOutputBlockk.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I.\..\..\src" "-I$(_2REAL_DIR)\kernel\src" "-I$(_2REAL_DEPENDENCIES_DIR)\poco\Foundation\include" "-I$(_2REAL_DEPENDENCIES_DIR)\eigen" "-I$(QTDIR)\include\QtXml"</Command>
-    </CustomBuild>
     <CustomBuild Include="..\..\src\UbGraphicsScene.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing UbGraphicsScene.h...</Message>

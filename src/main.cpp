@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	// icon and style settings
 	app->setStyleSheet( readStyleSheet() );
 	app->setWindowIcon(  QIcon("./data/logo.ico") );
-	
+
 	m_UberCode->show();
 	int iRet = app->exec();
 	return iRet;

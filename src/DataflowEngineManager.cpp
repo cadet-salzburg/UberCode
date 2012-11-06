@@ -7,6 +7,7 @@
 
 using namespace _2Real;
 using namespace _2Real::app;
+using namespace Uber;
 
 DataflowEngineManager* DataflowEngineManager::m_pInstance = nullptr;
 
@@ -122,4 +123,56 @@ const std::vector<BlockInstancingInfo>&	DataflowEngineManager::getBlockInstancin
 _2Real::app::Engine& DataflowEngineManager::getEngine()
 {
 	return m_Engine;
+}
+
+QList<UbBundleBlock*> DataflowEngineManager::getBundleBlocks()
+{
+	QList<UbBundleBlock*> blocks;
+	UbComposition* comp = getComposition();
+	UbGraphicsScene* scene = comp->getGraphicsScene();
+	QList<QGraphicsItem*> qgraphicsItems = scene->items();
+	QList<QGraphicsItem*>::iterator iter = qgraphicsItems.begin();
+	for( ;iter!=qgraphicsItems.end(); ++iter )
+	{
+		if ( (*iter)->type() == BundleBlockType )
+		{
+			//ToDo: Should we use QT qgraphicsitem_cast instead???
+			UbBundleBlock *b = static_cast<UbBundleBlock*>(*iter);
+			blocks.push_back(b);
+		}
+	}
+	//TODO: Fix this with shared_ptr. It is quite easy to loose object
+	return blocks;
+}
+
+QList<UbInletNode*>	DataflowEngineManager::getInlets( UbBundleBlock* block )
+{
+	QList<UbInletNode*> inlets;
+	QList<QGraphicsItem *> children = block->childItems();
+	QList<QGraphicsItem *>::iterator iter = children.begin();
+	for (;iter!=children.end();++iter)
+	{
+		if ( (*iter)->type() == InputNodeType )
+		{
+			UbInletNode *n = static_cast<UbInletNode*>(*iter);
+			inlets.push_back(n);
+		}
+	}
+	return inlets;
+}
+
+QList<UbOutletNode*> DataflowEngineManager::getOutlets( UbBundleBlock* block )
+{
+	QList<UbOutletNode*> outlets;
+	QList<QGraphicsItem *> children = block->childItems();
+	QList<QGraphicsItem *>::iterator iter = children.begin();
+	for (;iter!=children.end();++iter)
+	{
+		if ( (*iter)->type() == OutputNodeType )
+		{
+			UbOutletNode *n = static_cast<UbOutletNode*>(*iter);
+			outlets.push_back(n);
+		}
+	}
+	return outlets;
 }

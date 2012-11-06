@@ -6,11 +6,11 @@
 class SettingsDialog : public QDialog 
 {
 	Q_OBJECT
-		
-public slots:
-	void				onAddItemSlot();
-	void				onRemoveSelectedItems();
-	void				onAccept();
+
+		public slots:
+			void				onAddItemSlot();
+			void				onRemoveSelectedItems();
+			void				onAccept();
 
 public:
 	SettingsDialog(QWidget *parent = 0);

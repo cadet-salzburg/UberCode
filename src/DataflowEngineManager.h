@@ -4,19 +4,9 @@
 #include <QGraphicsItem>
 #include "_2RealApplication.h"
 #include "UbComposition.h"
-
-namespace Uber {
-enum  {
-		NodeType = QGraphicsItem::UserType + 1,
-		InputNodeType = QGraphicsItem::UserType + 2,
-		OutputNodeType = QGraphicsItem::UserType + 3,
-		AbstractBlockType = QGraphicsItem::UserType + 4,
-		BundleBlockType	  = QGraphicsItem::UserType + 5,
-		InputBlockType    = QGraphicsItem::UserType + 6,
-		OutputBlockType   = QGraphicsItem::UserType + 7,
-		IOBlockType   = QGraphicsItem::UserType + 8
-	};
-};
+#include "UbBundleBlock.h"
+#include "UbInletNode.h"
+#include "UbOutletNode.h"
 
 typedef std::pair<QString, _2Real::app::BundleHandle>	BlockInstancingInfo;
 typedef std::vector<BlockInstancingInfo>				BlockInstancingInfos;
@@ -25,20 +15,25 @@ class DataflowEngineManager
 {
 public:
 	~DataflowEngineManager();
-	static DataflowEngineManager*		getInstance();
-	QStringList							loadBundles();
-	UbComposition*						addComposition();
-	void								removeComposition(UbComposition* comp);
-	UbComposition*						getComposition();
+	static DataflowEngineManager*			getInstance();
+	QStringList								loadBundles();
 
-	const BlockInstancingInfos&			getBlockInstancingInfos(); 
-	_2Real::app::Engine&				getEngine();
+	Uber::UbComposition*					addComposition();
+	void									removeComposition(Uber::UbComposition* comp);
+	Uber::UbComposition*					getComposition();
+
+	_2Real::app::Engine&					getEngine();
+	const BlockInstancingInfos&				getBlockInstancingInfos();
+
+	QList<Uber::UbBundleBlock*>				getBundleBlocks();
+	QList<Uber::UbInletNode*>				getInlets( Uber::UbBundleBlock* block );
+	QList<Uber::UbOutletNode*>				getOutlets( Uber::UbBundleBlock* block );
+
 private:
 	DataflowEngineManager();
-	QStringList findBundlesInDirectory();
-
+	QStringList								findBundlesInDirectory();
 	static DataflowEngineManager*			m_pInstance;
 	_2Real::app::Engine&					m_Engine;
 	BlockInstancingInfos					m_BlockInstancingInfos;
-	std::vector<UbComposition*>				m_UbCompositions;
+	std::vector<Uber::UbComposition*>		m_UbCompositions;
 };

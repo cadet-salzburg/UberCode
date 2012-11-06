@@ -1,20 +1,22 @@
 #pragma once
-#include "ubnode.h"
-#include "DataflowEngineManager.h"
+#include "UbNode.h"
+#include "UbTypes.h"
+#include "_2RealApplication.h"
 
-class UbInletNode :public UbNode
-{
-public:
-	enum { Type = Uber::InputNodeType  };
-	UbInletNode( QGraphicsItem *parent,const  _2Real::app::InletHandle& handle );
-	virtual ~UbInletNode(void);
-	virtual int type() const { return Type; }
-	virtual bool isInlet(){ return true; }
-	const _2Real::app::InletHandle& getHandle()
+namespace Uber {
+	class UbInletNode :public UbNode
 	{
-		return m_Handle;
-	}
+	public:
+		UbInletNode( QGraphicsItem *parent,const  _2Real::app::InletHandle& handle );
+		virtual ~UbInletNode(void);
 
-private:
-	_2Real::app::InletHandle		m_Handle;
-};
+		enum { Type = InputNodeType  };
+
+		virtual int							type() const { return Type; }
+		virtual bool						isInlet(){ return true; }
+		const _2Real::app::InletHandle&		getHandle(){ return m_Handle; }
+
+	private:
+		_2Real::app::InletHandle			m_Handle;
+	};
+}

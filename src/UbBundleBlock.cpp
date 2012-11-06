@@ -8,87 +8,89 @@ using namespace _2Real;
 using namespace _2Real::app;
 using namespace std;
 
+namespace Uber {
 
-UbBundleBlock::UbBundleBlock(QGraphicsItem *parent,  _2Real::app::BundleHandle handle, QString blockName)
-	:UbAbstractBlock(parent)
-{
-	try
+	UbBundleBlock::UbBundleBlock(QGraphicsItem *parent,  _2Real::app::BundleHandle handle, QString blockName)
+		:UbAbstractBlock(parent)
 	{
-		m_BlockHandle = handle.createBlockInstance( blockName.toStdString() );
-		m_fDefaultFps = 30.0;
-		m_BlockHandle.setUpdateRate( m_fDefaultFps );
-		m_BlockHandle.setup();
-		m_BlockHandle.start();
-	}
-	catch ( Exception &e )
-	{
-		cout << e.message() << " " << e.what() << endl;
-	}
-	constructPath();
-}
-
-UbBundleBlock::UbBundleBlock( QGraphicsItem *parent,  QString blockInstanceId )
-	:UbAbstractBlock(parent)
-{
-	Engine::BlockHandles blockHandles = Engine::instance().getCurrentBlocks();
-	Engine::BlockHandleIterator iter = blockHandles.begin();
-	for ( ; iter!= blockHandles.end(); ++iter )
-	{
-		if ( iter->getIdAsString() == blockInstanceId.toUtf8().constData() )
+		try
 		{
-			std::cout << "found " << std::endl;
-			break;
+			m_BlockHandle = handle.createBlockInstance( blockName.toStdString() );
+			m_fDefaultFps = 30.0;
+			m_BlockHandle.setUpdateRate( m_fDefaultFps );
+			m_BlockHandle.setup();
+			m_BlockHandle.start();
 		}
-	}
-
-	if ( iter != blockHandles.end() )
-	{
-		m_BlockHandle	= *iter;
-	} else
-	{
-		throw std::exception("Cannot find any block instance with the specified Id.");
-	}
-	constructPath();
-}
-
-UbBundleBlock::~UbBundleBlock(void)
-{
-
-}
-
-void UbBundleBlock::addNodes()
-{
-	qreal nodeSpacing = 4;
-
-	try
-	{
-		int inletIdx   = 0;
-		int outletIdx  = 0;
-
-		//Create Inlets
-		BlockInfo::InletInfos inlets = m_BlockHandle.getBlockInfo().inlets;
-		for(auto it = inlets.begin(); it != inlets.end(); it++)
+		catch ( Exception &e )
 		{
-			UbInletNode *node = new UbInletNode(this, m_BlockHandle.getInletHandle(it->name));
-			//m_Inputs.append( node );
-			QPointF pos = QPointF(-m_Width/2.f, -m_Height/2.f) + node->getRadius()*QPointF(1.f,1.f) + QPointF(m_CornerRadius, m_CornerRadius);
-			node->setPos( pos + inletIdx*(2*node->getRadius()+nodeSpacing)*QPointF(1.f, 0.f));
-			inletIdx++;
+			cout << e.message() << " " << e.what() << endl;
+		}
+		constructPath();
+	}
+
+	UbBundleBlock::UbBundleBlock( QGraphicsItem *parent,  QString blockInstanceId )
+		:UbAbstractBlock(parent)
+	{
+		Engine::BlockHandles blockHandles = Engine::instance().getCurrentBlocks();
+		Engine::BlockHandleIterator iter = blockHandles.begin();
+		for ( ; iter!= blockHandles.end(); ++iter )
+		{
+			if ( iter->getIdAsString() == blockInstanceId.toUtf8().constData() )
+			{
+				std::cout << "found " << std::endl;
+				break;
+			}
 		}
 
-		//Create Outlets
-		BlockInfo::OutletInfos outlets = m_BlockHandle.getBlockInfo().outlets;
-		for(auto it = outlets.begin(); it != outlets.end(); it++)
+		if ( iter != blockHandles.end() )
 		{
-			UbOutletNode *node = new UbOutletNode(this, m_BlockHandle.getOutletHandle(it->name));
-			//m_Outputs.append( node );
-			QPointF pos = -QPointF(-m_Width/2.f, -m_Height/2.f) - node->getRadius()*QPointF(1.f,1.f) - QPointF(m_CornerRadius, m_CornerRadius);
-			node->setPos( pos - outletIdx*(2*node->getRadius()+nodeSpacing)*QPointF(1.f, 0.f));
-			outletIdx++;
+			m_BlockHandle	= *iter;
+		} else
+		{
+			throw std::exception("Cannot find any block instance with the specified Id.");
 		}
+		constructPath();
 	}
-	catch(Exception& e)
+
+	UbBundleBlock::~UbBundleBlock(void)
 	{
-		cout << e.message() << e.what() << std::endl;
+
+	}
+
+	void UbBundleBlock::addNodes()
+	{
+		qreal nodeSpacing = 4;
+
+		try
+		{
+			int inletIdx   = 0;
+			int outletIdx  = 0;
+
+			//Create Inlets
+			BlockInfo::InletInfos inlets = m_BlockHandle.getBlockInfo().inlets;
+			for(auto it = inlets.begin(); it != inlets.end(); it++)
+			{
+				UbInletNode *node = new UbInletNode(this, m_BlockHandle.getInletHandle(it->name));
+				//m_Inputs.append( node );
+				QPointF pos = QPointF(-m_Width/2.f, -m_Height/2.f) + node->getRadius()*QPointF(1.f,1.f) + QPointF(m_CornerRadius, m_CornerRadius);
+				node->setPos( pos + inletIdx*(2*node->getRadius()+nodeSpacing)*QPointF(1.f, 0.f));
+				inletIdx++;
+			}
+
+			//Create Outlets
+			BlockInfo::OutletInfos outlets = m_BlockHandle.getBlockInfo().outlets;
+			for(auto it = outlets.begin(); it != outlets.end(); it++)
+			{
+				UbOutletNode *node = new UbOutletNode(this, m_BlockHandle.getOutletHandle(it->name));
+				//m_Outputs.append( node );
+				QPointF pos = -QPointF(-m_Width/2.f, -m_Height/2.f) - node->getRadius()*QPointF(1.f,1.f) - QPointF(m_CornerRadius, m_CornerRadius);
+				node->setPos( pos - outletIdx*(2*node->getRadius()+nodeSpacing)*QPointF(1.f, 0.f));
+				outletIdx++;
+			}
+		}
+		catch(Exception& e)
+		{
+			cout << e.message() << e.what() << std::endl;
+		}
 	}
 }

@@ -36,12 +36,12 @@ void SettingsDialog::initUI()
 	QDialogButtonBox* buttonBoxBottom = new QDialogButtonBox( QDialogButtonBox::Ok );;
 
 	QSpacerItem* verticalSpacer = new QSpacerItem( 20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding );;
-	
+
 	m_OptionsWidget = new QListWidget();
 
 	verticalLayoutOuter->addLayout( horizontalLayoutTop );
 	verticalLayoutOuter->addWidget( buttonBoxBottom, 1, 0 );
-	
+
 	horizontalLayoutTop->addWidget( m_OptionsWidget );
 	horizontalLayoutTop->addLayout( verticalLayoutTopRight );
 
@@ -86,7 +86,7 @@ void SettingsDialog::onAddItemSlot()
 			QString l_data = widget->m_TextField->text();
 			if(l_data.isEmpty())
 			{
-				 return;
+				return;
 			}
 		}
 	}
@@ -118,7 +118,7 @@ void SettingsDialog::onAccept()
 			QString l_data = widget->m_TextField->text();
 			QDir path(l_data);
 			path.makeAbsolute();
-		
+
 			if(path.exists())
 			{
 				stringlist.push_back(l_data);

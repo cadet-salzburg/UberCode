@@ -102,21 +102,6 @@
     <ClCompile Include="..\..\src\UbImage.cpp">
       <Filter>source\dataflowUi\blocks</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\UbOutputBlockk.cpp">
-      <Filter>source\dataflowUi\blocks</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UbOutputBlockk.cpp">
-      <Filter>Generierte Dateien\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UbOutputBlockk.cpp">
-      <Filter>Generierte Dateien\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UbGraphicsView.cpp">
-      <Filter>Generierte Dateien\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UbGraphicsView.cpp">
-      <Filter>Generierte Dateien\Release</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_UbGraphicsScene.cpp">
       <Filter>Generierte Dateien\Debug</Filter>
     </ClCompile>
@@ -144,16 +129,22 @@
     <ClCompile Include="..\..\src\UbOutletNode.cpp">
       <Filter>source\dataflowUi\blocks</Filter>
     </ClCompile>
-    <ClCompile Include="UbGraphicsView.cpp">
-      <Filter>source\dataflowUi</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\SettingsManager.cpp">
       <Filter>source\widgets</Filter>
     </ClCompile>
-    <ClCompile Include="UbXMLWriter.cpp">
+    <ClCompile Include="..\..\src\UbGraphicsView.cpp">
+      <Filter>source\dataflowUi</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UbGraphicsView.cpp">
+      <Filter>Generierte Dateien\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UbGraphicsView.cpp">
+      <Filter>Generierte Dateien\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UbXMLReader.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="UbXMLReader.cpp">
+    <ClCompile Include="..\..\src\UbXMLWriter.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -176,16 +167,13 @@
     <CustomBuild Include="..\..\src\UbIOBlock.h">
       <Filter>source\dataflowUi\blocks</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\..\src\UbOutputBlockk.h">
-      <Filter>source\dataflowUi\blocks</Filter>
-    </CustomBuild>
     <CustomBuild Include="..\..\src\UbGraphicsScene.h">
       <Filter>source\dataflowUi</Filter>
     </CustomBuild>
     <CustomBuild Include="..\..\src\UbLinkController.h">
       <Filter>source\dataflowUi\blocks</Filter>
     </CustomBuild>
-    <CustomBuild Include="UbGraphicsView.h">
+    <CustomBuild Include="..\..\src\UbGraphicsView.h">
       <Filter>source\dataflowUi</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -223,10 +211,13 @@
     <ClInclude Include="..\..\src\SettingsManager.h">
       <Filter>source\widgets</Filter>
     </ClInclude>
-    <ClInclude Include="UbXMLWriter.h">
+    <ClInclude Include="UbTypes.h">
+      <Filter>source\dataflowUi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\UbXMLReader.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="UbXMLReader.h">
+    <ClInclude Include="..\..\src\UbXMLWriter.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>

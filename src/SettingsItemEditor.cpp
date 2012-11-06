@@ -19,7 +19,7 @@ void SettingsItemEditor::init()
 	QHBoxLayout* hLayout = new QHBoxLayout;
 	hLayout->setContentsMargins(0, 0, 0, 0);
 	m_TextField->setBackgroundRole(QPalette::Base);
-	
+
 	hLayout->addWidget( m_TextField );
 	hLayout->addWidget( m_Button );
 	connect( m_Button, SIGNAL(clicked()), this, SLOT( openFileDialog() ));
@@ -41,7 +41,7 @@ void SettingsItemEditor::openFileDialog()
 	QFileDialog dialog(this);
 	dialog.setFileMode(QFileDialog::DirectoryOnly);
 	dialog.setOptions(QFileDialog::ShowDirsOnly);
-	
+
 	int result = dialog.exec();
 	QStringList filename = dialog.selectedFiles();
 	if(!filename.isEmpty() && result==1)
