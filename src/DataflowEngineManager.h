@@ -7,6 +7,7 @@
 #include "UbBundleBlock.h"
 #include "UbInletNode.h"
 #include "UbOutletNode.h"
+#include "UbGraphicsView.h"
 
 typedef std::pair<QString, _2Real::app::BundleHandle>	BlockInstancingInfo;
 typedef std::vector<BlockInstancingInfo>				BlockInstancingInfos;
@@ -29,6 +30,9 @@ public:
 	QList<Uber::UbInletNode*>				getInlets( Uber::UbBundleBlock* block );
 	QList<Uber::UbOutletNode*>				getOutlets( Uber::UbBundleBlock* block );
 
+	void									setGraphicsView( Uber::UbGraphicsView* view );
+	Uber::UbGraphicsView*							getGraphicsView();						
+
 private:
 	DataflowEngineManager();
 	QStringList								findBundlesInDirectory();
@@ -36,4 +40,5 @@ private:
 	_2Real::app::Engine&					m_Engine;
 	BlockInstancingInfos					m_BlockInstancingInfos;
 	std::vector<Uber::UbComposition*>		m_UbCompositions;
+	Uber::UbGraphicsView					*m_GraphicsView;
 };

@@ -20,12 +20,14 @@ namespace Uber {
 		QRectF					boundingRect() const;
 		void					paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 		void					constructPath();
+		void					updatePath();
 
 		void					setInputNode( const _2Real::app::OutletHandle& handle );
 		void					setOutputNode( const _2Real::app::InletHandle& handle );
 		bool					isInputBlock();
 
 		void					receiveData(_2Real::app::AppData const& data);
+
 	private:
 		bool					m_IsInputBlock;			
 		UbNode*					m_Node;
@@ -54,8 +56,9 @@ namespace Uber {
 			m_PreviousPoint = m_CurrentPoint;
 		};
 	public slots:
-		void				updateData(_2Real::app::AppData data);
+		void					updateData(_2Real::app::AppData data);
 	signals:
-		void				sendData(_2Real::app::AppData data);
+		void					sendData(_2Real::app::AppData data);
+		//void					viewportChanged();
 	};
 }

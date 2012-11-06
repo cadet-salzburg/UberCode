@@ -11,7 +11,7 @@
 #include "UbInletNode.h"
 #include "UbOutletNode.h"
 #include "UbImage.h"
-
+#include "DataflowEngineManager.h"
 
 using namespace std;
 using namespace _2Real;
@@ -25,6 +25,8 @@ namespace Uber {
 		,m_Node(NULL)
 		,m_IsInputBlock(false)
 	{
+		m_Node  = new UbNode(this);
+		m_ProxyWidget = new QGraphicsProxyWidget(this);
 		constructPath();
 	}
 
@@ -50,12 +52,9 @@ namespace Uber {
 	void UbIOBlock::constructPath()
 	{
 		//m_ProxyWidget = new QGraphicsProxyWidget(this);
-		m_ProxyWidget = new QGraphicsProxyWidget(this);
 		QPainterPath path;
 		path.addRoundedRect( -m_Width/2, -m_Height/2, m_Width, m_Height, m_CornerRadius, m_CornerRadius );
 		m_Path = path;
-		m_Node  = new UbNode(this);
-
 		QPointF pos = QPointF(-m_Width/2.f, -m_Height/2.f) + m_Node->getRadius()*QPointF(1.f,1.f) + QPointF(m_CornerRadius, m_CornerRadius);
 		m_Pos =  pos + 1*(2*m_Node->getRadius()+4)*QPointF(1.f, 0.f);
 		m_Node->setPos( m_Pos );
@@ -68,6 +67,7 @@ namespace Uber {
 	void UbIOBlock::setInputNode( const _2Real::app::OutletHandle& handle )
 	{
 		m_Node = new UbOutletNode( this, handle );
+		dynamic_cast<UbOutletNode*>(m_Node)->setHandle;
 		m_Node->setPos( m_Pos );
 		try
 		{
@@ -92,6 +92,16 @@ namespace Uber {
 				widget->setLayout(layout);
 				m_ProxyWidget->setWidget( widget );
 			}
+			QSizeF sz = m_ProxyWidget->size();
+			m_ProxyWidget->setPos(-sz.width()/2.f, -sz.height()/2.f);
+			m_Width = sz.width()+ 20;
+			m_Height = sz.height()+ 20;
+			constructPath();
+			UbGraphicsView *graphicsView = DataflowEngineManager::getInstance()->getGraphicsView();
+			if ( graphicsView )
+				graphicsView->viewport()->update();
+
+			//m_ProxyWidget->setTransformOriginPoint(sz.width()/2.f, sz.height()/2.f );
 			handle.registerToNewData( *this, &UbIOBlock::receiveData );
 			// note that the moc is quite pedantic with regards to namespaces:
 			// you must use the full symbol name here & in the function implementations
@@ -178,8 +188,8 @@ namespace Uber {
 	{
 		//	update();
 		Q_UNUSED(option)
-			Q_UNUSED(widget)
-			QPen pen;
+		Q_UNUSED(widget)
+		QPen pen;
 		pen.setWidthF(1.f);
 		pen.setBrush(Qt::black);	
 		painter->setPen(pen);

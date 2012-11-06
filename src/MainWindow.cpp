@@ -24,16 +24,21 @@ MainWindow::MainWindow()
 
 	connect(m_UiBuilderWindow->actionOpen_UberCode, SIGNAL(triggered()), this, SLOT(open()));
 	connect( m_UiBuilderWindow->actionSave_UberBlock, SIGNAL(triggered()), this, SLOT(save()));
+
 	m_SettingsDialog = new SettingsDialog;
 	m_BlockNavigationTreeWidget = new BlockNavigationTreeWidget();
 	m_UiBuilderWindow->dockWidget->setWidget(m_BlockNavigationTreeWidget);
 	// workbench
 	m_WorkbenchGraphicsView = new UbGraphicsView();
 	m_WorkbenchGraphicsView->setRenderHint(QPainter::Antialiasing);
+
 	QGraphicsScene* s = DataflowEngineManager::getInstance()->addComposition()->getGraphicsScene();
+	DataflowEngineManager::getInstance()->setGraphicsView(m_WorkbenchGraphicsView);
 	m_WorkbenchGraphicsView->setScene( s );
+	
 	Uber::UbLinkController::getInstance()->setScene( s );
 	m_UiBuilderWindow->workbenchLayout->addWidget(m_WorkbenchGraphicsView);
+	
 	// connect slots
 	QObject::connect( m_UiBuilderWindow->actionOptions, SIGNAL(activated()), m_SettingsDialog, SLOT(show()));
 }
@@ -169,7 +174,6 @@ void MainWindow::save()
 		delete ubXML;
 	}
 }
-
 bool MainWindow::event( QEvent * e )
 {
 	return QMainWindow::event(e);

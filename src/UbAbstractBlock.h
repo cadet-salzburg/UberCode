@@ -8,10 +8,10 @@ namespace Uber {
 	class UbAbstractBlock :public QGraphicsObject
 	{	
 	public:
+		enum { Type = AbstractBlockType };
+
 		UbAbstractBlock( QGraphicsItem *parent );
 		virtual ~UbAbstractBlock( void );
-		
-		enum { Type = AbstractBlockType };
 
 		virtual int						type() const = 0;
 		virtual void					paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);

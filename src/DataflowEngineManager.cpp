@@ -11,7 +11,9 @@ using namespace Uber;
 
 DataflowEngineManager* DataflowEngineManager::m_pInstance = nullptr;
 
-DataflowEngineManager::DataflowEngineManager() : m_Engine( Engine::instance() )
+DataflowEngineManager::DataflowEngineManager()
+	:m_Engine( Engine::instance() ),
+	m_GraphicsView(0)
 {
 
 }
@@ -176,4 +178,14 @@ QList<UbOutletNode*> DataflowEngineManager::getOutlets( UbBundleBlock* block )
 		}
 	}
 	return outlets;
+}
+
+void	DataflowEngineManager::setGraphicsView( UbGraphicsView* view )
+{
+	m_GraphicsView = view;
+}
+
+UbGraphicsView* DataflowEngineManager::getGraphicsView()
+{
+	return m_GraphicsView;
 }
