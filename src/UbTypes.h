@@ -9,6 +9,7 @@ namespace Uber {
 		BundleBlockType	  = QGraphicsItem::UserType + 5,
 		InputBlockType    = QGraphicsItem::UserType + 6,
 		OutputBlockType   = QGraphicsItem::UserType + 7,
-		IOBlockType   = QGraphicsItem::UserType + 8
+		IOBlockType   = QGraphicsItem::UserType + 8,
+		ImageBlockType = QGraphicsItem::UserType + 9
 	};
 };

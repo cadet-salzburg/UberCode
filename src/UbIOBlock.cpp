@@ -63,11 +63,9 @@ namespace Uber {
 		setFlag(QGraphicsItem::ItemIsMovable);
 		setFlag(QGraphicsItem::ItemIsSelectable);
 	}
-
 	void UbIOBlock::setInputNode( const _2Real::app::OutletHandle& handle )
 	{
 		m_Node = new UbOutletNode( this, handle );
-		dynamic_cast<UbOutletNode*>(m_Node)->setHandle;
 		m_Node->setPos( m_Pos );
 		try
 		{

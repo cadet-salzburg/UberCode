@@ -23,5 +23,6 @@ namespace Uber {
 		QPoint				m_EventPos; 
 	private slots:
 		void				addIOBlock();
+		void				addImageBlock();
 	};
 }

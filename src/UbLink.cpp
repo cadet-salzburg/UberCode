@@ -88,6 +88,7 @@ namespace Uber {
 		m_IsChanging = false;
 		if ( isHardLink() )
 		{
+			//ToDo:  clean this up. The check is already happening at the link controller.
 			UbOutletNode *nodeA;
 			UbInletNode *nodeB;
 			if ( m_StartNode->type() == Uber::OutputNodeType )
@@ -104,6 +105,7 @@ namespace Uber {
 			hOutlet.link(hInlet);
 			//		nodeA->getHandle().link(nodeB->getHandle());
 		}
+		updatePath();
 	}
 
 	bool UbLink::isChanging() const

@@ -1,6 +1,7 @@
 #include <QMenu>
 #include "UbGraphicsView.h"
 #include "UbIOBlock.h"
+#include "UbImageBlock.h"
 #include "DataflowEngineManager.h"
 
 namespace Uber {
@@ -36,12 +37,19 @@ namespace Uber {
 		DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(ioblock);
 	}
 
+	void UbGraphicsView::addImageBlock()
+	{
+		UbImageBlock *imageBlock = new UbImageBlock(0);
+		imageBlock->setPos( m_EventPos );
+		DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(imageBlock);
+	}
+
 	void UbGraphicsView::contextMenuEvent( QContextMenuEvent *event )
 	{
 		QMenu menu(this);
 		m_EventPos = event->pos();
-		QAction *action( new QAction("Add IOBlock", this));
-		connect( action, SIGNAL(triggered()), this, SLOT( addIOBlock() ) );
+		QAction *action( new QAction("Add ImageBlock", this));
+		connect( action, SIGNAL(triggered()), this, SLOT( addImageBlock() ) );
 		menu.addAction( action );
 		menu.exec(event->globalPos());
 		std::cout << " The x-position is: " << m_EventPos.x() << " and the y-position is: " << m_EventPos.y() << std::endl; 

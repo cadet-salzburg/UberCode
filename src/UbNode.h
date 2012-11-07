@@ -29,7 +29,7 @@ namespace Uber {
 
 		void				hoverLeaveEvent ( QGraphicsSceneHoverEvent * event );
 		void				hoverMoveEvent ( QGraphicsSceneHoverEvent * event );
-		
+	protected:
 		QString				m_NodeName;
 	private:
 		qreal				m_Radius;

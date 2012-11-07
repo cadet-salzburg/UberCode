@@ -147,6 +147,15 @@
     <ClCompile Include="..\..\src\UbXMLWriter.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\UbImageBlock.cpp">
+      <Filter>source\dataflowUi\blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UbImageBlock.cpp">
+      <Filter>Generierte Dateien\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UbImageBlock.cpp">
+      <Filter>Generierte Dateien\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\src\uberCode.ui">
@@ -175,6 +184,9 @@
     </CustomBuild>
     <CustomBuild Include="..\..\src\UbGraphicsView.h">
       <Filter>source\dataflowUi</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\src\UbImageBlock.h">
+      <Filter>source\dataflowUi\blocks</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

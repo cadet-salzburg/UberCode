@@ -12,8 +12,9 @@
 
 namespace Uber {
 	UbNode::UbNode( QGraphicsItem *parent )
-		:QGraphicsObject( parent )
-		,m_Radius( 4 )
+		:QGraphicsObject( parent ),
+		m_Radius( 4 ),
+		m_NodeName("")
 	{
 		constructPath();
 		setAcceptHoverEvents( true ); 

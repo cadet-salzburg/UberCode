@@ -121,50 +121,91 @@ namespace Uber {
 			if ( eventHappenedAtNode( e ) )
 			{
 				UbNode *startNode = m_CurrentLink->getStartNode();
-				UbNode *endNode	  = (UbNode*) item;
-				if ( startNode != endNode && startNode->parentItem() != endNode->parentItem() )
+				UbNode *endNode	  = static_cast<UbNode*>(item);
+
+				if ( nodesCanBeConnected( startNode, endNode ) )
 				{
-					if ( startNode->type() != endNode->type() )
+					UbInletNode* inlet = getInletNode(startNode, endNode );
+					UbOutletNode* outlet = getOutletNode(startNode, endNode );
+					m_CurrentLink->setStartNode(outlet);
+					m_CurrentLink->setEndNode(inlet);
+					m_CurrentLink->finishedChanging();
+					return true;
+				} else if ( nodesHaveDifferentParents(startNode, endNode) )
+				{
+					if ( isBundleBlockNode( startNode ) ^ isBundleBlockNode( endNode ) )
 					{
-						if ( (startNode->type() == Uber::NodeType ) && ( endNode->type() == Uber::OutputNodeType ) )
-						{
-							QGraphicsObject *obj = startNode->parentObject();
-							UbOutletNode *_node =  dynamic_cast<UbOutletNode*>(endNode);
-							dynamic_cast<UbIOBlock*>(obj)->setInputNode(_node->getHandle());
-							m_CurrentLink->setEndNode(endNode);
-							m_CurrentLink->finishedChanging();
-							m_CurrentLink->updatePath();
-							return true;
-						} else if ( ( startNode->type() == Uber::OutputNodeType ) && (endNode->type() == Uber::NodeType ) )
-						{
-							QGraphicsObject *obj = endNode->parentObject();
-							UbOutletNode *_node =  dynamic_cast<UbOutletNode*>(startNode);
-							dynamic_cast<UbIOBlock*>(obj)->setInputNode(_node->getHandle());
-							m_CurrentLink->setEndNode(endNode);
-							m_CurrentLink->finishedChanging();
-							m_CurrentLink->updatePath();
-							return true;
-						} else if ( (startNode->type() == Uber::OutputNodeType ) && ( endNode->type() == Uber::InputNodeType) )
-						{
-							if ( dynamic_cast<UbOutletNode*>(startNode)->getHandle().getTypename() == dynamic_cast<UbInletNode*>(endNode)->getHandle().getTypename() )
-							{
-								m_CurrentLink->setStartNode(endNode);
-								m_CurrentLink->setEndNode(startNode);
-								m_CurrentLink->finishedChanging();
-								m_CurrentLink->updatePath();
-								return true;
-							}
-						} else if ( ( startNode->type() == Uber::InputNodeType ) && ( endNode->type() == Uber::OutputNodeType ) )
-						{
-							if ( dynamic_cast<UbInletNode*>(startNode)->getHandle().getTypename() == dynamic_cast<UbOutletNode*>(endNode)->getHandle().getTypename() )
-							{
-								m_CurrentLink->setStartNode(startNode);
-								m_CurrentLink->setEndNode(endNode);
-								m_CurrentLink->finishedChanging();
-								m_CurrentLink->updatePath();
-								return true;
-							}
-						}
+						if ( bothNodesAreOutlets(startNode, endNode ) )
+						UbNode* node = startNode;
+						if ( isBundleBlockNode(startNode) )
+							node = endNode;
+						//Check if they can be connected.
+
+						//Connect them.
+					}
+				}
+			}
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+				//if ( nodesHaveDifferentParents(startNode, endNode) )
+				//{
+				//	if ( nodesHaveDifferentType(startNode, endNode ) )
+				//	{
+				//		if ( (startNode->type() == Uber::OutputNodeType ) && ( endNode->type() == Uber::InputNodeType) )
+				//		{
+				//			if ( dynamic_cast<UbOutletNode*>(startNode)->getHandle().getTypename() == dynamic_cast<UbInletNode*>(endNode)->getHandle().getTypename() )
+				//			{
+				//				m_CurrentLink->setStartNode(endNode);
+				//				m_CurrentLink->setEndNode(startNode);
+				//				m_CurrentLink->finishedChanging();
+				//				m_CurrentLink->updatePath();
+				//				return true;
+				//			}
+				//		} else if ( ( startNode->type() == Uber::InputNodeType ) && ( endNode->type() == Uber::OutputNodeType ) )
+				//		{
+				//			if ( dynamic_cast<UbInletNode*>(startNode)->getHandle().getTypename() == dynamic_cast<UbOutletNode*>(endNode)->getHandle().getTypename() )
+				//			{
+				//				m_CurrentLink->setStartNode(startNode);
+				//				m_CurrentLink->setEndNode(endNode);
+				//				m_CurrentLink->finishedChanging();
+				//				m_CurrentLink->updatePath();
+				//				return true;
+				//			}
+				//		}
+				//	} else {
+
+				//		if ( (startNode->type() == Uber::NodeType ) && ( endNode->type() == Uber::OutputNodeType ) )
+				//		{
+				//			QGraphicsObject *obj = startNode->parentObject();
+				//			UbOutletNode *_node =  dynamic_cast<UbOutletNode*>(endNode);
+				//			dynamic_cast<UbIOBlock*>(obj)->setInputNode(_node->getHandle());
+				//			m_CurrentLink->setEndNode(endNode);
+				//			m_CurrentLink->finishedChanging();
+				//			m_CurrentLink->updatePath();
+				//			return true;
+				//		} else if ( ( startNode->type() == Uber::OutputNodeType ) && (endNode->type() == Uber::NodeType ) )
+				//		{
+				//			QGraphicsObject *obj = endNode->parentObject();
+				//			UbOutletNode *_node =  dynamic_cast<UbOutletNode*>(startNode);
+				//			dynamic_cast<UbIOBlock*>(obj)->setInputNode(_node->getHandle());
+				//			m_CurrentLink->setEndNode(endNode);
+				//			m_CurrentLink->finishedChanging();
+				//			m_CurrentLink->updatePath();
+				//			return true;
+				//		}
 					}
 
 
@@ -201,6 +242,74 @@ namespace Uber {
 			return false;
 		}
 	}
+	bool UbLinkController::nodesHaveDifferentParents( UbNode* nodeA, UbNode *nodeB )
+	{
+		if( nodeA->parentItem() != nodeB->parentItem() )
+			return true;
+		return false;
+	}
+	bool UbLinkController::nodesHaveDifferentType( UbNode* nodeA, UbNode *nodeB )
+	{
+		if ( nodeA->type() != nodeB->type() )
+			return true;
+		return false;
+	}
+
+	UbInletNode* UbLinkController::getInletNode( UbNode* nodeA, UbNode *nodeB )
+	{		
+		UbInletNode* node = 0;
+		if ( nodeA->type() == Uber::InputNodeType )
+		{
+			node = static_cast<UbInletNode*>(nodeA);
+		} else if ( nodeB->type() == Uber::InputNodeType )
+		{
+			node = static_cast<UbInletNode*>(nodeB);
+		}
+		return node;
+	}
+
+	UbOutletNode* UbLinkController::getOutletNode( UbNode* nodeA, UbNode *nodeB )
+	{
+		UbOutletNode* node = 0;
+		if ( nodeA->type() == Uber::OutputNodeType )
+		{
+			node = static_cast<UbOutletNode*>(nodeA);
+		} else if ( nodeB->type() == Uber::OutputNodeType )
+		{
+			node = static_cast<UbOutletNode*>(nodeB);
+		}
+		return node;
+	}
+
+	bool UbLinkController::nodesCanBeConnected( UbNode* nodeA, UbNode* nodeB )
+	{
+		if ( isBundleBlockNode(nodeA) && isBundleBlockNode(B) && nodesHaveDifferentParents(nodeA, nodeB ) && nodesHaveDifferentType( nodeA, nodeB )  )
+		{
+			UbInletNode* inlet = getInletNode(nodeA, nodeB);
+			UbInletNode* outlet = getInletNode(nodeA, nodeB);
+			if ( inlet->getHandle().getTypename() == outlet->getHandle().getTypename() )
+				return true;
+		}
+		return false;
+	}
+
+	bool UbLinkController::isBundleBlockNode( UbNode* node )
+	{
+		if ( node->parentItem()->type() == Uber::BundleBlockType )
+			return true;
+		return false;
+	}
+
+	bool UbLinkController::bothNodesAreOutlets( UbNode *nodeA, UbNode *nodeB )
+	{
+		if ( ( nodeA->type() == nodeB->type() ) && nodeA->type() = Uber::OutputNodeType )
+		{
+			return true;
+		}
+		return false;
+	}
+
+
 	bool UbLinkController::eventHappenedAtNode( QGraphicsSceneMouseEvent * e )
 	{
 		QGraphicsItem *item = itemAt(e->scenePos());
