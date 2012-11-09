@@ -13,7 +13,8 @@ namespace Uber {
 		m_EndNode( NULL ),
 		m_StartPos(QPointF(0.f, 0.f)),
 		m_EndPos(QPointF(0.f, 0.f)),
-		m_IsChanging(false)
+		m_IsChanging(false),
+		m_IsHardLink( false )
 	{
 
 	}
@@ -83,10 +84,11 @@ namespace Uber {
 		m_IsChanging = true;
 	}
 
-	void UbLink::finishedChanging()
+	void UbLink::finishedChanging( bool hardLink )
 	{
+		setHardLink(hardLink);
 		m_IsChanging = false;
-		if ( isHardLink() )
+		if ( m_IsHardLink )
 		{
 			//ToDo:  clean this up. The check is already happening at the link controller.
 			UbOutletNode *nodeA;
@@ -142,8 +144,8 @@ namespace Uber {
 			//}
 		}
 	}
-	bool UbLink::isHardLink()
+	void UbLink::setHardLink( bool isHard )
 	{
-		return !( (m_StartNode->type() == Uber::NodeType) || (m_EndNode->type() == Uber::NodeType) ); 
+		m_IsHardLink = isHard;
 	}
 }

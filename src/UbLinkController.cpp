@@ -5,8 +5,11 @@
 #include "UbInletNode.h"
 #include "UbOutletNode.h"
 #include "UbIOBlock.h"
+#include "UbImageUiBlock.h"
+#include <string>
 
 namespace Uber {
+
 	UbLinkController*	UbLinkController::m_Instance = 0;
 	QGraphicsScene*		UbLinkController::m_Scene	 = 0;
 
@@ -129,23 +132,51 @@ namespace Uber {
 					UbOutletNode* outlet = getOutletNode(startNode, endNode );
 					m_CurrentLink->setStartNode(outlet);
 					m_CurrentLink->setEndNode(inlet);
-					m_CurrentLink->finishedChanging();
+					m_CurrentLink->finishedChanging(true);
 					return true;
 				} else if ( nodesHaveDifferentParents(startNode, endNode) )
 				{
 					if ( isBundleBlockNode( startNode ) ^ isBundleBlockNode( endNode ) )
 					{
 						if ( bothNodesAreOutlets(startNode, endNode ) )
-						UbNode* node = startNode;
-						if ( isBundleBlockNode(startNode) )
-							node = endNode;
-						//Check if they can be connected.
+						{
+							//We have an output node and ui block
+							UbNode* blockNode = endNode;
+							UbNode* uiNode = startNode;
+							if ( isBundleBlockNode(startNode) )
+							{
+								blockNode = startNode;
+								uiNode	  = endNode;
+							}
+							//Check if they can be connected.
+							UbOutletNode* blockOutlet = static_cast<UbOutletNode*>(blockNode);
+							UbOutletNode* uiOutlet = static_cast<UbOutletNode*>(uiNode);
+							if ( canConnectOutputNodeToUiBlockOfType(blockOutlet,uiOutlet->parentObject()->type() ) )
+							{
+								//set handle for the node of the ui block
+								uiOutlet->setHandle(blockOutlet->getHandle());
+								QGraphicsObject *obj = uiOutlet->parentObject();
+								UbImageUiBlock* imgBlock  = static_cast<UbImageUiBlock*>(obj);
+								imgBlock->nodeIsSet();
 
-						//Connect them.
+								//create link
+								m_CurrentLink->setStartNode( blockNode);
+								m_CurrentLink->setEndNode( uiNode);
+								m_CurrentLink->finishedChanging(false);
+								return true;
+							}	
+						}
 					}
 				}
 			}
+			//We didn't complete the linking, so remove the linkage.
+			if ( m_CurrentLink->isChanging() )
+			{
+				delete m_CurrentLink;
+			}
+			m_CurrentLink = 0;
 		}
+		return false;
 	}
 
 
@@ -206,7 +237,7 @@ namespace Uber {
 				//			m_CurrentLink->updatePath();
 				//			return true;
 				//		}
-					}
+				//	}
 
 
 
@@ -232,22 +263,23 @@ namespace Uber {
 					//m_CurrentLink->finishedChanging();
 					//m_CurrentLink->updatePath();
 					//return true;
-				}
-			}
-			if ( m_CurrentLink->isChanging() )
-			{
-				delete m_CurrentLink;
-			}
-			m_CurrentLink = 0;
-			return false;
-		}
-	}
+			//	}
+			//}
+	//		if ( m_CurrentLink->isChanging() )
+	//		{
+	//			delete m_CurrentLink;
+	//		}
+	//		m_CurrentLink = 0;
+	//		return false;
+	//	}
+	//}
 	bool UbLinkController::nodesHaveDifferentParents( UbNode* nodeA, UbNode *nodeB )
 	{
 		if( nodeA->parentItem() != nodeB->parentItem() )
 			return true;
 		return false;
 	}
+
 	bool UbLinkController::nodesHaveDifferentType( UbNode* nodeA, UbNode *nodeB )
 	{
 		if ( nodeA->type() != nodeB->type() )
@@ -283,10 +315,12 @@ namespace Uber {
 
 	bool UbLinkController::nodesCanBeConnected( UbNode* nodeA, UbNode* nodeB )
 	{
-		if ( isBundleBlockNode(nodeA) && isBundleBlockNode(B) && nodesHaveDifferentParents(nodeA, nodeB ) && nodesHaveDifferentType( nodeA, nodeB )  )
+		if ( ( ( isBundleBlockNode(nodeA) && isBundleBlockNode(nodeB) ) && ( nodesHaveDifferentParents(nodeA, nodeB ) ) && nodesHaveDifferentType( nodeA, nodeB ) ) )
 		{
 			UbInletNode* inlet = getInletNode(nodeA, nodeB);
-			UbInletNode* outlet = getInletNode(nodeA, nodeB);
+			UbOutletNode* outlet = getOutletNode(nodeA, nodeB);
+			std::string typeNameA = inlet->getHandle().getTypename();
+			std::string typeNameB = outlet->getHandle().getTypename();
 			if ( inlet->getHandle().getTypename() == outlet->getHandle().getTypename() )
 				return true;
 		}
@@ -302,7 +336,7 @@ namespace Uber {
 
 	bool UbLinkController::bothNodesAreOutlets( UbNode *nodeA, UbNode *nodeB )
 	{
-		if ( ( nodeA->type() == nodeB->type() ) && nodeA->type() = Uber::OutputNodeType )
+		if ( ( nodeA->type() == nodeB->type() )  && ( nodeA->type() == Uber::OutputNodeType ))
 		{
 			return true;
 		}
@@ -314,7 +348,7 @@ namespace Uber {
 	{
 		QGraphicsItem *item = itemAt(e->scenePos());
 		if ( item != nullptr ){
-			return ( item->type() == UbNode::Type || item->type() == UbInletNode::Type || item->type() == UbInletNode::Type )?true:false;
+			return ( item->type() == UbNode::Type || item->type() == UbInletNode::Type || item->type() == UbOutletNode::Type )?true:false;
 		}
 		return false;
 
@@ -336,6 +370,15 @@ namespace Uber {
 			break;
 		}
 		return ( QObject::eventFilter(obj, e) || ret );
+	}
+
+	bool UbLinkController::canConnectOutputNodeToUiBlockOfType( UbOutletNode* outNode, int type )
+	{
+		if ( ( outNode->getHandle().getTypename() == "number image" ) && ( type == ImageBlockType ) )
+		{
+			return true;
+		}
+		return false;
 	}
 
 	void UbLinkController::render()

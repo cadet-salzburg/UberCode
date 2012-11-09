@@ -31,7 +31,7 @@ public:
 	QList<Uber::UbOutletNode*>				getOutlets( Uber::UbBundleBlock* block );
 
 	void									setGraphicsView( Uber::UbGraphicsView* view );
-	Uber::UbGraphicsView*							getGraphicsView();						
+	Uber::UbGraphicsView*					getGraphicsView();						
 
 private:
 	DataflowEngineManager();

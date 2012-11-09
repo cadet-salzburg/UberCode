@@ -18,7 +18,7 @@ using namespace _2Real;
 
 namespace Uber {
 	UbIOBlock::UbIOBlock( QGraphicsItem *parent )
-		:QGraphicsObject(parent)
+		:UbAbstractBlock(parent)
 		,m_Width(140)
 		,m_Height(70)
 		,m_CornerRadius(8)

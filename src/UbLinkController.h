@@ -36,6 +36,7 @@ namespace Uber {
 		bool						nodesCanBeConnected( UbNode* nodeA, UbNode* nodeB );
 		bool						isBundleBlockNode( UbNode* node );
 		bool						bothNodesAreOutlets( UbNode *nodeA, UbNode *nodeB );
+		bool						canConnectOutputNodeToUiBlockOfType( UbOutletNode* outNode, int type );
 
 		bool						processStartLink( QGraphicsSceneMouseEvent * e );
 		bool						processUpdateLink( QGraphicsSceneMouseEvent * e );

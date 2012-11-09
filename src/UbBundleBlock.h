@@ -17,25 +17,9 @@ namespace Uber {
 		_2Real::app::BlockHandle	getHandle(){ return m_BlockHandle;}
 		QString						getBlockId(){ return m_BlockId; }
 
-
-	protected:
-		virtual void				mousePressEvent ( QGraphicsSceneMouseEvent * e )
-		{
-			//TODO: QT dragging seems to have glitches. Not sure if its a QT bug or not.
-			m_CurrentPoint = m_PreviousPoint =  e->scenePos();  
-		};
-		virtual void				mouseMoveEvent ( QGraphicsSceneMouseEvent * e )
-		{
-			m_CurrentPoint = e->scenePos();
-			QPointF diff = m_CurrentPoint - m_PreviousPoint;
-			setPos(pos() + diff );
-			m_PreviousPoint = m_CurrentPoint;
-		};
 	private:
-		void						addNodes();
+		void						configureNodes();
 		_2Real::app::BlockHandle	m_BlockHandle;
-		QPointF						m_CurrentPoint;
-		QPointF						m_PreviousPoint;
 		QString						m_BlockId;
 	};
 }

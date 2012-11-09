@@ -26,7 +26,7 @@ namespace Uber {
 		{
 			cout << e.message() << " " << e.what() << endl;
 		}
-		constructPath();
+		configureNodes();
 	}
 
 	UbBundleBlock::UbBundleBlock( QGraphicsItem *parent,  QString blockInstanceId )
@@ -51,7 +51,7 @@ namespace Uber {
 		{
 			throw std::exception("Cannot find any block instance with the specified Id.");
 		}
-		constructPath();
+		configureNodes();
 	}
 
 	UbBundleBlock::~UbBundleBlock(void)
@@ -59,7 +59,7 @@ namespace Uber {
 
 	}
 
-	void UbBundleBlock::addNodes()
+	void UbBundleBlock::configureNodes()
 	{
 		qreal nodeSpacing = 4;
 

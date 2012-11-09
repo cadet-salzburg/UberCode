@@ -29,6 +29,7 @@ namespace Uber {
 			if ( std::get<0>(*it) == strBlockName )
 			{
 				UbBundleBlock *block = new UbBundleBlock( 0, std::get<1>(*it), strBlockName );
+				int t = block->type();
 				block->setPos(pos);
 				m_UbGraphicsScene->addItem(block);
 				break;

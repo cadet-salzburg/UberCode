@@ -27,12 +27,13 @@ namespace Uber {
 		void			setNodes( UbNode* start, UbNode* end );
 
 		void			startedChanging();
-		void			finishedChanging();
+		void			finishedChanging( bool isHardLink );
 		bool			isChanging() const;
+		void			setHardLink( bool isHard );
 	protected:
 		void			mousePressEvent ( QGraphicsSceneMouseEvent * event );
 	private:
-		bool			isHardLink();
+		bool			m_IsHardLink;
 		bool			m_IsSet;
 		bool			m_IsChanging;
 		UbNode*			m_StartNode;

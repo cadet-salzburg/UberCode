@@ -22,7 +22,7 @@ namespace Uber {
 		void				initialize();
 		QPoint				m_EventPos; 
 	private slots:
-		void				addIOBlock();
 		void				addImageBlock();
+		void				addSliderBlock();
 	};
 }

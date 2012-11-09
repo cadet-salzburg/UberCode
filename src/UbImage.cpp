@@ -22,6 +22,7 @@ namespace Uber {
 		makeCurrent();	
 		QPainter p( this );
 		p.setRenderHint( QPainter::SmoothPixmapTransform, 1 );
+		p.setBrush(QColor(69,82,80));
 		p.drawImage( 0, 0, m_Image );
 	}
 }
