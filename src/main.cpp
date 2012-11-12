@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 	MainWindow*	m_UberCode = new MainWindow();
 
 	// icon and style settings
-	app->setStyleSheet( readStyleSheet() );
+	//app->setStyleSheet( readStyleSheet() );
 	app->setWindowIcon(  QIcon("./data/logo.ico") );
 
 	m_UberCode->show();

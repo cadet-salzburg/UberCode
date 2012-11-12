@@ -11,6 +11,8 @@ namespace Uber {
 		OutputBlockType   = QGraphicsItem::UserType + 7,
 		IOBlockType   = QGraphicsItem::UserType + 8,
 		ImageBlockType = QGraphicsItem::UserType + 9,
-		UiBlockType		= QGraphicsItem::UserType + 10
+		UiBlockType		= QGraphicsItem::UserType + 10,
+		SliderBlockType = QGraphicsItem::UserType + 11,
+		SpinBoxBlockType = QGraphicsItem::UserType + 12
 	};
 };

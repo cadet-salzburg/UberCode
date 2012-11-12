@@ -1,22 +1,23 @@
 #pragma once
+#pragma once
 #include "UbAbstractBlock.h"
 #include <QGraphicsProxyWidget>
 #include "UbInletNode.h"
-#include <QSlider>
+#include <QSpinBox>
 
 namespace Uber {
-	class UbSliderUiBlock : public UbAbstractBlock
+	class UbSpinBoxUiBlock : public UbAbstractBlock
 	{
 		Q_OBJECT
 	public:
-		enum { Type = SliderBlockType };
-		UbSliderUiBlock( QGraphicsItem *parent );
-		virtual	~UbSliderUiBlock(void);
+		enum { Type = SpinBoxBlockType };
+		UbSpinBoxUiBlock( QGraphicsItem *parent );
+		virtual	~UbSpinBoxUiBlock(void);
 
 		virtual	int					type() const { return Type; }
 		void						nodeIsSet();
-	public slots:
-		void						setValue(int value);
+		public slots:
+			void					setValue(int value);
 	protected:
 		virtual void				addNodes(){}
 		virtual void				configureNodes();
@@ -24,6 +25,6 @@ namespace Uber {
 		void						init();
 		QGraphicsProxyWidget*		m_ProxyWidget;
 		UbInletNode*				m_Node;		
-		QSlider*					m_Slider;
+		QSpinBox*					m_SpinBox;
 	};
 }

@@ -19,9 +19,6 @@
     <Filter Include="source">
       <UniqueIdentifier>{0418cf34-c924-475f-a6a3-650fe2d32479}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ressources">
-      <UniqueIdentifier>{a231ea9e-e3e0-46ee-87e9-37075c18527b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="docs">
       <UniqueIdentifier>{9c1ed73a-fe66-4b0f-8798-a45ff589a184}</UniqueIdentifier>
     </Filter>
@@ -33,6 +30,9 @@
     </Filter>
     <Filter Include="source\dataflowUi\blocks">
       <UniqueIdentifier>{2867ecdd-4d89-4ba8-9c77-d09d9d82fd83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{a231ea9e-e3e0-46ee-87e9-37075c18527b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +153,21 @@
     <ClCompile Include="..\..\src\UbSliderUiBlock.cpp">
       <Filter>source\dataflowUi\blocks</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UbSliderUiBlock.cpp">
+      <Filter>Generierte Dateien\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UbSliderUiBlock.cpp">
+      <Filter>Generierte Dateien\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="UbSpinBoxUiBlock.cpp">
+      <Filter>source\dataflowUi\blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UbSpinBoxUiBlock.cpp">
+      <Filter>Generierte Dateien\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UbSpinBoxUiBlock.cpp">
+      <Filter>Generierte Dateien\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\src\uberCode.ui">
@@ -183,6 +198,12 @@
       <Filter>source\dataflowUi\blocks</Filter>
     </CustomBuild>
     <CustomBuild Include="..\..\src\UbUiBlock.h">
+      <Filter>source\dataflowUi\blocks</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\src\UbSliderUiBlock.h">
+      <Filter>source\dataflowUi\blocks</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UbSpinBoxUiBlock.h">
       <Filter>source\dataflowUi\blocks</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -229,14 +250,8 @@
     <ClInclude Include="..\..\src\UbTypes.h">
       <Filter>source\dataflowUi</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\UbSliderUiBlock.h">
-      <Filter>source\dataflowUi\blocks</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\bin\ubercode.qss">
-      <Filter>ressources</Filter>
-    </None>
     <None Include="..\..\docs\todo.txt">
       <Filter>docs</Filter>
     </None>

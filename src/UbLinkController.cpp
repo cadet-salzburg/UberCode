@@ -4,8 +4,9 @@
 #include "UbLinkController.h"
 #include "UbInletNode.h"
 #include "UbOutletNode.h"
-#include "UbIOBlock.h"
 #include "UbImageUiBlock.h"
+#include "UbSliderUiBlock.h"
+#include "UbSpinBoxUiBlock.h"
 #include <string>
 
 namespace Uber {
@@ -159,6 +160,40 @@ namespace Uber {
 								UbImageUiBlock* imgBlock  = static_cast<UbImageUiBlock*>(obj);
 								imgBlock->nodeIsSet();
 
+								//create link
+								m_CurrentLink->setStartNode( blockNode);
+								m_CurrentLink->setEndNode( uiNode);
+								m_CurrentLink->finishedChanging(false);
+								return true;
+							}	
+						}
+						if ( bothNodesAreInlets( startNode, endNode ) )
+						{
+							//We have an input node and ui block
+							UbNode* blockNode = endNode;
+							UbNode* uiNode = startNode;
+							if ( isBundleBlockNode(startNode) )
+							{
+								blockNode = startNode;
+								uiNode	  = endNode;
+							}
+							//Check if they can be connected.
+							UbInletNode* blockInlet = static_cast<UbInletNode*>(blockNode);
+							UbInletNode* uiInlet = static_cast<UbInletNode*>(uiNode);
+							if ( canConnectInputNodeToUiBlockOfType(blockInlet,uiInlet->parentObject()->type() ) )
+							{
+								//set handle for the node of the ui block
+								uiInlet->setHandle(blockInlet->getHandle());
+								QGraphicsObject *obj = uiInlet->parentObject();
+								if ( obj->type() == Uber::SliderBlockType )
+								{
+									UbSliderUiBlock* sliderBlock = static_cast<UbSliderUiBlock*>(obj);
+									sliderBlock->nodeIsSet();
+								} else if ( obj->type() == Uber::SpinBoxBlockType )
+								{
+									UbSpinBoxUiBlock* spinboxBlock = static_cast<UbSpinBoxUiBlock*>(obj);
+									spinboxBlock->nodeIsSet();
+								}
 								//create link
 								m_CurrentLink->setStartNode( blockNode);
 								m_CurrentLink->setEndNode( uiNode);
@@ -333,7 +368,14 @@ namespace Uber {
 			return true;
 		return false;
 	}
-
+	bool UbLinkController::bothNodesAreInlets( UbNode *nodeA, UbNode *nodeB )
+	{
+		if ( ( nodeA->type() == nodeB->type() )  && ( nodeA->type() == Uber::InputNodeType ))
+		{
+			return true;
+		}
+		return false;
+	}
 	bool UbLinkController::bothNodesAreOutlets( UbNode *nodeA, UbNode *nodeB )
 	{
 		if ( ( nodeA->type() == nodeB->type() )  && ( nodeA->type() == Uber::OutputNodeType ))
@@ -372,9 +414,17 @@ namespace Uber {
 		return ( QObject::eventFilter(obj, e) || ret );
 	}
 
-	bool UbLinkController::canConnectOutputNodeToUiBlockOfType( UbOutletNode* outNode, int type )
+	bool UbLinkController::canConnectOutputNodeToUiBlockOfType( UbOutletNode* node, int type )
 	{
-		if ( ( outNode->getHandle().getTypename() == "number image" ) && ( type == ImageBlockType ) )
+		if ( ( node->getHandle().getTypename() == "number image" ) && ( type == ImageBlockType ) )
+		{
+			return true;
+		} 
+		return false;
+	}
+	bool UbLinkController::canConnectInputNodeToUiBlockOfType( UbInletNode* node, int type )
+	{
+		if ( ( ( node->getHandle().getTypename() == "int" ) && ( type == SliderBlockType ) ) || ( ( node->getHandle().getTypename() == "int" ) && ( type == SpinBoxBlockType ) ) )
 		{
 			return true;
 		}

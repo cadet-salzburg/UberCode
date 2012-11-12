@@ -2,6 +2,7 @@
 #include "UbGraphicsView.h"
 #include "UbImageUiBlock.h"
 #include "UbSliderUiBlock.h"
+#include "UbSpinBoxUiBlock.h"
 #include "DataflowEngineManager.h"
 
 namespace Uber {
@@ -41,6 +42,13 @@ namespace Uber {
 		sliderBlock->setPos( m_EventPos );
 		DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(sliderBlock);
 	}
+	void UbGraphicsView::addSpinBoxBlock()
+	{
+		UbSpinBoxUiBlock *spinboxBlock = new UbSpinBoxUiBlock(0);
+		spinboxBlock->setPos( m_EventPos );
+		DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(spinboxBlock);
+	}
+
 	void UbGraphicsView::contextMenuEvent( QContextMenuEvent *event )
 	{
 		QMenu menu(this);
@@ -53,6 +61,10 @@ namespace Uber {
 		QAction *sliderBlockAction( new QAction("Add SliderBlock", this));
 		connect( sliderBlockAction, SIGNAL(triggered()), this, SLOT( addSliderBlock() ) );
 		menu.addAction( sliderBlockAction );
+		//
+		QAction *spinboxBlockAction( new QAction("Add SpinBoxBlock", this));
+		connect( spinboxBlockAction, SIGNAL(triggered()), this, SLOT( addSpinBoxBlock() ) );
+		menu.addAction( spinboxBlockAction );
 		//
 		menu.exec(event->globalPos());
 		std::cout << " The x-position is: " << m_EventPos.x() << " and the y-position is: " << m_EventPos.y() << std::endl; 

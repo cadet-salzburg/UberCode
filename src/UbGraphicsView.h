@@ -24,5 +24,6 @@ namespace Uber {
 	private slots:
 		void				addImageBlock();
 		void				addSliderBlock();
+		void				addSpinBoxBlock();
 	};
 }
