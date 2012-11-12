@@ -1,7 +1,6 @@
 #include "UbGraphicsScene.h"
 #include "BlockNavigationTreeWidget.h"
 #include "DataflowEngineManager.h"
-#include "UbIOBlock.h"
 
 namespace Uber {
 	UbGraphicsScene::UbGraphicsScene()
@@ -50,10 +49,6 @@ namespace Uber {
 		QString blockName = event->mimeData()->text();
 		DataflowEngineManager::getInstance()->getComposition()->addBlock(blockName, event->scenePos());
 		event->acceptProposedAction();
-		//UbIOBlock *b = new UbIOBlock(nullptr);
-		//b->setPos(event->scenePos());
-		//DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(b);
-		//DataflowEngineManager::getInstance()->getComposition()->addBlock(blockName, event->scenePos());
 	}
 
 	void UbGraphicsScene::initialize()

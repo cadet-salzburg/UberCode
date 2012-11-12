@@ -36,7 +36,7 @@ namespace Uber {
 	void UbSliderUiBlock::configureNodes()
 	{
 		//QPointF pos = QPointF(0, -m_Height/2.f) + m_Node->getRadius()*QPointF(1.f,1.f) + QPointF(m_CornerRadius, m_CornerRadius);
-		QPointF pos = QPointF(0, -m_Height/2.f) +  m_Node->getRadius()*QPointF(0.f,2.f);
+		QPointF pos = QPointF(0, -m_Height/2.f) +  m_Node->getHeight()*QPointF(0.f,2.f);
 		m_Node->setPos(pos);
 	}
 	void UbSliderUiBlock::nodeIsSet()

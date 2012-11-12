@@ -11,7 +11,7 @@ namespace Uber {
 		,m_Handle(handle)
 
 	{
-		m_NodeName = QString::fromStdString( m_Handle.getName() );
+		setName( QString::fromStdString( m_Handle.getName() ) );
 	}
 	UbOutletNode::~UbOutletNode(void)
 	{
@@ -24,6 +24,6 @@ namespace Uber {
 	void UbOutletNode::setHandle( const _2Real::app::OutletHandle& handle )
 	{
 		m_Handle = handle;
-		m_NodeName = QString::fromStdString( m_Handle.getName() );
+		setName( QString::fromStdString( m_Handle.getName() ) );
 	}
 }

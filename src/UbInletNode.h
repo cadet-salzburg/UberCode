@@ -14,7 +14,7 @@ namespace Uber {
 		enum { Type = InputNodeType  };
 		
 		virtual int							type() const { return Type; }
-		virtual bool						isInlet(){ return true; }
+
 		void								setHandle( const  _2Real::app::InletHandle& handle );
 		_2Real::app::InletHandle&			getHandle();
 

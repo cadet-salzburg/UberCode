@@ -30,7 +30,7 @@ namespace Uber {
 
 	void UbImageUiBlock::configureNodes()
 	{
-		QPointF pos = QPointF(-m_Width/2.f, -m_Height/2.f) + m_Node->getRadius()*QPointF(1.f,1.f) + QPointF(m_CornerRadius, m_CornerRadius);
+		QPointF pos = QPointF(-m_Width/2.f, -m_Height/2.f) + QPointF(m_Node->getWidth()/2.f, m_Node->getHeight()/2.f) + QPointF(m_CornerRadius, m_CornerRadius);
 		m_Node->setPos(pos);
 	}
 

@@ -16,8 +16,7 @@ namespace Uber {
 		try
 		{
 			m_BlockHandle = handle.createBlockInstance( blockName.toStdString() );
-			m_fDefaultFps = 30.0;
-			m_BlockHandle.setUpdateRate( m_fDefaultFps );
+			m_BlockHandle.setUpdateRate( 30 );
 			m_BlockHandle.setup();
 			m_BlockHandle.start();
 			m_BlockId = QString::fromUtf8( m_BlockHandle.getIdAsString().c_str() );
@@ -74,8 +73,8 @@ namespace Uber {
 			{
 				UbInletNode *node = new UbInletNode(this, m_BlockHandle.getInletHandle(it->name));
 				//m_Inputs.append( node );
-				QPointF pos = QPointF(-m_Width/2.f, -m_Height/2.f) + node->getRadius()*QPointF(1.f,1.f) + QPointF(m_CornerRadius, m_CornerRadius);
-				node->setPos( pos + inletIdx*(2*node->getRadius()+nodeSpacing)*QPointF(1.f, 0.f));
+				QPointF pos = QPointF(-m_Width/2.f, -m_Height/2.f) + QPointF( node->getWidth(),node->getHeight() ) + QPointF(m_CornerRadius, m_CornerRadius);
+				node->setPos( pos + inletIdx*(2*node->getWidth()+nodeSpacing)*QPointF(1.f, 0.f));
 				inletIdx++;
 			}
 
@@ -85,8 +84,8 @@ namespace Uber {
 			{
 				UbOutletNode *node = new UbOutletNode(this, m_BlockHandle.getOutletHandle(it->name));
 				//m_Outputs.append( node );
-				QPointF pos = -QPointF(-m_Width/2.f, -m_Height/2.f) - node->getRadius()*QPointF(1.f,1.f) - QPointF(m_CornerRadius, m_CornerRadius);
-				node->setPos( pos - outletIdx*(2*node->getRadius()+nodeSpacing)*QPointF(1.f, 0.f));
+				QPointF pos = -QPointF(-m_Width/2.f, -m_Height/2.f) - QPointF( node->getWidth(),node->getHeight() ) - QPointF(m_CornerRadius, m_CornerRadius);
+				node->setPos( pos - outletIdx*(2*node->getWidth()+nodeSpacing)*QPointF(1.f, 0.f));
 				outletIdx++;
 			}
 		}

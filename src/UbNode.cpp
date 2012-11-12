@@ -11,41 +11,44 @@
 #include <QToolTip>
 
 namespace Uber {
-	UbNode::UbNode( QGraphicsItem *parent )
-		:QGraphicsObject( parent ),
-		m_Radius( 4 ),
+	UbNode::UbNode( QGraphicsItem *parent ) :UbObject( parent ),
 		m_NodeName("")
 	{
+		m_Height = 8;
+		m_Width = 8;
 		constructPath();
 		setAcceptHoverEvents( true ); 
 	}
 
 	void UbNode::constructPath()
 	{
-		m_Path.addEllipse( -m_Radius, -m_Radius, 2*m_Radius, 2*m_Radius );
-
-		//setFlag(QGraphicsItem::ItemIsMovable);
-		//setFlag(QGraphicsItem::ItemIsSelectable);
+		m_Path.addEllipse( -m_Width/2, -m_Height/2, m_Width, m_Height );
 	}
 
-	QRectF UbNode::boundingRect() const
-	{
-		return QRectF(QPointF(-m_Radius, -m_Radius), QPointF( m_Radius, m_Radius));
-	}
-
-	void UbNode::setRadius( qreal radius )
-	{
-		m_Radius = radius;
-	}
-
-	const qreal&	UbNode::getRadius()  const
-	{
-		return m_Radius;
-	}
 	void UbNode::setName( QString name )
 	{
 		m_NodeName = name;
 		setToolTip( m_NodeName );
+	}
+
+	const QString&	UbNode::getName() const 
+	{ 
+		return m_NodeName;
+	}
+
+	bool UbNode::link( UbNode *node )
+	{
+		//We can only link inlet to outlets
+		bool res = false;
+		if ( ( type() == InputNodeType ) && ( node->type() == OutputNodeType ) )
+		{
+			res = static_cast<UbInletNode*>(this)->getHandle().link( static_cast<UbOutletNode*>(node)->getHandle() );
+
+		} else if ( ( type() == OutputNodeType ) && ( node->type() == InputNodeType ) )
+		{
+			res = static_cast<UbOutletNode*>(this)->getHandle().link( static_cast<UbInletNode*>(node)->getHandle() );
+		}
+		return res;
 	}
 
 	void UbNode::hoverMoveEvent ( QGraphicsSceneHoverEvent * event )
@@ -57,17 +60,5 @@ namespace Uber {
 	void UbNode::hoverLeaveEvent ( QGraphicsSceneHoverEvent * event )
 	{
 		std::cout << " Hover stopped happening" << std::endl;
-	}
-
-	void UbNode::paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget )
-	{
-		Q_UNUSED(option)
-			Q_UNUSED(widget)
-			QPen pen;
-		pen.setWidthF(1.f);
-		pen.setBrush(Qt::black);	
-		painter->setPen(pen);
-		painter->setBrush(QColor(177,189,180));
-		painter->drawPath( m_Path );
 	}
 }

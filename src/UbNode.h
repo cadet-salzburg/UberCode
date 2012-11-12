@@ -1,39 +1,30 @@
 #pragma once
 #include <QGraphicsPathItem>
-#include <QGraphicsObject>
-
+#include <QString>
+#include "UbObject.h"
 #include "UbTypes.h"
 
 class UbLink;
-
 namespace Uber {
-	class UbNode :public QGraphicsObject
+	class UbNode :public UbObject
 	{
 	public:
 		UbNode( QGraphicsItem *parent = 0 );
 
 		enum { Type = NodeType  };
 
-		virtual int			type() const { return Type; }
-		QRectF				boundingRect() const;
-		void				constructPath();
-		void				paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+		virtual int				type() const { return Type; }
 
-		void				setRadius( qreal radius );
-		const qreal&		getRadius() const;
+		void					constructPath();
 
-		void				setName(QString name );
-		const QString&		getName() const { return m_NodeName; }				
+		void					setName( QString name );
+		const QString&			getName() const;				
 
-		virtual bool		isInlet(){ return false; }
-
-		void				hoverLeaveEvent ( QGraphicsSceneHoverEvent * event );
-		void				hoverMoveEvent ( QGraphicsSceneHoverEvent * event );
 	protected:
-		QString				m_NodeName;
+		virtual bool			link( UbNode *node );
+		void					hoverLeaveEvent ( QGraphicsSceneHoverEvent * event );
+		void					hoverMoveEvent ( QGraphicsSceneHoverEvent * event );
 	private:
-		qreal				m_Radius;
-		QPainterPath		m_Path;
-		UbLink*				link;
+		QString					m_NodeName;
 	};
 }

@@ -16,6 +16,7 @@ namespace Uber {
 
 		virtual	int					type() const { return Type; }
 		void						nodeIsSet();
+
 		public slots:
 			void					setValue(int value);
 	protected:
