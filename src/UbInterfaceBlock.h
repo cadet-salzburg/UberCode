@@ -8,14 +8,15 @@
 namespace Uber {
 	class UbInterfaceBlock : public  UbAbstractBlock
 	{
+	public:
 		UbInterfaceBlock( QGraphicsItem *parent );
 		virtual ~UbInterfaceBlock(void);
-
 		enum { Type = InterfaceBlockType };
 
 		virtual int						type() const { return Type; }
+		virtual void					blockIsConnected() = 0;
 	protected:
-		void							configureNodes(){};
+		virtual void					arrangeNodes() = 0;
 		UbNode*							m_Node;
 		QGraphicsProxyWidget*			m_ProxyWidget;
 	};

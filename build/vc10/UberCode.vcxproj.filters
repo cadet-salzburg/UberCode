@@ -34,6 +34,15 @@
     <Filter Include="resources">
       <UniqueIdentifier>{a231ea9e-e3e0-46ee-87e9-37075c18527b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\dataflowUi\blocks\ui">
+      <UniqueIdentifier>{e216a54b-4527-44a2-a22e-6c25965e3c91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\dataflowUi\blocks\nodes">
+      <UniqueIdentifier>{fd4872fa-4a29-4e7d-ae10-9e3c061f8bba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\dataflowUi\blocks\links">
+      <UniqueIdentifier>{79c300d9-8881-42eb-8726-ea3733cb65c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.cpp">
@@ -105,21 +114,6 @@
     <ClCompile Include="..\..\src\UbComposition.cpp">
       <Filter>source\dataflowUi</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\UbInletNode.cpp">
-      <Filter>source\dataflowUi\blocks</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\UbLink.cpp">
-      <Filter>source\dataflowUi\blocks</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\UbLinkController.cpp">
-      <Filter>source\dataflowUi\blocks</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\UbNode.cpp">
-      <Filter>source\dataflowUi\blocks</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\UbOutletNode.cpp">
-      <Filter>source\dataflowUi\blocks</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\SettingsManager.cpp">
       <Filter>source\widgets</Filter>
     </ClCompile>
@@ -138,38 +132,65 @@
     <ClCompile Include="..\..\src\UbXMLWriter.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\UbImageUiBlock.cpp">
-      <Filter>source\dataflowUi\blocks</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UbImageUiBlock.cpp">
-      <Filter>Generierte Dateien\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UbImageUiBlock.cpp">
-      <Filter>Generierte Dateien\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\UbSliderUiBlock.cpp">
-      <Filter>source\dataflowUi\blocks</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UbSliderUiBlock.cpp">
-      <Filter>Generierte Dateien\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UbSliderUiBlock.cpp">
-      <Filter>Generierte Dateien\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="UbSpinBoxUiBlock.cpp">
-      <Filter>source\dataflowUi\blocks</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UbSpinBoxUiBlock.cpp">
-      <Filter>Generierte Dateien\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UbSpinBoxUiBlock.cpp">
-      <Filter>Generierte Dateien\Release</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\UbObject.cpp">
       <Filter>source\dataflowUi\blocks</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UbOutputBlock.cpp">
+      <Filter>Generierte Dateien\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UbOutputBlock.cpp">
+      <Filter>Generierte Dateien\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UbImageView.cpp">
+      <Filter>Generierte Dateien\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UbImageView.cpp">
+      <Filter>Generierte Dateien\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UbSlider.cpp">
+      <Filter>Generierte Dateien\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UbSlider.cpp">
+      <Filter>Generierte Dateien\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UbSlider.cpp">
+      <Filter>source\dataflowUi\blocks\ui</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\UbInterfaceBlock.cpp">
-      <Filter>source\dataflowUi\blocks</Filter>
+      <Filter>source\dataflowUi\blocks\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UbOutputBlock.cpp">
+      <Filter>source\dataflowUi\blocks\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UbInputBlock.cpp">
+      <Filter>source\dataflowUi\blocks\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UbImageView.cpp">
+      <Filter>source\dataflowUi\blocks\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UbOutletNode.cpp">
+      <Filter>source\dataflowUi\blocks\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UbNode.cpp">
+      <Filter>source\dataflowUi\blocks\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UbInletNode.cpp">
+      <Filter>source\dataflowUi\blocks\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UbLink.cpp">
+      <Filter>source\dataflowUi\blocks\links</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UbLinkController.cpp">
+      <Filter>source\dataflowUi\blocks\links</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UbSpinbox.cpp">
+      <Filter>Generierte Dateien\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UbSpinbox.cpp">
+      <Filter>Generierte Dateien\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="UbSpinbox.cpp">
+      <Filter>source\dataflowUi\blocks\ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,23 +212,26 @@
     <CustomBuild Include="..\..\src\UbGraphicsScene.h">
       <Filter>source\dataflowUi</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\..\src\UbLinkController.h">
-      <Filter>source\dataflowUi\blocks</Filter>
-    </CustomBuild>
     <CustomBuild Include="..\..\src\UbGraphicsView.h">
       <Filter>source\dataflowUi</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\..\src\UbImageUiBlock.h">
-      <Filter>source\dataflowUi\blocks</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\src\UbSliderUiBlock.h">
-      <Filter>source\dataflowUi\blocks</Filter>
-    </CustomBuild>
-    <CustomBuild Include="UbSpinBoxUiBlock.h">
-      <Filter>source\dataflowUi\blocks</Filter>
+    <CustomBuild Include="..\..\src\UbSlider.h">
+      <Filter>source\dataflowUi\blocks\ui</Filter>
     </CustomBuild>
     <CustomBuild Include="..\..\src\UbInterfaceBlock.h">
-      <Filter>source\dataflowUi\blocks</Filter>
+      <Filter>source\dataflowUi\blocks\ui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\src\UbOutputBlock.h">
+      <Filter>source\dataflowUi\blocks\ui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\src\UbImageView.h">
+      <Filter>source\dataflowUi\blocks\ui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\src\UbLinkController.h">
+      <Filter>source\dataflowUi\blocks\links</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UbSpinbox.h">
+      <Filter>source\dataflowUi\blocks\ui</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -229,18 +253,6 @@
     <ClInclude Include="..\..\src\UbComposition.h">
       <Filter>source\dataflowUi</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\UbInletNode.h">
-      <Filter>source\dataflowUi\blocks</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\UbLink.h">
-      <Filter>source\dataflowUi\blocks</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\UbNode.h">
-      <Filter>source\dataflowUi\blocks</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\UbOutletNode.h">
-      <Filter>source\dataflowUi\blocks</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\SettingsManager.h">
       <Filter>source\widgets</Filter>
     </ClInclude>
@@ -255,6 +267,21 @@
     </ClInclude>
     <ClInclude Include="..\..\src\UbObject.h">
       <Filter>source\dataflowUi\blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\UbInputBlock.h">
+      <Filter>source\dataflowUi\blocks\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\UbOutletNode.h">
+      <Filter>source\dataflowUi\blocks\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\UbNode.h">
+      <Filter>source\dataflowUi\blocks\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\UbInletNode.h">
+      <Filter>source\dataflowUi\blocks\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\UbLink.h">
+      <Filter>source\dataflowUi\blocks\links</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

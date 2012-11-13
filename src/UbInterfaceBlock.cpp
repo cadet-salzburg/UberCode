@@ -2,7 +2,8 @@
 namespace Uber {
 	UbInterfaceBlock::UbInterfaceBlock( QGraphicsItem *parent )
 		:UbAbstractBlock( parent ),
-		m_ProxyWidget( new QGraphicsProxyWidget )
+		m_ProxyWidget( new QGraphicsProxyWidget(this) ),
+		m_Node(0)
 	{
 
 	}

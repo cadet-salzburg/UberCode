@@ -19,9 +19,9 @@ namespace Uber {
 
 		void					setName( QString name );
 		const QString&			getName() const;				
-
-	protected:
 		virtual bool			link( UbNode *node );
+	protected:
+
 		void					hoverLeaveEvent ( QGraphicsSceneHoverEvent * event );
 		void					hoverMoveEvent ( QGraphicsSceneHoverEvent * event );
 	private:

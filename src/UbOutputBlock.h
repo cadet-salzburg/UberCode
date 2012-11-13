@@ -10,7 +10,7 @@ namespace Uber {
 		UbOutputBlock( QGraphicsItem *parent );
 		virtual ~UbOutputBlock(void);
 		enum { Type = OutputBlockType };
-		
+
 		virtual	int				type() const { return Type; }
 
 	protected:

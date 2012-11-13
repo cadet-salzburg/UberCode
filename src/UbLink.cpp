@@ -86,27 +86,10 @@ namespace Uber {
 
 	void UbLink::finishedChanging( bool hardLink )
 	{
-		setHardLink(hardLink);
+		m_IsHardLink = hardLink;
 		m_IsChanging = false;
 		if ( m_IsHardLink )
-		{
-			//ToDo:  clean this up. The check is already happening at the link controller.
-			UbOutletNode *nodeA;
-			UbInletNode *nodeB;
-			if ( m_StartNode->type() == Uber::OutputNodeType )
-			{
-				nodeA =  dynamic_cast<UbOutletNode*>(m_StartNode);
-				nodeB =  dynamic_cast<UbInletNode*>(m_EndNode);
-			} else 
-			{
-				nodeA =  dynamic_cast<UbOutletNode*>(m_EndNode);
-				nodeB =  dynamic_cast<UbInletNode*>(m_StartNode);
-			}
-			_2Real::app::OutletHandle hOutlet = nodeA->getHandle();
-			_2Real::app::InletHandle hInlet = nodeB->getHandle();
-			hOutlet.link(hInlet);
-			//		nodeA->getHandle().link(nodeB->getHandle());
-		}
+			m_StartNode->link( m_EndNode );
 		updatePath();
 	}
 

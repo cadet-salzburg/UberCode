@@ -4,9 +4,9 @@
 #include "UbLinkController.h"
 #include "UbInletNode.h"
 #include "UbOutletNode.h"
-#include "UbImageUiBlock.h"
-#include "UbSliderUiBlock.h"
-#include "UbSpinBoxUiBlock.h"
+#include "UbImageView.h"
+#include "UbSlider.h"
+#include "UbSpinbox.h"
 #include <string>
 
 namespace Uber {
@@ -157,8 +157,8 @@ namespace Uber {
 								//set handle for the node of the ui block
 								uiOutlet->setHandle(blockOutlet->getHandle());
 								QGraphicsObject *obj = uiOutlet->parentObject();
-								UbImageUiBlock* imgBlock  = static_cast<UbImageUiBlock*>(obj);
-								imgBlock->nodeIsSet();
+								UbImageView* imgBlock  = static_cast<UbImageView*>(obj);
+								imgBlock->blockIsConnected();
 
 								//create link
 								m_CurrentLink->setStartNode( blockNode);
@@ -187,12 +187,12 @@ namespace Uber {
 								QGraphicsObject *obj = uiInlet->parentObject();
 								if ( obj->type() == Uber::SliderBlockType )
 								{
-									UbSliderUiBlock* sliderBlock = static_cast<UbSliderUiBlock*>(obj);
-									sliderBlock->nodeIsSet();
+									UbSlider* sliderBlock = static_cast<UbSlider*>(obj);
+									sliderBlock->blockIsConnected();
 								} else if ( obj->type() == Uber::SpinBoxBlockType )
 								{
-									UbSpinBoxUiBlock* spinboxBlock = static_cast<UbSpinBoxUiBlock*>(obj);
-									spinboxBlock->nodeIsSet();
+									UbSpinbox* spinboxBlock = static_cast<UbSpinbox*>(obj);
+									spinboxBlock->blockIsConnected();
 								}
 								//create link
 								m_CurrentLink->setStartNode( blockNode);

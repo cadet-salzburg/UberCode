@@ -18,7 +18,7 @@ namespace Uber {
 	protected:
 		
 		virtual void					constructPath();
-		virtual void					configureNodes() = 0;
+		virtual void					arrangeNodes() = 0;
 		virtual void					mousePressEvent ( QGraphicsSceneMouseEvent * e )
 		{
 			//TODO: QT dragging seems to have glitches. Not sure if its a QT bug or not.

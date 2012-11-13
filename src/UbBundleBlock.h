@@ -18,7 +18,7 @@ namespace Uber {
 		QString						getBlockId(){ return m_BlockId; }
 
 	private:
-		void						configureNodes();
+		void						arrangeNodes();
 		_2Real::app::BlockHandle	m_BlockHandle;
 		QString						m_BlockId;
 	};

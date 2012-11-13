@@ -1,8 +1,8 @@
 #include <QMenu>
 #include "UbGraphicsView.h"
-#include "UbImageUiBlock.h"
-#include "UbSliderUiBlock.h"
-#include "UbSpinBoxUiBlock.h"
+#include "UbImageView.h"
+#include "UbSlider.h"
+#include "UbSpinbox.h"
 #include "DataflowEngineManager.h"
 
 namespace Uber {
@@ -32,19 +32,19 @@ namespace Uber {
 
 	void UbGraphicsView::addImageBlock()
 	{
-		UbImageUiBlock *imageBlock = new UbImageUiBlock(0);
+		UbImageView *imageBlock = new UbImageView(0);
 		imageBlock->setPos( m_EventPos );
 		DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(imageBlock);
 	}
 	void UbGraphicsView::addSliderBlock()
 	{
-		UbSliderUiBlock *sliderBlock = new UbSliderUiBlock(0);
+		UbSlider *sliderBlock = new UbSlider(0);
 		sliderBlock->setPos( m_EventPos );
 		DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(sliderBlock);
 	}
 	void UbGraphicsView::addSpinBoxBlock()
 	{
-		UbSpinBoxUiBlock *spinboxBlock = new UbSpinBoxUiBlock(0);
+		UbSpinbox *spinboxBlock = new UbSpinbox(0);
 		spinboxBlock->setPos( m_EventPos );
 		DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(spinboxBlock);
 	}
