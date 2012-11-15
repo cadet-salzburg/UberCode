@@ -2,6 +2,7 @@
 #include <QDomDocument>
 #include <QString>
 #include "UbBundleBlock.h"
+#include "UbInterfaceBlock.h"
 
 namespace Uber {
 	namespace xml {
@@ -11,7 +12,7 @@ namespace Uber {
 			UbXMLWriter( QString const& filePath );
 			~UbXMLWriter( void );
 			void addUbBlock(  UbBundleBlock &UbBlock );
-			void addUbElement();
+			void addInterfaceBlock( const UbInterfaceBlock &block );
 		private:
 			void initialize();
 			void writeFile() const;

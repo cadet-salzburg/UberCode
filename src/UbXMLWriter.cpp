@@ -24,11 +24,13 @@ namespace Uber {
 				std::cout << "The xml file is in read-only mode" << std::endl;
 				return;
 			}
+
 			if ( !m_DomDocument.setContent(&file) )
 			{
 				file.close();
 				return;
 			}
+
 			file.close();
 			m_Root = m_DomDocument.documentElement();
 			if ( m_Root.tagName() != "config") {
@@ -36,6 +38,7 @@ namespace Uber {
 				return;
 			}
 		}
+
 		void UbXMLWriter::addUbBlock(  UbBundleBlock &UbBlock )
 		{
 			QDomNode ubercodeData;
@@ -50,6 +53,7 @@ namespace Uber {
 			{
 				blockInstances  = ubercodeData.appendChild(m_DomDocument.createElement("block_instances"));
 			}
+
 			QDomNode blockInstance   = blockInstances.appendChild(m_DomDocument.createElement("block_instance"));
 			QDomNode blockInstanceId = blockInstance.appendChild(m_DomDocument.createElement("block_instance_id"));
 			QDomText blockInstanceIdName = m_DomDocument.createTextNode( QString::fromUtf8( UbBlock.getHandle().getIdAsString().c_str()));
@@ -63,9 +67,31 @@ namespace Uber {
 			positionY.appendChild(positionYvalue);
 		}
 
-		void UbXMLWriter::addUbElement()
+		void UbXMLWriter::addInterfaceBlock( const UbInterfaceBlock &block )
 		{
-
+			QDomNode ubercodeData;
+			QDomNode uiInstances;
+			ubercodeData	= m_Root.namedItem("ubercode_data"); 
+			if ( ubercodeData.isNull() )
+			{
+				ubercodeData	 = m_Root.appendChild(m_DomDocument.createElement("ubercode_data"));
+			}
+			uiInstances	= ubercodeData.namedItem("ui_instances"); 
+			if ( uiInstances.isNull() )
+			{
+				uiInstances  = ubercodeData.appendChild(m_DomDocument.createElement("ui_instances"));
+			}
+			QDomNode uiInstance   = uiInstances.appendChild(m_DomDocument.createElement("ui_instance"));
+			QDomNode uiInstanceNameTag = uiInstance.appendChild(m_DomDocument.createElement("ui_instance_name"));
+			QDomText uiInstanceName = m_DomDocument.createTextNode( block.getName() );
+			uiInstanceNameTag.appendChild(uiInstanceName);
+			QDomNode position = uiInstance.appendChild(m_DomDocument.createElement("position"));
+			QDomNode positionX = position.appendChild(m_DomDocument.createElement("x"));
+			QDomNode positionY = position.appendChild(m_DomDocument.createElement("y"));
+			QDomText positionXvalue = m_DomDocument.createTextNode(QString::number(block.x()));
+			QDomText positionYvalue = m_DomDocument.createTextNode(QString::number(block.y()));
+			positionX.appendChild(positionXvalue);
+			positionY.appendChild(positionYvalue);
 		}
 		void UbXMLWriter::writeFile() const
 		{

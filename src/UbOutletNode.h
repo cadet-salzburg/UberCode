@@ -1,10 +1,14 @@
 #pragma once
 #include "UbNode.h"
 #include "UbTypes.h"
+#include <QSharedPointer>
+#include <QWeakPointer>
 #include "_2RealApplication.h"
 
 
 namespace Uber {
+	typedef QSharedPointer<class UbOutletNode>	UbOutletNodeRef;
+	typedef QWeakPointer<class UbOutletNode>	UbOutletNodeWeakRef;
 	class UbOutletNode :public UbNode
 	{
 	public:

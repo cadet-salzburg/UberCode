@@ -10,10 +10,10 @@ namespace Uber {
 		UbComposition();
 		~UbComposition();
 
-		UbGraphicsScene*		getGraphicsScene();
-		void					addBlock(QString strBlockName, QPointF pos );
-		void					addBlock( UbBundleBlock *block );
+		UbGraphicsScene*	getGraphicsScene();
+		void	addBlock(QString strBlockName, QPointF pos );
+		void	addBlock( UbBundleBlock *block );
 	private:
-		UbGraphicsScene*		m_UbGraphicsScene;
+		UbGraphicsScene*	m_UbGraphicsScene;
 	};
 }

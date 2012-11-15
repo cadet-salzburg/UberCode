@@ -5,6 +5,7 @@ namespace Uber {
 		:UbInputBlock(parent)
 	{
 		init();
+		setName(QString("Slider"));
 	}
 
 	UbSlider::~UbSlider(void)
@@ -33,15 +34,24 @@ namespace Uber {
 
 	void UbSlider::arrangeNodes()
 	{
-		QPointF pos = QPointF(0, -m_Height/2.f) +  m_Node->getHeight()*QPointF(0.f,2.f);
-		m_Node->setPos(pos);
+		UbNodeRef node = m_Node.toStrongRef();
+		if ( node )
+		{
+			QPointF pos = QPointF(0, -m_Height/2.f) +  node->getHeight()*QPointF(0.f,2.f);
+			node->setPos(pos);
+		}
 	}
+
 	void UbSlider::blockIsConnected()
 	{
 		connect( m_Slider, SIGNAL(valueChanged(int)), this, SLOT(setValue(int)));
 	}
 	void UbSlider::setValue(int value)
 	{
-		static_cast<UbInletNode*>(m_Node)->getHandle().setValue( value );
+		UbNodeRef node = m_Node.toStrongRef();
+		if ( node )
+		{
+			qSharedPointerCast<UbInletNode>(node)->getHandle().setValue( value );
+		}
 	}
 }

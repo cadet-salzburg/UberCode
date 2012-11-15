@@ -1,44 +1,34 @@
 #pragma once
 #include <QGraphicsPathItem>
 #include <QGraphicsSceneMouseEvent>
+#include <QSharedPointer>
+#include <QWeakPointer>
 #include "UbNode.h"
+#include "UbTypes.h"
 
 namespace Uber {
+	typedef QSharedPointer<class UbLink>	UbLinkRef;
+	typedef QWeakPointer<class UbLink>		UbLinkWeakRef;	
 	class UbLink : public QGraphicsPathItem
 	{
 	public:
 		UbLink(QGraphicsItem *parent = 0,  QGraphicsScene *scene = 0);
-		//UbLink(QGraphicsItem *parent,  QGraphicsScene *scene, );
 		virtual	~UbLink();
 
-		void			updatePath();
-		void			paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget );
+		void				updatePath();
+		void				paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget );
 
-		void			setStartNode( UbNode* start );
-		UbNode*			getStartNode() const;
+		void				setStartNode( UbNodeRef start );
+		UbNodeRef			getStartNode() const;
 
-		void			setEndNode( UbNode* end );
-		UbNode*			getEndNode() const;
+		void				setEndNode( UbNodeRef end );
+		UbNodeRef			getEndNode() const;
 
-		void			setStartPos( QPointF start );
-		void			setEndPos( QPointF end );
-		void			setDragPos( QPointF pos);
-
-		void			setNodes( UbNode* start, UbNode* end );
-
-		void			startedChanging();
-		void			finishedChanging( bool isHardLink );
-		bool			isChanging() const;
-		void			setHardLink( bool isHard );
+		void				setNodes( UbNodeRef start, UbNodeRef end );
+		bool				nodesAreSet();
+		bool				isHardLink();
 	protected:
-		void			mousePressEvent ( QGraphicsSceneMouseEvent * event );
-	private:
-		bool			m_IsHardLink;
-		bool			m_IsSet;
-		bool			m_IsChanging;
-		UbNode*			m_StartNode;
-		UbNode*			m_EndNode;
-		QPointF			m_StartPos;
-		QPointF			m_EndPos;
+		UbNodeRef			m_StartNode;
+		UbNodeRef			m_EndNode;
 	};
 }

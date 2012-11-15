@@ -4,7 +4,9 @@ namespace Uber {
 	UbInputBlock::UbInputBlock( QGraphicsItem *parent )
 		:UbInterfaceBlock(parent)
 	{
-		m_Node = new UbInletNode(this);
+		UbInletNodeRef node( new UbInletNode(this) );
+		m_Inlets.push_back( node );
+		m_Node = node.toWeakRef();
 	}
 
 	UbInputBlock::~UbInputBlock(void)

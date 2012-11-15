@@ -16,6 +16,7 @@ namespace Uber {
 		~UbImageView(void);
 
 		enum { Type = ImageBlockType };
+
 		virtual	int						type() const { return Type; }
 		virtual void					blockIsConnected();
 		virtual void					updateData(	_2Real::app::AppData data	);

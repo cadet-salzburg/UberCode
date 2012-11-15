@@ -6,6 +6,7 @@
 #include "UbNode.h"
 #include "UbInletNode.h"
 #include "UbOutletNode.h"
+#include <QVector>
 
 namespace Uber {
 	class UbLinkController : public QObject
@@ -14,7 +15,7 @@ namespace Uber {
 	public:
 		static	UbLinkController*	getInstance();
 		static	void				setScene( QGraphicsScene * scene );
-		void						addLink( UbNode* start, UbNode* end ); 
+		void						addLink( UbNodeRef start, UbNodeRef end ); 
 		void						addLink( UbLink* const link );
 		void						removeLink( UbLink* const link );
 		bool						eventFilter(QObject * obj, QEvent * e );
@@ -25,24 +26,25 @@ namespace Uber {
 	private:
 		UbLinkController(void);
 		~UbLinkController(void);
-		static UbLinkController*	m_Instance;
-		static QGraphicsScene*		m_Scene;
-		UbLink*						m_CurrentLink;
-
-		bool						nodesHaveDifferentParents( UbNode* nodeA, UbNode *nodeB );
-		bool						nodesHaveDifferentType( UbNode* nodeA, UbNode *nodeB );
-		UbInletNode*				getInletNode( UbNode* nodeA, UbNode* nodeB );
-		UbOutletNode*				getOutletNode( UbNode* nodeA, UbNode* nodeB );
-		bool						nodesCanBeConnected( UbNode* nodeA, UbNode* nodeB );
-		bool						isBundleBlockNode( UbNode* node );
-		bool						bothNodesAreOutlets( UbNode *nodeA, UbNode *nodeB );
-		bool						bothNodesAreInlets( UbNode *nodeA, UbNode *nodeB );
-		bool						canConnectInputNodeToUiBlockOfType( UbInletNode* node, int type );
-		bool						canConnectOutputNodeToUiBlockOfType( UbOutletNode* node, int type );
+		bool						nodesHaveDifferentParents( UbNodeRef nodeA, UbNodeRef nodeB );
+		bool						nodesHaveDifferentType( UbNodeRef nodeA, UbNodeRef nodeB );
+		UbInletNodeRef				getInletNode( UbNodeRef nodeA, UbNodeRef nodeB );
+		UbOutletNodeRef				getOutletNode( UbNodeRef nodeA, UbNodeRef nodeB );
+		bool						nodesCanBeConnected( UbNodeRef nodeA, UbNodeRef nodeB );
+		bool						isBundleBlockNode( UbNodeRef node );
+		bool						bothNodesAreOutlets( UbNodeRef nodeA, UbNodeRef nodeB );
+		bool						bothNodesAreInlets( UbNodeRef nodeA, UbNodeRef nodeB );
+		bool						canConnectInputNodeToUiBlockOfType( UbInletNodeRef node, int type );
+		bool						canConnectOutputNodeToUiBlockOfType( UbOutletNodeRef node, int type );
 
 		bool						processStartLink( QGraphicsSceneMouseEvent * e );
 		bool						processUpdateLink( QGraphicsSceneMouseEvent * e );
 		bool						processEndLink( QGraphicsSceneMouseEvent *e );
 		bool						eventHappenedAtNode( QGraphicsSceneMouseEvent * e );
+
+		static UbLinkController*	m_Instance;
+		static QGraphicsScene*		m_Scene;
+		UbLink*						m_CurrentLink;
+		QVector<UbLinkWeakRef>		m_Links;
 	};
 }

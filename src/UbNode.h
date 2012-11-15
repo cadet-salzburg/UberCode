@@ -1,16 +1,19 @@
 #pragma once
 #include <QGraphicsPathItem>
 #include <QString>
+#include <QSharedPointer>
+#include <QWeakPointer>
 #include "UbObject.h"
 #include "UbTypes.h"
 
 class UbLink;
 namespace Uber {
+	typedef QSharedPointer<class UbNode>	UbNodeRef;
+	typedef QWeakPointer<class UbNode>		UbNodeWeakRef;
 	class UbNode :public UbObject
 	{
 	public:
 		UbNode( QGraphicsItem *parent = 0 );
-
 		enum { Type = NodeType  };
 
 		virtual int				type() const { return Type; }

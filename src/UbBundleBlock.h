@@ -1,6 +1,8 @@
 #pragma once
 #include "UbAbstractBlock.h"
 #include "_2RealApplication.h"
+#include "UbNode.h"
+#include <QVector>
 #include <QGraphicsSceneMouseEvent>
 
 namespace Uber {
@@ -16,7 +18,8 @@ namespace Uber {
 		virtual int					type() const { return Type; }
 		_2Real::app::BlockHandle	getHandle(){ return m_BlockHandle;}
 		QString						getBlockId(){ return m_BlockId; }
-
+		QVector<UbNodeRef>			getInlets();
+		QVector<UbNodeRef>			getOutlets();
 	private:
 		void						arrangeNodes();
 		_2Real::app::BlockHandle	m_BlockHandle;

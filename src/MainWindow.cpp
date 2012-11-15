@@ -97,14 +97,14 @@ void MainWindow::open()
 
 			if ( outBlock!=0 && inBlock!=0 )
 			{
-				UbNode *outletNode = 0;
-				UbNode *inletNode = 0;
+				UbNodeRef inletNode		= UbNodeRef();
+				UbNodeRef outletNode	= UbNodeRef();
 
-				QList<Uber::UbInletNode*> inletList  = DataflowEngineManager::getInstance()->getInlets( inBlock );
-				QList<Uber::UbOutletNode*> outletList = DataflowEngineManager::getInstance()->getOutlets( outBlock );
+				QVector<Uber::UbNodeRef> inlets  = inBlock->getInlets();
+				QVector<Uber::UbNodeRef> outlets = outBlock->getOutlets();
 
-				QList<Uber::UbInletNode*>::iterator iterInlet = inletList.begin();
-				for (;iterInlet!=inletList.end();++iterInlet)
+				QVector<Uber::UbNodeRef>::iterator iterInlet = inlets.begin();
+				for (;iterInlet!=inlets.end();++iterInlet)
 				{
 					if ( (*iterInlet)->getName() == inletId )
 					{
@@ -113,8 +113,8 @@ void MainWindow::open()
 					}
 				}
 
-				QList<Uber::UbOutletNode*>::iterator iterOutlet = outletList.begin();
-				for (;iterOutlet!=outletList.end();++iter)
+				QVector<Uber::UbNodeRef>::iterator iterOutlet = outlets.begin();
+				for (;iterOutlet!=outlets.end();++iter)
 				{
 					if ( (*iterOutlet)->getName() == outletId )
 					{
@@ -168,6 +168,13 @@ void MainWindow::save()
 			if ( (*iter)->type() ==  Uber::BundleBlockType )
 			{
 				ubXML->addUbBlock(*dynamic_cast<UbBundleBlock*>(*iter) );
+			} 
+			else if ( 
+				( (*iter)->type() ==  Uber::ImageBlockType ) ||
+				( (*iter)->type() ==  Uber::SliderBlockType ) || 
+				( (*iter)->type() ==  Uber::SpinBoxBlockType ) )
+			{
+				ubXML->addInterfaceBlock(*dynamic_cast<UbInterfaceBlock*>(*iter) );
 			}
 		}
 		//ubXML->addUbBlock(b);

@@ -71,10 +71,11 @@ namespace Uber {
 			BlockInfo::InletInfos inlets = m_BlockHandle.getBlockInfo().inlets;
 			for(auto it = inlets.begin(); it != inlets.end(); it++)
 			{
-				UbInletNode *node = new UbInletNode(this, m_BlockHandle.getInletHandle(it->name));
+				UbInletNodeRef node(new UbInletNode(this, m_BlockHandle.getInletHandle(it->name)));
 				//m_Inputs.append( node );
 				QPointF pos = QPointF(-m_Width/2.f, -m_Height/2.f) + QPointF( node->getWidth(),node->getHeight() ) + QPointF(m_CornerRadius, m_CornerRadius);
 				node->setPos( pos + inletIdx*(2*node->getWidth()+nodeSpacing)*QPointF(1.f, 0.f));
+				m_Inlets.push_back(node);
 				inletIdx++;
 			}
 
@@ -82,10 +83,11 @@ namespace Uber {
 			BlockInfo::OutletInfos outlets = m_BlockHandle.getBlockInfo().outlets;
 			for(auto it = outlets.begin(); it != outlets.end(); it++)
 			{
-				UbOutletNode *node = new UbOutletNode(this, m_BlockHandle.getOutletHandle(it->name));
+				UbOutletNodeRef node( new UbOutletNode(this, m_BlockHandle.getOutletHandle(it->name)));
 				//m_Outputs.append( node );
 				QPointF pos = -QPointF(-m_Width/2.f, -m_Height/2.f) - QPointF( node->getWidth(),node->getHeight() ) - QPointF(m_CornerRadius, m_CornerRadius);
 				node->setPos( pos - outletIdx*(2*node->getWidth()+nodeSpacing)*QPointF(1.f, 0.f));
+				m_Outlets.push_back(node);
 				outletIdx++;
 			}
 		}
@@ -93,5 +95,15 @@ namespace Uber {
 		{
 			cout << e.message() << e.what() << std::endl;
 		}
+	}
+
+	QVector<UbNodeRef> UbBundleBlock::getInlets()
+	{
+		return m_Inlets;
+	}
+
+	QVector<UbNodeRef> UbBundleBlock::getOutlets()
+	{
+		return m_Outlets;
 	}
 }

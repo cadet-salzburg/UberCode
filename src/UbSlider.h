@@ -1,6 +1,7 @@
 #pragma once
 #include "UbInputBlock.h"
 #include <QGraphicsProxyWidget>
+#include "UbNode.h"
 #include "UbInletNode.h"
 #include <QSlider>
 

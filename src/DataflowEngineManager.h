@@ -27,8 +27,6 @@ public:
 	const BlockInstancingInfos&				getBlockInstancingInfos();
 
 	QList<Uber::UbBundleBlock*>				getBundleBlocks();
-	QList<Uber::UbInletNode*>				getInlets( Uber::UbBundleBlock* block );
-	QList<Uber::UbOutletNode*>				getOutlets( Uber::UbBundleBlock* block );
 
 	void									setGraphicsView( Uber::UbGraphicsView* view );
 	Uber::UbGraphicsView*					getGraphicsView();						

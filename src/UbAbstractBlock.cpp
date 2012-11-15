@@ -1,5 +1,4 @@
 #include "UbAbstractBlock.h"
-
 namespace Uber {
 	UbAbstractBlock::UbAbstractBlock( QGraphicsItem *parent )
 		:UbObject( parent )
@@ -15,7 +14,6 @@ namespace Uber {
 
 	}
 
-
 	void UbAbstractBlock::constructPath()
 	{
 		QPainterPath path;
@@ -23,5 +21,26 @@ namespace Uber {
 		QRectF rect( QPointF(-m_Width/2., -m_Height/2.), QPointF( m_Width/2.,m_Height/2.) );
 		m_Path.addRoundedRect( rect, m_CornerRadius, m_CornerRadius );;
 		setFlag(QGraphicsItem::ItemIsSelectable);
+	}
+
+	Uber::UbNodeRef UbAbstractBlock::getNodeUnderMouse()
+	{
+		QVector<UbNodeRef>::iterator iter = m_Inlets.begin();
+		for (; iter!=m_Inlets.end();++iter)
+		{
+			if ((*iter)->isUnderMouse() )
+			{
+				return *iter;
+			}
+		}
+		iter = m_Outlets.begin();
+		for (; iter!=m_Outlets.end();++iter)
+		{
+			if ((*iter)->isUnderMouse() )
+			{
+				return *iter;
+			}
+		}
+		return UbNodeRef();
 	}
 }

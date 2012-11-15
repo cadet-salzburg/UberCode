@@ -18,9 +18,9 @@ namespace Uber {
 	void UbObject::paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget )
 	{
 		Q_UNUSED(option)
-			Q_UNUSED(widget)
-			QPen pen;
-		pen.setWidthF(1.f);
+		Q_UNUSED(widget)
+		QPen pen;
+		pen.setWidthF(0.5f);
 		pen.setBrush(Qt::black);	
 		painter->setPen(pen);
 		painter->setBrush(m_Color);
@@ -29,7 +29,7 @@ namespace Uber {
 
 	QRectF UbObject::boundingRect() const
 	{
-		return QRectF( QPointF(-m_Width/2., -m_Height/2.), QPointF( m_Width/2.,m_Height/2.) );
+		return QRectF( QPointF(-m_Width/2.-1 , -m_Height/2.-1), QPointF( m_Width/2.+1,m_Height/2.+1) );
 	}
 
 }

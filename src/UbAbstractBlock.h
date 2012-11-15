@@ -3,6 +3,7 @@
 #include <QPoint>
 #include "UbObject.h"
 #include "UbTypes.h"
+#include "UbNode.h"
 
 namespace Uber {
 	class UbAbstractBlock :public UbObject
@@ -15,6 +16,7 @@ namespace Uber {
 		virtual ~UbAbstractBlock( void );
 
 		virtual int						type() const { return Type; }
+		UbNodeRef						getNodeUnderMouse();
 	protected:
 		
 		virtual void					constructPath();
@@ -33,6 +35,8 @@ namespace Uber {
 			m_PreviousPoint = m_CurrentPoint;
 		}
 
+		QVector<UbNodeRef>				m_Inlets;
+		QVector<UbNodeRef>				m_Outlets;
 		int								m_CornerRadius;
 	private:
 		QPointF							m_CurrentPoint;

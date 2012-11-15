@@ -148,38 +148,6 @@ QList<UbBundleBlock*> DataflowEngineManager::getBundleBlocks()
 	return blocks;
 }
 
-QList<UbInletNode*>	DataflowEngineManager::getInlets( UbBundleBlock* block )
-{
-	QList<UbInletNode*> inlets;
-	QList<QGraphicsItem *> children = block->childItems();
-	QList<QGraphicsItem *>::iterator iter = children.begin();
-	for (;iter!=children.end();++iter)
-	{
-		if ( (*iter)->type() == InputNodeType )
-		{
-			UbInletNode *n = static_cast<UbInletNode*>(*iter);
-			inlets.push_back(n);
-		}
-	}
-	return inlets;
-}
-
-QList<UbOutletNode*> DataflowEngineManager::getOutlets( UbBundleBlock* block )
-{
-	QList<UbOutletNode*> outlets;
-	QList<QGraphicsItem *> children = block->childItems();
-	QList<QGraphicsItem *>::iterator iter = children.begin();
-	for (;iter!=children.end();++iter)
-	{
-		if ( (*iter)->type() == OutputNodeType )
-		{
-			UbOutletNode *n = static_cast<UbOutletNode*>(*iter);
-			outlets.push_back(n);
-		}
-	}
-	return outlets;
-}
-
 void	DataflowEngineManager::setGraphicsView( UbGraphicsView* view )
 {
 	m_GraphicsView = view;

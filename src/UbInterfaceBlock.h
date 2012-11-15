@@ -15,9 +15,13 @@ namespace Uber {
 
 		virtual int						type() const { return Type; }
 		virtual void					blockIsConnected() = 0;
+		void							setName( const QString& name );
+		const QString&					getName() const;
+
 	protected:
 		virtual void					arrangeNodes() = 0;
-		UbNode*							m_Node;
 		QGraphicsProxyWidget*			m_ProxyWidget;
+		QString							m_Name;
+		UbNodeWeakRef					m_Node;
 	};
 }
