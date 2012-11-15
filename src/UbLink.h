@@ -30,5 +30,6 @@ namespace Uber {
 	protected:
 		UbNodeRef			m_StartNode;
 		UbNodeRef			m_EndNode;
+
 	};
 }

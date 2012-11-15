@@ -66,7 +66,7 @@ namespace Uber {
 		}
 	}
 
-	void UbImageView::updateData(_2Real::app::AppData data) 
+	void UbImageView::updateData( _2Real::app::AppData const& data ) 
 	{
 		UbOutputBlock::updateData(data);
 		UbNodeRef node = m_Node.toStrongRef();

@@ -28,7 +28,6 @@ namespace Uber {
 	void UbLinkController::setScene( QGraphicsScene * scene )
 	{
 		m_Scene = scene;
-		m_Scene->installEventFilter(m_Instance);
 	}
 
 	void UbLinkController::addLink( UbNodeRef start, UbNodeRef end )
@@ -93,8 +92,9 @@ namespace Uber {
 					m_CurrentLink->setStartNode(nd);
 					m_CurrentLink->getEndNode()->setPos(e->scenePos() );
 					m_CurrentLink->updatePath();
-					return true;
+					//return true;
 				}
+				return true;
 			}
 			break;
 		case Qt::RightButton:
@@ -140,6 +140,7 @@ namespace Uber {
 					UbOutletNodeRef outlet = getOutletNode(startNode, endNode );
 					m_CurrentLink->setStartNode(outlet);
 					m_CurrentLink->setEndNode(inlet);
+					startNode->link(endNode.data());
 					return true;
 				} else if ( nodesHaveDifferentParents(startNode, endNode) )
 				{
@@ -210,6 +211,7 @@ namespace Uber {
 								return true;
 							}	
 						}
+						return true;
 					}
 				}
 			}
@@ -333,20 +335,26 @@ namespace Uber {
 
 	bool UbLinkController::eventFilter( QObject *obj, QEvent *e )
 	{
-		QGraphicsSceneMouseEvent *me = (QGraphicsSceneMouseEvent*) e;
-		bool ret = false;
-		switch ((int) e->type()){
-		case QEvent::GraphicsSceneMousePress:
-			ret = processStartLink(me);
-			break;
-		case QEvent::GraphicsSceneMouseMove:
-			ret = processUpdateLink(me);
-			break;
-		case QEvent::GraphicsSceneMouseRelease:
-			ret = processEndLink(me);
-			break;
+		if ( ( e->type() == QEvent::GraphicsSceneMouseMove ) || ( e->type() == QEvent::GraphicsSceneMousePress ) || ( e->type() == QEvent::GraphicsSceneMouseRelease ) ) 
+		{
+			QGraphicsSceneMouseEvent *me = static_cast<QGraphicsSceneMouseEvent*>(e);
+			bool ret = false;
+			switch ((int) e->type()){
+			case QEvent::GraphicsSceneMousePress:
+				ret = processStartLink(me);
+				break;
+			case QEvent::GraphicsSceneMouseMove:
+				ret = processUpdateLink(me);
+				break;
+			case QEvent::GraphicsSceneMouseRelease:
+				ret = processEndLink(me);
+				break;
+			}
+			return ret;
+		} else {
+			// standard event processing
+			return QObject::eventFilter(obj, e);
 		}
-		return ( QObject::eventFilter(obj, e) || ret );
 	}
 
 	bool UbLinkController::canConnectOutputNodeToUiBlockOfType( UbOutletNodeRef node, int type )

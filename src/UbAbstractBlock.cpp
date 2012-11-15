@@ -1,4 +1,5 @@
 #include "UbAbstractBlock.h"
+
 namespace Uber {
 	UbAbstractBlock::UbAbstractBlock( QGraphicsItem *parent )
 		:UbObject( parent )

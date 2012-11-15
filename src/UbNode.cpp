@@ -18,6 +18,7 @@ namespace Uber {
 		m_Width = 8;
 		constructPath();
 		setAcceptHoverEvents( true ); 
+		installEventFilter(UbLinkController::getInstance());
 	}
 
 	void UbNode::constructPath()
@@ -36,12 +37,13 @@ namespace Uber {
 		return m_NodeName;
 	}
 
-	bool UbNode::link( UbNode *node )
+	bool UbNode::link( UbNode* node )
 	{
 		//We can only link inlet to outlets
 		bool res = false;
 		if ( ( type() == InputNodeType ) && ( node->type() == OutputNodeType ) )
 		{
+			//qSharedPointerCast<UbOutletNode>(this)
 			res = static_cast<UbInletNode*>(this)->getHandle().link( static_cast<UbOutletNode*>(node)->getHandle() );
 
 		} else if ( ( type() == OutputNodeType ) && ( node->type() == InputNodeType ) )

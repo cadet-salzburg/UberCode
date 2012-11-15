@@ -18,8 +18,8 @@ namespace Uber {
 		_2Real::app::AppData	m_Data;
 
 	public slots:
-		virtual void			updateData(	_2Real::app::AppData data	);
+		virtual void			updateData( _2Real::app::AppData const& data );
 	signals:
-		void					sendData(	_2Real::app::AppData data	);
+		void					sendData( _2Real::app::AppData const& data );
 	};
 }
