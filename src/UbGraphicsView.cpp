@@ -3,6 +3,7 @@
 #include "UbImageView.h"
 #include "UbSlider.h"
 #include "UbSpinbox.h"
+#include "UbRadiobutton.h"
 #include "DataflowEngineManager.h"
 
 namespace Uber {
@@ -49,6 +50,13 @@ namespace Uber {
 		DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(spinboxBlock);
 	}
 
+	void UbGraphicsView::addRadioButtonBlock()
+	{
+		UbRadiobutton* radioButton = new UbRadiobutton(0);
+		radioButton->setPos( m_EventPos );
+		DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(radioButton);
+	}
+
 	void UbGraphicsView::contextMenuEvent( QContextMenuEvent *event )
 	{
 		QMenu menu(this);
@@ -66,7 +74,14 @@ namespace Uber {
 		connect( spinboxBlockAction, SIGNAL(triggered()), this, SLOT( addSpinBoxBlock() ) );
 		menu.addAction( spinboxBlockAction );
 		//
+		QAction *radiobuttonBlockAction( new QAction("Add RadioButtonBlock", this));
+		connect( radiobuttonBlockAction, SIGNAL(triggered()), this, SLOT( addRadioButtonBlock() ) );
+		menu.addAction( radiobuttonBlockAction );
+		//
 		menu.exec(event->globalPos());
 		std::cout << " The x-position is: " << m_EventPos.x() << " and the y-position is: " << m_EventPos.y() << std::endl; 
 	}
+
+
+
 }

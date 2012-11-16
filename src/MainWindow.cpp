@@ -19,6 +19,9 @@ MainWindow::MainWindow()
 	QApplication::setOrganizationDomain("cadet.at");
 	QApplication::setApplicationName("UberCode");
 
+	//setAttribute(Qt::WA_TranslucentBackground);
+	//setWindowFlags(Qt::FramelessWindowHint);
+
 	m_UiBuilderWindow = new Ui_MainWindow;
 	m_UiBuilderWindow->setupUi( this );
 

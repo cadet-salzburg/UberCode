@@ -2,6 +2,7 @@
 #include "UbBundleBlock.h"
 #include "UbInletNode.h"
 #include "UbOutletNode.h"
+#include "UbMultiInletNode.h"
 #include "app/_2RealEngine.h"
 
 using namespace _2Real;
@@ -71,11 +72,22 @@ namespace Uber {
 			BlockInfo::InletInfos inlets = m_BlockHandle.getBlockInfo().inlets;
 			for(auto it = inlets.begin(); it != inlets.end(); it++)
 			{
-				UbInletNodeRef node(new UbInletNode(this, m_BlockHandle.getInletHandle(it->name)));
+				_2Real::app::InletHandle handle = m_BlockHandle.getInletHandle(it->name);
+				if ( handle.isMultiInlet() )
+				{
+					UbMultiInletNodeRef node(new UbMultiInletNode(this,handle));
+					QPointF pos = QPointF(-m_Width/2.f, -m_Height/2.f) + QPointF( node->getWidth()/2,node->getHeight()/2 ) + QPointF(m_CornerRadius, m_CornerRadius);
+					node->setPos( pos + inletIdx*(node->getWidth()+nodeSpacing)*QPointF(1.f, 0.f));
+					m_Inlets.push_back(node);
+				} else
+				{
+					UbInletNodeRef node(new UbInletNode(this, handle));
+					QPointF pos = QPointF(-m_Width/2.f, -m_Height/2.f) + QPointF( node->getWidth()/2,node->getHeight()/2 ) + QPointF(m_CornerRadius, m_CornerRadius);
+					node->setPos( pos + inletIdx*(node->getWidth()+nodeSpacing)*QPointF(1.f, 0.f));
+					m_Inlets.push_back(node);
+				}
 				//m_Inputs.append( node );
-				QPointF pos = QPointF(-m_Width/2.f, -m_Height/2.f) + QPointF( node->getWidth(),node->getHeight() ) + QPointF(m_CornerRadius, m_CornerRadius);
-				node->setPos( pos + inletIdx*(2*node->getWidth()+nodeSpacing)*QPointF(1.f, 0.f));
-				m_Inlets.push_back(node);
+
 				inletIdx++;
 			}
 
@@ -85,8 +97,8 @@ namespace Uber {
 			{
 				UbOutletNodeRef node( new UbOutletNode(this, m_BlockHandle.getOutletHandle(it->name)));
 				//m_Outputs.append( node );
-				QPointF pos = -QPointF(-m_Width/2.f, -m_Height/2.f) - QPointF( node->getWidth(),node->getHeight() ) - QPointF(m_CornerRadius, m_CornerRadius);
-				node->setPos( pos - outletIdx*(2*node->getWidth()+nodeSpacing)*QPointF(1.f, 0.f));
+				QPointF pos = -QPointF(-m_Width/2.f, -m_Height/2.f) - QPointF( node->getWidth()/2,node->getHeight()/2 ) - QPointF(m_CornerRadius, m_CornerRadius);
+				node->setPos( pos - outletIdx*(node->getWidth()+nodeSpacing)*QPointF(1.f, 0.f));
 				m_Outlets.push_back(node);
 				outletIdx++;
 			}

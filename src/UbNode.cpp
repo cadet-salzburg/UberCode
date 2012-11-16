@@ -16,6 +16,7 @@ namespace Uber {
 	{
 		m_Height = 8;
 		m_Width = 8;
+		m_Color = QColor(120,120,120);
 		constructPath();
 		setAcceptHoverEvents( true ); 
 		installEventFilter(UbLinkController::getInstance());

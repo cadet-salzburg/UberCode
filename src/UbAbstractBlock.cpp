@@ -5,8 +5,8 @@ namespace Uber {
 		:UbObject( parent )
 		,m_CornerRadius(8)
 	{
-		m_Width = 140;
-		m_Height = 70;
+		m_Width = 110;
+		m_Height = 40;
 		constructPath();
 	}
 

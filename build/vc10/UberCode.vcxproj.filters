@@ -192,6 +192,18 @@
     <ClCompile Include="UbSpinbox.cpp">
       <Filter>source\dataflowUi\blocks\ui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\UbMultiInletNode.cpp">
+      <Filter>source\dataflowUi\blocks\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UbRadiobutton.cpp">
+      <Filter>source\dataflowUi\blocks\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UbRadiobutton.cpp">
+      <Filter>Generierte Dateien\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UbRadiobutton.cpp">
+      <Filter>Generierte Dateien\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\src\uberCode.ui">
@@ -231,6 +243,9 @@
       <Filter>source\dataflowUi\blocks\links</Filter>
     </CustomBuild>
     <CustomBuild Include="UbSpinbox.h">
+      <Filter>source\dataflowUi\blocks\ui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\src\UbRadiobutton.h">
       <Filter>source\dataflowUi\blocks\ui</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -282,6 +297,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\UbLink.h">
       <Filter>source\dataflowUi\blocks\links</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\UbMultiInletNode.h">
+      <Filter>source\dataflowUi\blocks\nodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
