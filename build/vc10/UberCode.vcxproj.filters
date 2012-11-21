@@ -204,6 +204,24 @@
     <ClCompile Include="GeneratedFiles\Release\moc_UbRadiobutton.cpp">
       <Filter>Generierte Dateien\Release</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\UbMultiNodeContainer.cpp">
+      <Filter>source\dataflowUi\blocks\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UbMultiNodeContainer.cpp">
+      <Filter>Generierte Dateien\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UbMultiNodeContainer.cpp">
+      <Filter>Generierte Dateien\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UbPathBlock.cpp">
+      <Filter>source\dataflowUi\blocks\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UbPathBlock.cpp">
+      <Filter>Generierte Dateien\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UbPathBlock.cpp">
+      <Filter>Generierte Dateien\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\src\uberCode.ui">
@@ -246,6 +264,12 @@
       <Filter>source\dataflowUi\blocks\ui</Filter>
     </CustomBuild>
     <CustomBuild Include="..\..\src\UbRadiobutton.h">
+      <Filter>source\dataflowUi\blocks\ui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\src\UbMultiNodeContainer.h">
+      <Filter>source\dataflowUi\blocks\nodes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\src\UbPathBlock.h">
       <Filter>source\dataflowUi\blocks\ui</Filter>
     </CustomBuild>
   </ItemGroup>

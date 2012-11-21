@@ -18,9 +18,11 @@ namespace Uber {
 		virtual QRectF					boundingRect() const;
 		const qreal&					getWidth() const { return m_Width; }
 		const qreal&					getHeight() const { return m_Height; }
+		void							setColor(QColor color);
 	protected:
 
 		virtual void					constructPath() = 0;
+		
 		QColor							m_Color;
 		qreal							m_Width;
 		qreal							m_Height;

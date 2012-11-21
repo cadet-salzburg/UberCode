@@ -4,6 +4,7 @@
 #include "UbSlider.h"
 #include "UbSpinbox.h"
 #include "UbRadiobutton.h"
+#include "UbPathBlock.h"
 #include "DataflowEngineManager.h"
 
 namespace Uber {
@@ -11,6 +12,7 @@ namespace Uber {
 		:QGraphicsView(parent)
 	{
 		initialize();
+		setMouseTracking(true);
 	}
 
 	UbGraphicsView::UbGraphicsView( QGraphicsScene * scene, QWidget * parent )
@@ -57,6 +59,13 @@ namespace Uber {
 		DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(radioButton);
 	}
 
+	void UbGraphicsView::addPathInputBlock()
+	{
+		UbPathBlock* pathBlock = new UbPathBlock(0);
+		pathBlock->setPos( m_EventPos );
+		DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(pathBlock);
+	}
+
 	void UbGraphicsView::contextMenuEvent( QContextMenuEvent *event )
 	{
 		QMenu menu(this);
@@ -78,9 +87,15 @@ namespace Uber {
 		connect( radiobuttonBlockAction, SIGNAL(triggered()), this, SLOT( addRadioButtonBlock() ) );
 		menu.addAction( radiobuttonBlockAction );
 		//
+		QAction *pathinputBlockAction( new QAction("Add PathInputBlock", this));
+		connect( pathinputBlockAction, SIGNAL(triggered()), this, SLOT( addPathInputBlock() ) );
+		menu.addAction( pathinputBlockAction );
+		//
 		menu.exec(event->globalPos());
 		std::cout << " The x-position is: " << m_EventPos.x() << " and the y-position is: " << m_EventPos.y() << std::endl; 
 	}
+
+
 
 
 

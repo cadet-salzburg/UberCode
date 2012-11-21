@@ -16,7 +16,7 @@ namespace Uber {
 	{
 		m_Height = 8;
 		m_Width = 8;
-		m_Color = QColor(120,120,120);
+		m_Color = QColor(153,135,141);
 		constructPath();
 		setAcceptHoverEvents( true ); 
 		installEventFilter(UbLinkController::getInstance());
@@ -24,6 +24,8 @@ namespace Uber {
 
 	void UbNode::constructPath()
 	{
+		//QPath path;
+		m_Path = QPainterPath();
 		m_Path.addEllipse( -m_Width/2, -m_Height/2, m_Width, m_Height );
 	}
 
@@ -59,6 +61,7 @@ namespace Uber {
 		std::cout << " Hover is happening" << std::endl;
 		QPointF pos = event->lastScreenPos();
 		QToolTip::showText( QPoint(pos.x(),pos.y()), QString(m_NodeName) );
+
 	}
 	void UbNode::hoverLeaveEvent ( QGraphicsSceneHoverEvent * event )
 	{

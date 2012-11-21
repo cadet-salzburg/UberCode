@@ -1,9 +1,9 @@
 #include "UbObject.h"
-
+#include <iostream>
 namespace Uber {
 	UbObject::UbObject( QGraphicsItem *parent )
 		:QGraphicsObject( parent ),
-		m_Color(69,82,80),
+		m_Color(97,84,87),
 		m_Width(0.f),
 		m_Height(0.f)
 	{
@@ -32,4 +32,8 @@ namespace Uber {
 		return QRectF( QPointF(-m_Width/2.-1 , -m_Height/2.-1), QPointF( m_Width/2.+1,m_Height/2.+1) );
 	}
 
+	void UbObject::setColor( QColor color )
+	{
+		m_Color = color;
+	}
 }

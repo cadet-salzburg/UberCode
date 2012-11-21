@@ -8,12 +8,15 @@ namespace Uber {
 		NodeType				= QGraphicsItem::UserType + 4,
 		InputNodeType			= QGraphicsItem::UserType + 5,
 		OutputNodeType			= QGraphicsItem::UserType + 6,
-		InterfaceBlockType		= QGraphicsItem::UserType + 7,
-		InputBlockType			= QGraphicsItem::UserType + 8,
-		OutputBlockType			= QGraphicsItem::UserType + 9,
-		ImageBlockType			= QGraphicsItem::UserType + 10,
-		SliderBlockType			= QGraphicsItem::UserType + 11,
-		SpinBoxBlockType		= QGraphicsItem::UserType + 12,
-		RadioButtonBlockType	= QGraphicsItem::UserType + 13 
+		MultiInputNodeType		= QGraphicsItem::UserType + 7,
+		InterfaceBlockType		= QGraphicsItem::UserType + 8,
+		InputBlockType			= QGraphicsItem::UserType + 9,
+		OutputBlockType			= QGraphicsItem::UserType + 10,
+		ImageBlockType			= QGraphicsItem::UserType + 11,
+		SliderBlockType			= QGraphicsItem::UserType + 12,
+		SpinBoxBlockType		= QGraphicsItem::UserType + 13,
+		RadioButtonBlockType	= QGraphicsItem::UserType + 14,
+		MultiInputNodeContainer = QGraphicsItem::UserType + 15,
+		PathBlockType			= QGraphicsItem::UserType + 16
 	};
 };

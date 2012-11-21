@@ -26,5 +26,6 @@ namespace Uber {
 		void				addSliderBlock();
 		void				addSpinBoxBlock();
 		void				addRadioButtonBlock();
+		void				addPathInputBlock();
 	};
 }

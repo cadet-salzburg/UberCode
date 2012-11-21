@@ -2,11 +2,13 @@
 #include <QEvent>
 #include <QObject>
 #include "UbLinkController.h"
+#include "UbMultiInletNode.h"
 #include "UbInletNode.h"
 #include "UbOutletNode.h"
 #include "UbImageView.h"
 #include "UbSlider.h"
 #include "UbSpinbox.h"
+#include "UbPathBlock.h"
 #include "UbBundleBlock.h"
 #include "UbTypes.h"
 #include <string>
@@ -84,8 +86,15 @@ namespace Uber {
 			if( eventHappenedAtNode(e))
 			{
 				QGraphicsItem *item = itemAt(e->scenePos());
-				UbBundleBlock *parent = static_cast<UbBundleBlock*>( item->parentObject() );
-				UbNodeRef nd = parent->getNodeUnderMouse();
+				UbNodeRef nd;
+				if ( item->parentObject()->type() == MultiInputNodeContainer )
+				{
+					UbMultiNodeContainer *parent = static_cast<UbMultiNodeContainer*>( item->parentObject() );
+					nd = parent->getNodeUnderMouse();
+				} else {
+					UbBundleBlock *parent = static_cast<UbBundleBlock*>( item->parentObject() );
+					nd = parent->getNodeUnderMouse();
+				}
 				if ( nd )
 				{
 					m_CurrentLink = new UbLink( 0, m_Scene );
@@ -131,7 +140,9 @@ namespace Uber {
 			if ( eventHappenedAtNode( e ) )
 			{
 				UbNodeRef startNode = m_CurrentLink->getStartNode();
-				UbBundleBlock *parent = static_cast<UbBundleBlock*>( item->parentObject() );
+				//UbBundleBlock *parent = static_cast<UbBundleBlock*>( item->parentObject() );
+				UbAbstractBlock *parent = static_cast<UbAbstractBlock*>( item->parentObject() );
+
 				UbNodeRef endNode = parent->getNodeUnderMouse();
 
 				if ( nodesCanBeConnected( startNode, endNode ) )
@@ -193,6 +204,7 @@ namespace Uber {
 
 							if ( canConnectInputNodeToUiBlockOfType(blockInlet,uiInlet->parentObject()->type() ) )
 							{
+								int type = uiInlet->parentObject()->type();
 								//set handle for the node of the ui block
 								uiInlet->setHandle(blockInlet->getHandle());
 								QGraphicsObject *obj = uiInlet->parentObject();
@@ -204,6 +216,10 @@ namespace Uber {
 								{
 									UbSpinbox* spinboxBlock = static_cast<UbSpinbox*>(obj);
 									spinboxBlock->blockIsConnected();
+								} else if ( obj->type() == Uber::PathBlockType )
+								{
+									UbPathBlock* pathBlock = static_cast<UbPathBlock*>(obj);
+									pathBlock->blockIsConnected();
 								}
 								//create link
 								m_CurrentLink->setStartNode( blockNode);
@@ -294,9 +310,10 @@ namespace Uber {
 
 	bool UbLinkController::isBundleBlockNode( UbNodeRef node )
 	{
+		int t = node->parentItem()->type();
 		if ( node )
 		{
-			if ( node->parentItem()->type() == Uber::BundleBlockType )
+			if ( node->parentItem()->type() == Uber::BundleBlockType || node->parentItem()->type() == Uber::MultiInputNodeContainer )
 				return true;
 		}
 		return false;
@@ -367,7 +384,10 @@ namespace Uber {
 	}
 	bool UbLinkController::canConnectInputNodeToUiBlockOfType( UbInletNodeRef node, int type )
 	{
-		if ( ( ( node->getHandle().getTypename() == "int" ) && ( type == SliderBlockType ) ) || ( ( node->getHandle().getTypename() == "int" ) && ( type == SpinBoxBlockType ) ) )
+		std::string typen = node->getHandle().getTypename();
+		if ( ( ( node->getHandle().getTypename() == "int" ) && ( type == SliderBlockType ) ) 
+			|| ( ( node->getHandle().getTypename() == "int" ) && ( type == SpinBoxBlockType ) ) 
+			|| ( ( node->getHandle().getTypename() == "string" ) && ( type == PathBlockType ) ) )
 		{
 			return true;
 		}

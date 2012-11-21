@@ -4,6 +4,7 @@
 #include "UbObject.h"
 #include "UbTypes.h"
 #include "UbNode.h"
+#include <QPropertyAnimation>
 
 namespace Uber {
 	class UbAbstractBlock :public UbObject
@@ -17,6 +18,7 @@ namespace Uber {
 
 		virtual int						type() const { return Type; }
 		UbNodeRef						getNodeUnderMouse();
+		/*UbNodeRef						getNodeAtPosition(QPointF p);*/
 	protected:
 		
 		virtual void					constructPath();
@@ -41,5 +43,6 @@ namespace Uber {
 	private:
 		QPointF							m_CurrentPoint;
 		QPointF							m_PreviousPoint;
+		QPropertyAnimation*				m_PropertyAnimation;
 	};
 }
