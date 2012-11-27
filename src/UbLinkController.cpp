@@ -150,10 +150,39 @@ namespace Uber {
 			}
 			break;
 		case Qt::RightButton:
-			//if (item && (item->type() == QNEConnection::Type || item->type() == QNEBlock::Type))
-			//	delete item;
-			// if (selBlock == (QNEBlock*) item)
-			// selBlock = 0;
+			if( eventHappenedAtNode(e))
+			{
+				QGraphicsItem *item = itemAt(e->scenePos());
+				UbNodeRef nd;
+				if ( item->parentObject()->type() == MultiInputNodeContainer )
+				{
+					UbMultiNodeContainer *parent = static_cast<UbMultiNodeContainer*>( item->parentObject() );
+					nd = parent->getNodeUnderMouse();
+				} else {
+					UbBundleBlock *parent = static_cast<UbBundleBlock*>( item->parentObject() );
+					nd = parent->getNodeUnderMouse();
+				}
+				if ( nd )
+				{
+					for ( QVector< UbLinkRef >::iterator it = m_Links.begin(); it != m_Links.end(); )
+					{
+						if ( ( *it )->getStartNode() == nd || ( *it )->getEndNode() == nd )
+						{
+							UbNodeRef start = ( *it )->getStartNode();
+							UbNodeRef end = ( *it )->getEndNode();
+							std::cout << "found a link" << std::endl;
+							if ( !( this->bothNodesAreInlets( start, end ) || this->bothNodesAreOutlets( start, end ) ) )
+							{
+								start->unlink( end.data() );
+							}
+							m_Scene->removeItem( ( *it ).data() ); 
+							it = m_Links.erase( it );
+						}
+						else ++it;
+					}
+				}
+				return true;
+			}
 			break;
 		}
 		return false;

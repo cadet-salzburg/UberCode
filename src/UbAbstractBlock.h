@@ -43,12 +43,7 @@ namespace Uber {
 		
 		virtual void					constructPath();
 		virtual void					arrangeNodes() = 0;
-		virtual void					mousePressEvent ( QGraphicsSceneMouseEvent * e )
-		{
-			//TODO: QT dragging seems to have glitches. Not sure if its a QT bug or not.
-			m_CurrentPoint = m_PreviousPoint =  e->scenePos();  
-		}
-
+		virtual void					mousePressEvent ( QGraphicsSceneMouseEvent * e );
 		virtual void					mouseMoveEvent ( QGraphicsSceneMouseEvent * e )
 		{
 			m_CurrentPoint = e->scenePos();
@@ -56,7 +51,6 @@ namespace Uber {
 			setPos(pos() + diff );
 			m_PreviousPoint = m_CurrentPoint;
 		}
-
 
 		int								m_CornerRadius;
 	private:

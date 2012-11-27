@@ -99,6 +99,20 @@ namespace Uber {
 	void UbGraphicsView::contextMenuEvent( QContextMenuEvent *event )
 	{
 		m_EventPos = event->pos();
-		m_ContextMenu->exec(event->globalPos());
+
+		// this fails oO
+		// QGraphicsItem *item = DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->itemAt( m_EventPos );
+
+		// stop context menu if there's sth under the mouse
+		QList< QGraphicsItem * > list = DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->items();
+		for ( QList< QGraphicsItem * >::iterator it = list.begin(); it != list.end(); ++it )
+		{
+			if ( ( **it ).isUnderMouse() )
+			{
+				return;
+			}
+		}
+
+		m_ContextMenu->exec( event->globalPos() );
 	}
 }

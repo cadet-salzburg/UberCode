@@ -42,7 +42,7 @@ namespace Uber {
 		painter->setPen(pen);
 		painter->setBrush(m_Color);
 		painter->drawPath( m_Path );
-		std::cout << "The pos is: " << pos().x() << " " << pos().y() << std::endl;
+		//std::cout << "The pos is: " << pos().x() << " " << pos().y() << std::endl;
 	}
 
 	QRectF UbObject::boundingRect() const

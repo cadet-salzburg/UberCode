@@ -86,7 +86,7 @@ namespace Uber {
 
 	void UbMultiInletNode::hoverEnterEvent( QGraphicsSceneHoverEvent * event )
 	{
-		std::cout << "MultiInlet Hover Enter" << std::endl;
+		//std::cout << "MultiInlet Hover Enter" << std::endl;
 		if ( m_Animation->currentTime()==0)
 		{
 			expand();
@@ -95,7 +95,7 @@ namespace Uber {
 
 	void UbMultiInletNode::hoverLeaveEvent( QGraphicsSceneHoverEvent * event )
 	{
-		std::cout << "MultiInlet Hover Leave" << std::endl;
+		//std::cout << "MultiInlet Hover Leave" << std::endl;
 		close();
 		//m_Animation->setCurrentTime(0);
 
@@ -104,7 +104,7 @@ namespace Uber {
 
 	void UbMultiInletNode::hoverMoveEvent( QGraphicsSceneHoverEvent * event )
 	{
-		std::cout << "MultiInlet Hover Move" << std::endl;
+		//std::cout << "MultiInlet Hover Move" << std::endl;
 		//UbNode::hoverMoveEvent(event);
 	}
 

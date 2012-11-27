@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'uberCode.ui'
 **
-** Created: Tue 13. Nov 11:11:53 2012
+** Created: Tue 27. Nov 18:28:13 2012
 **      by: Qt User Interface Compiler version 4.8.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!

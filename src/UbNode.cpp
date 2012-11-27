@@ -31,8 +31,8 @@ namespace Uber {
 	UbNode::UbNode( QGraphicsItem *parent ) :UbObject( parent ),
 		m_NodeName("")
 	{
-		m_Height = 8;
-		m_Width = 8;
+		m_Height = 10;
+		m_Width = 10;
 		m_Color = QColor(153,135,141);
 		constructPath();
 		setAcceptHoverEvents( true ); 
@@ -57,6 +57,20 @@ namespace Uber {
 		return m_NodeName;
 	}
 
+	void UbNode::unlink( UbNode* node )
+	{
+		if ( ( type() == InputNodeType ) && ( node->type() == OutputNodeType ) )
+		{
+			static_cast<UbInletNode*>(this)->getHandle().unlinkFrom( static_cast<UbOutletNode*>(node)->getHandle() );
+		} 
+		else if ( ( type() == OutputNodeType ) && ( node->type() == InputNodeType ) )
+		{
+			static_cast<UbOutletNode*>(this)->getHandle().unlinkFrom( static_cast<UbInletNode*>(node)->getHandle() );
+		}
+
+		std::cout << "done" << std::endl;
+	}
+
 	bool UbNode::link( UbNode* node )
 	{
 		//We can only link inlet to outlets
@@ -75,14 +89,14 @@ namespace Uber {
 
 	void UbNode::hoverMoveEvent ( QGraphicsSceneHoverEvent * event )
 	{
-		//std::cout << " Hover is happening" << std::endl;
+		//std::cout << "ub node hover is happening" << std::endl;
 		QPointF pos = event->lastScreenPos();
 		QToolTip::showText( QPoint(pos.x(),pos.y()), QString(m_NodeName) );
 
 	}
 	void UbNode::hoverLeaveEvent ( QGraphicsSceneHoverEvent * event )
 	{
-		//std::cout << " Hover stopped happening" << std::endl;
+		//std::cout << "ub node hover stopped happening" << std::endl;
 	}
 
 	UbObject* UbNode::getParentBlock()
@@ -102,5 +116,15 @@ namespace Uber {
 			}
 		}
 		return NULL;
+	}
+
+	void UbNode::mousePressEvent( QGraphicsSceneMouseEvent *e )
+	{
+		Qt::MouseButtons buttons = e->buttons();
+		if ( buttons & Qt::MouseButton::RightButton )
+		{
+			std::cout << "ub node received a right click event" << std::endl;
+			e->accept();
+		}
 	}
 }

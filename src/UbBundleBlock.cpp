@@ -44,6 +44,7 @@ namespace Uber {
 			cout << e.message() << " " << e.what() << endl;
 		}
 		arrangeNodes();
+		setToolTip( QString::fromUtf8( m_BlockHandle.getBlockInfo().name.c_str() ) );
 	}
 
 	UbBundleBlock::UbBundleBlock( QGraphicsItem *parent,  QString blockInstanceId )
@@ -79,7 +80,7 @@ namespace Uber {
 
 	void UbBundleBlock::arrangeNodes()
 	{
-		qreal nodeSpacing = 4;
+		qreal nodeSpacing = 5;
 
 		try
 		{

@@ -33,7 +33,6 @@ namespace Uber {
 
 	UbLink::~UbLink()
 	{
-		std::cout << "UbLink destructor was called" << std::endl;
 	}
 
 	void UbLink::updatePath()

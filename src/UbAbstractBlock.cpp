@@ -22,8 +22,8 @@ namespace Uber {
 		:UbObject( parent )
 		,m_CornerRadius(8)
 	{
-		m_Width = 110;
-		m_Height = 40;
+		m_Width = 160;//110;
+		m_Height = 80;//40;
 		constructPath();
 		m_PropertyAnimation = new QPropertyAnimation(this, "opacity");
 		m_PropertyAnimation->setDuration(1000);
@@ -69,6 +69,14 @@ namespace Uber {
 		}
 		return UbNodeRef();
 	}
+
+	void UbAbstractBlock::mousePressEvent( QGraphicsSceneMouseEvent * e )
+	{
+		//TODO: QT dragging seems to have glitches. Not sure if its a QT bug or not.
+		std::cout << "abstract block received a mouse event" << std::endl;
+		m_CurrentPoint = m_PreviousPoint =  e->scenePos();  
+	}
+
 	//Uber::UbNodeRef UbAbstractBlock::getNodeAtPosition(QPointF p)
 	//{
 	//	QVector<UbNodeRef>::iterator iter = m_Inlets.begin();
