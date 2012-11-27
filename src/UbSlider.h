@@ -21,6 +21,9 @@
 #include "UbNode.h"
 #include "UbInletNode.h"
 #include <QSlider>
+#include "qtpropertymanager.h"
+#include "qteditorfactory.h"
+#include "qttreepropertybrowser.h"
 
 namespace Uber {
 	class UbSlider : public UbInputBlock
@@ -31,16 +34,23 @@ namespace Uber {
 		virtual	~UbSlider(void);
 		enum { Type = SliderBlockType };
 
-		virtual	int					type() const { return Type; }
+		virtual	int							type() const { return Type; }
+		void								initPropertyEditor();
 	public slots:
-		void						setValue(int value);
-	protected:
-		virtual void				arrangeNodes();
+		void								setValue(int value);
+		void								valueChanged(QtProperty *property, double value);
+	protected:	
+		virtual void						arrangeNodes();
 	private:
-		void						init();	
-		QSlider*					m_Slider;
-		qreal						m_MinimumValue;
-		qreal						m_MaximumValue;
-		qreal						m_CurrentValue;
+		void								init();	
+		QSlider*							m_Slider;
+		qreal								m_MinimumValue;
+		qreal								m_MaximumValue;
+		qreal								m_CurrentValue;
+		QtTreePropertyBrowser				*m_PropertyEditor;
+		QtDoublePropertyManager				*m_DoubleManager;
+		QMap<QtProperty *, QString>			propertyToId;
+		QMap<QString, QtProperty *>			idToProperty;
+		QMap<QString, bool>					idToExpanded;
 	};
 }
