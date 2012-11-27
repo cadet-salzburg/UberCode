@@ -33,19 +33,19 @@ namespace Ubercode {
 		public:
 			UbXMLReader(QString const& filePath);
 			~UbXMLReader(void);
-			QMap<QString, QPoint>			getBlockData();
-			QMap<QString, QPoint>			getInterfaceData();
-			QList<LinkData>					getLinkData();
-			QList<UiLinkData>				getInterfaceLinkData();
+			QMap<QString, QPoint>						getBlockData();
+			QMap<QString, QPair<QPoint, QString >>		getInterfaceData();
+			QList<LinkData>								getLinkData();
+			QList<UiLinkData>							getInterfaceLinkData();
 		private:
-			void							initialize();
-			QString							m_FilePath;
-			QDomDocument					m_DomDocument;
-			QDomElement						m_Root;
-			QMap<QString, QPoint>			m_BlockData;
-			QList<LinkData>					m_LinkData;
-			QMap<QString, QPoint>			m_InterfaceData;
-			QList<UiLinkData>				m_UiLinkData;
+			void										initialize();
+			QString										m_FilePath;
+			QDomDocument								m_DomDocument;
+			QDomElement									m_Root;
+			QMap<QString, QPoint>						m_BlockData;
+			QList<LinkData>								m_LinkData;
+			QMap<QString, QPair<QPoint, QString >>		m_InterfaceData;
+			QList<UiLinkData>							m_UiLinkData;
 		};
 	}
 }

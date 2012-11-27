@@ -29,7 +29,7 @@ namespace Uber {
 		enum { Type = PathBlockType };
 
 		virtual int			type() const { return Type; }
-		QString				getValue();
+		QString				getValue() const;
 		virtual void		blockIsConnected();
 	signals:
 		void				editingFinished();

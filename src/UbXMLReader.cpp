@@ -118,7 +118,13 @@ namespace Ubercode {
 				{
 					uiPosition.setY( posY.toElement().text().toInt() );
 				}
-				m_InterfaceData.insert( uiString, uiPosition );
+				QDomNode value = currentUiInstance.namedItem("value");
+				QString uiValue = "";
+				if ( !value.isNull() )
+				{
+					uiValue = value.toElement().text();
+				}
+				m_InterfaceData.insert( uiString, qMakePair<QPoint, QString>(uiPosition, uiValue ) );
 
 				currentUiInstance = currentUiInstance.nextSiblingElement("ui_instance");
 			}
@@ -156,7 +162,7 @@ namespace Ubercode {
 			return m_LinkData;
 		}
 
-		QMap<QString, QPoint> UbXMLReader::getInterfaceData()
+		QMap<QString, QPair<QPoint, QString >> UbXMLReader::getInterfaceData()
 		{
 			return m_InterfaceData;
 		}

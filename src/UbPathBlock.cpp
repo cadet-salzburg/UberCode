@@ -79,7 +79,7 @@ namespace Uber {
 		m_LineEdit->setText(m_Value);
 		emit editingFinished();
 	}
-	QString UbPathBlock::getValue()
+	QString UbPathBlock::getValue() const
 	{
 		return m_Value;
 	}

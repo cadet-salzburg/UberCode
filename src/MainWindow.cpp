@@ -164,8 +164,8 @@ void MainWindow::open()
 			}
 		}
 		// Add UI Elements
-		QMap<QString, QPoint> uiData = xmlLoader->getInterfaceData();
-		QMap<QString, QPoint>::const_iterator uiIter = uiData.constBegin();
+		QMap<QString, QPair<QPoint,QString> > uiData = xmlLoader->getInterfaceData();
+		QMap<QString, QPair<QPoint,QString> >::const_iterator uiIter = uiData.constBegin();
 		while ( uiIter!= uiData.constEnd() )
 		{
 			Uber::UbInterfaceBlock *interfaceBlock = 0;
@@ -175,7 +175,10 @@ void MainWindow::open()
 				interfaceBlock = new Uber::UbImageView(0);
 			} else if ( list.at(0) == "PathBlock" )
 			{
-				interfaceBlock = new Uber::UbPathBlock(0);
+				UbPathBlock* p = new Uber::UbPathBlock(0);
+				interfaceBlock = p;
+				p->setValue(uiIter.value().second);
+				
 			} else if ( list.at(0) == "Radiobutton" )
 			{
 				interfaceBlock = new Uber::UbRadiobutton(0);
@@ -189,7 +192,7 @@ void MainWindow::open()
 			if ( interfaceBlock )
 			{
 				interfaceBlock->setName( uiIter.key() );
-				interfaceBlock->setPos(uiIter.value());
+				interfaceBlock->setPos(uiIter.value().first);
 				
 				//Ensure that IDs will be correct
 				if ( m_InterfaceIdData.contains(interfaceBlock->type()) )

@@ -20,6 +20,7 @@ limitations under the License.
 #include <iostream>
 #include "UbXMLWriter.h"
 #include "UbLinkController.h"
+#include "UbPathBlock.h"
 
 namespace Uber {
 	namespace xml {
@@ -109,6 +110,14 @@ namespace Uber {
 			QDomText positionYvalue = m_DomDocument.createTextNode(QString::number(block.y()));
 			positionX.appendChild(positionXvalue);
 			positionY.appendChild(positionYvalue);
+			 if ( block.type() == PathBlockType )
+			 {
+				 const UbPathBlock &pathBlock = static_cast<const  UbPathBlock&>(block);
+				 QDomNode value = uiInstance.appendChild(m_DomDocument.createElement("value"));
+				 QString val = pathBlock.getValue();
+				 QDomText valueString = m_DomDocument.createTextNode(val);
+				 value.appendChild(valueString);
+			 }
 			//Get link ( if any )
 			UbNodeRef nd = block.getNode();
 			QVector<UbLinkRef> links = UbLinkController::getInstance()->getLinksWithEndNode(nd);
