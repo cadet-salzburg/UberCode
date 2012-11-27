@@ -30,11 +30,13 @@ namespace Uber {
 		virtual ~UbInterfaceBlock(void);
 		enum { Type = InterfaceBlockType };
 		virtual int						type() const { return Type; }
-		virtual void					blockIsConnected() = 0;
+		virtual void					blockIsConnected();
+		virtual bool					isConnected();
 		UbNodeRef						getNode() const;
 	protected:
 		virtual void					arrangeNodes() = 0;
 		QGraphicsProxyWidget*			m_ProxyWidget;
 		UbNodeWeakRef					m_Node;
+		bool							m_BlockIsConnected;
 	};
 }

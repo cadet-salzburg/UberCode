@@ -32,7 +32,6 @@ namespace Uber {
 		enum { Type = RadioButtonBlockType };
 
 		virtual	int					type() const { return Type; }
-		virtual void				blockIsConnected();
 
 	public slots:
 		void						setValue(int value);

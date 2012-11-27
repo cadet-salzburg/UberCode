@@ -29,6 +29,9 @@ namespace Uber {
 	{
 		init();
 		setName(QString("PathBlock"));
+		connect( this, SIGNAL(editingFinished()), m_LineEdit, SIGNAL(editingFinished()));
+		connect( m_LineEdit, SIGNAL(editingFinished()), this, SLOT(sendValue()));
+		//connect( m_LineEdit, SIGNAL(textChanged(QString)), this, SLOT(setValue(QString)));
 	}
 
 	UbPathBlock::~UbPathBlock(void)
@@ -38,7 +41,6 @@ namespace Uber {
 
 	void	UbPathBlock::init()
 	{
-
 		QHBoxLayout *m_Layout = new QHBoxLayout;
 		m_LineEdit = new QLineEdit;
 		QPushButton *m_PushButton = new QPushButton("...",0);
@@ -62,31 +64,46 @@ namespace Uber {
 		constructPath();
 		update();
 	}
-
 	void UbPathBlock::blockIsConnected()
 	{
-		connect( m_LineEdit, SIGNAL(textChanged(QString)), this, SLOT(setValue(QString)));
+		UbInterfaceBlock::blockIsConnected();
+		emit editingFinished();
 	}
 	void UbPathBlock::buttonPressed()
 	{
-		m_FilePath = QFileDialog::getOpenFileName();
-		m_LineEdit->setText(m_FilePath);
-
+		 setValue( QFileDialog::getOpenFileName() );
 	}
 	void UbPathBlock::setValue(QString value)
 	{
-		std::string path = value.toUtf8().constData();
-		//std::cout << path << std::endl;
-		UbNodeRef node = m_Node.toStrongRef();
-		if ( node )
+		m_Value = value;
+		m_LineEdit->setText(m_Value);
+		emit editingFinished();
+	}
+	QString UbPathBlock::getValue()
+	{
+		return m_Value;
+	}
+	void UbPathBlock::sendValue()
+	{
+		m_Value = m_LineEdit->text();
+		if ( m_BlockIsConnected )
 		{
-			qSharedPointerCast<UbInletNode>(node)->getHandle().setValue( path );
+			std::string path = m_Value.toUtf8().constData();
+			//std::cout << path << std::endl;
+			UbNodeRef node = m_Node.toStrongRef();
+			if ( node )
+			{
+				qSharedPointerCast<UbInletNode>(node)->getHandle().setValue( path );
+			}
 		}
 	}
+
 
 	void UbPathBlock::arrangeNodes()
 	{
 
 	}
+
+
 
 }

@@ -29,11 +29,14 @@ namespace Uber {
 		enum { Type = PathBlockType };
 
 		virtual int			type() const { return Type; }
+		QString				getValue();
 		virtual void		blockIsConnected();
-
-		public slots:
-			void			buttonPressed();
-			void			setValue(QString value);
+	signals:
+		void				editingFinished();
+	public slots:
+		void				buttonPressed();
+		void				setValue( QString value );
+		void				sendValue();
 
 	protected:
 		virtual void		arrangeNodes();
@@ -44,7 +47,7 @@ namespace Uber {
 		//QPushButton*		m_PushButton;
 		//QHBoxLayout*		m_Layout;
 		QWidget*			m_Widget;
-		QString				m_FilePath;
+		QString				m_Value;
 		QLineEdit*			m_LineEdit;
 	};
 }

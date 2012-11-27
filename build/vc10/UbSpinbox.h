@@ -31,7 +31,6 @@ namespace Uber {
 		virtual	~UbSpinbox(void);
 
 		virtual	int					type() const { return Type; }
-		virtual void				blockIsConnected();
 
 	public slots:
 		void						setValue(int value);

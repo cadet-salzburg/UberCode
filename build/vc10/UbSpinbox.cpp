@@ -24,6 +24,7 @@ namespace Uber {
 		//m_Node = new UbInletNode(this);
 		init();
 		setName(QString("SpinBox"));
+		connect( m_SpinBox, SIGNAL(valueChanged(int)), this, SLOT(setValue(int)));
 	}
 
 	UbSpinbox::~UbSpinbox(void)
@@ -59,13 +60,11 @@ namespace Uber {
 			node->setPos(pos);
 		}
 	}
-
-	void UbSpinbox::blockIsConnected()
-	{
-		connect( m_SpinBox, SIGNAL(valueChanged(int)), this, SLOT(setValue(int)));
-	}
 	void UbSpinbox::setValue(int value)
 	{
-		qSharedPointerCast<UbInletNode>(m_Node)->getHandle().setValue( value );
+		if ( m_BlockIsConnected )
+		{
+			qSharedPointerCast<UbInletNode>(m_Node)->getHandle().setValue( value );
+		}
 	}
 }

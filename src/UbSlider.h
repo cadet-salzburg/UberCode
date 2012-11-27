@@ -32,7 +32,6 @@ namespace Uber {
 		enum { Type = SliderBlockType };
 
 		virtual	int					type() const { return Type; }
-		virtual void				blockIsConnected();
 	public slots:
 		void						setValue(int value);
 	protected:
@@ -42,6 +41,6 @@ namespace Uber {
 		QSlider*					m_Slider;
 		qreal						m_MinimumValue;
 		qreal						m_MaximumValue;
-
+		qreal						m_CurrentValue;
 	};
 }

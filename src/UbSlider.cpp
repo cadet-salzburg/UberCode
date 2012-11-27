@@ -23,6 +23,7 @@ namespace Uber {
 	{
 		init();
 		setName(QString("Slider"));
+		connect( m_Slider, SIGNAL(valueChanged(int)), this, SLOT(setValue(int)));
 	}
 
 	UbSlider::~UbSlider(void)
@@ -59,16 +60,15 @@ namespace Uber {
 		}
 	}
 
-	void UbSlider::blockIsConnected()
-	{
-		connect( m_Slider, SIGNAL(valueChanged(int)), this, SLOT(setValue(int)));
-	}
 	void UbSlider::setValue(int value)
 	{
-		UbNodeRef node = m_Node.toStrongRef();
-		if ( node )
+		if ( m_BlockIsConnected )
 		{
-			qSharedPointerCast<UbInletNode>(node)->getHandle().setValue( value );
+			UbNodeRef node = m_Node.toStrongRef();
+			if ( node )
+			{
+				qSharedPointerCast<UbInletNode>(node)->getHandle().setValue( value );
+			}
 		}
 	}
 }

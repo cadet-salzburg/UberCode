@@ -49,6 +49,7 @@ namespace Uber {
 
 	void UbImageView::blockIsConnected()
 	{
+		UbInterfaceBlock::blockIsConnected();
 		UbNodeRef node = m_Node.toStrongRef();
 		if ( node )
 		{

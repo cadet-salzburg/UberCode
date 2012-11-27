@@ -23,6 +23,7 @@ namespace Uber {
 	{
 		init();
 		setName(QString("Radiobutton"));
+		connect( m_Button, SIGNAL(valueChanged(int)), this, SLOT(setValue(int)));
 	}
 
 	UbRadiobutton::~UbRadiobutton(void)
@@ -57,16 +58,15 @@ namespace Uber {
 		}
 	}
 
-	void UbRadiobutton::blockIsConnected()
-	{
-		connect( m_Button, SIGNAL(valueChanged(int)), this, SLOT(setValue(int)));
-	}
 	void UbRadiobutton::setValue(int value)
 	{
-		UbNodeRef node = m_Node.toStrongRef();
-		if ( node )
+		if ( m_BlockIsConnected )
 		{
-			qSharedPointerCast<UbInletNode>(node)->getHandle().setValue( value );
+			UbNodeRef node = m_Node.toStrongRef();
+			if ( node )
+			{
+				qSharedPointerCast<UbInletNode>(node)->getHandle().setValue( value );
+			}
 		}
 	}
 }

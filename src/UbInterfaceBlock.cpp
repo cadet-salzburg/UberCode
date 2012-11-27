@@ -20,19 +20,28 @@ namespace Uber {
 	UbInterfaceBlock::UbInterfaceBlock( QGraphicsItem *parent )
 		:UbAbstractBlock( parent ),
 		m_ProxyWidget( new QGraphicsProxyWidget(this) ),
-		m_Node(UbNodeRef() )
+		m_Node(UbNodeRef() ),
+		m_BlockIsConnected( false )
 	{
 
 	}
+
 	UbInterfaceBlock::~UbInterfaceBlock(void)
 	{
 
 	}
 
-	Uber::UbNodeRef UbInterfaceBlock::getNode() const
+	void UbInterfaceBlock::blockIsConnected()
+	{
+		m_BlockIsConnected = true;
+	}
+	bool UbInterfaceBlock::isConnected()
+	{
+		return m_BlockIsConnected;
+	}
+	UbNodeRef UbInterfaceBlock::getNode() const
 	{
 		return m_Node.toStrongRef();
 	}
-
 }
 
