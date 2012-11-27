@@ -1,3 +1,20 @@
+/*
+CADET - Center for Advances in Digital Entertainment Technologies
+Copyright 2011 Fachhochschule Salzburg GmbH
+http://www.cadet.at
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 #include <QMenu>
 #include "UbGraphicsView.h"
 #include "UbImageView.h"
@@ -13,12 +30,16 @@ namespace Uber {
 	{
 		initialize();
 		setMouseTracking(true);
+		createContextMenu();
+
+
 	}
 
 	UbGraphicsView::UbGraphicsView( QGraphicsScene * scene, QWidget * parent )
 		:QGraphicsView( scene, parent )
 	{
 		initialize();
+		createContextMenu();
 	}
 
 	void UbGraphicsView::initialize()
@@ -28,75 +49,56 @@ namespace Uber {
 		setAcceptDrops(true);
 		setSceneRect(0,0,640,480);
 	}
+	void UbGraphicsView::createContextMenu()
+	{
+		m_SignalMapper = new QSignalMapper(this);
+		m_ContextMenu = new QMenu(this);
+		//
+		QAction *imageBlockAction( new QAction("Add ImageBlock", this));
+		connect( imageBlockAction, SIGNAL(triggered()), m_SignalMapper, SLOT(map()) );
+		m_ContextMenu->addAction( imageBlockAction );
+		//
+		QAction *pathBlockAction( new QAction("Add PathBlock", this));
+		connect( pathBlockAction, SIGNAL(triggered()), m_SignalMapper, SLOT(map()) );
+		m_ContextMenu->addAction( pathBlockAction );
+		//
+		QAction *radiobuttonBlockAction( new QAction("Add RadiobuttonBlock", this));
+		connect( radiobuttonBlockAction, SIGNAL(triggered()), m_SignalMapper, SLOT(map()) );
+		m_ContextMenu->addAction( radiobuttonBlockAction );
+		//
+		QAction *sliderBlockAction( new QAction("Add SliderBlock", this));
+		connect( sliderBlockAction, SIGNAL(triggered()), m_SignalMapper, SLOT(map()) );
+		m_ContextMenu->addAction( sliderBlockAction );
+		//
+		QAction *spinboxAction( new QAction("Add SpinboxBlock", this));
+		connect( spinboxAction, SIGNAL(triggered()), m_SignalMapper, SLOT(map()) );
+		m_ContextMenu->addAction( spinboxAction );
+		//
+		m_SignalMapper->setMapping(imageBlockAction, ImageBlockType );
+		m_SignalMapper->setMapping(pathBlockAction, PathBlockType );
+		m_SignalMapper->setMapping(radiobuttonBlockAction, RadioButtonBlockType );
+		m_SignalMapper->setMapping(sliderBlockAction, SliderBlockType );
+		m_SignalMapper->setMapping(spinboxAction, SpinBoxBlockType );
+		//
+		connect(m_SignalMapper, SIGNAL(mapped(int)), this, SLOT(addInterfaceBlock(int)));
+	}
 	void UbGraphicsView::resizeEvent( QResizeEvent * event )
 	{
-		std::cout << "Resize event was called" << std::endl;
+		//std::cout << "Resize event was called" << std::endl;
 	}
-
-	void UbGraphicsView::addImageBlock()
+	void UbGraphicsView::addInterfaceBlock( int type )
 	{
-		UbImageView *imageBlock = new UbImageView(0);
-		imageBlock->setPos( m_EventPos );
-		DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(imageBlock);
-	}
-	void UbGraphicsView::addSliderBlock()
-	{
-		UbSlider *sliderBlock = new UbSlider(0);
-		sliderBlock->setPos( m_EventPos );
-		DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(sliderBlock);
-	}
-	void UbGraphicsView::addSpinBoxBlock()
-	{
-		UbSpinbox *spinboxBlock = new UbSpinbox(0);
-		spinboxBlock->setPos( m_EventPos );
-		DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(spinboxBlock);
-	}
-
-	void UbGraphicsView::addRadioButtonBlock()
-	{
-		UbRadiobutton* radioButton = new UbRadiobutton(0);
-		radioButton->setPos( m_EventPos );
-		DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(radioButton);
-	}
-
-	void UbGraphicsView::addPathInputBlock()
-	{
-		UbPathBlock* pathBlock = new UbPathBlock(0);
-		pathBlock->setPos( m_EventPos );
-		DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(pathBlock);
+		UbObject *block = DataflowEngineManager::getInstance()->createInterfaceBlock(type);
+		if ( block )
+		{
+			block->setPos( m_EventPos );
+			DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(block);
+		}
 	}
 
 	void UbGraphicsView::contextMenuEvent( QContextMenuEvent *event )
 	{
-		QMenu menu(this);
 		m_EventPos = event->pos();
-		//
-		QAction *imageBlockAction( new QAction("Add ImageBlock", this));
-		connect( imageBlockAction, SIGNAL(triggered()), this, SLOT( addImageBlock() ) );
-		menu.addAction( imageBlockAction );
-		//
-		QAction *sliderBlockAction( new QAction("Add SliderBlock", this));
-		connect( sliderBlockAction, SIGNAL(triggered()), this, SLOT( addSliderBlock() ) );
-		menu.addAction( sliderBlockAction );
-		//
-		QAction *spinboxBlockAction( new QAction("Add SpinBoxBlock", this));
-		connect( spinboxBlockAction, SIGNAL(triggered()), this, SLOT( addSpinBoxBlock() ) );
-		menu.addAction( spinboxBlockAction );
-		//
-		QAction *radiobuttonBlockAction( new QAction("Add RadioButtonBlock", this));
-		connect( radiobuttonBlockAction, SIGNAL(triggered()), this, SLOT( addRadioButtonBlock() ) );
-		menu.addAction( radiobuttonBlockAction );
-		//
-		QAction *pathinputBlockAction( new QAction("Add PathInputBlock", this));
-		connect( pathinputBlockAction, SIGNAL(triggered()), this, SLOT( addPathInputBlock() ) );
-		menu.addAction( pathinputBlockAction );
-		//
-		menu.exec(event->globalPos());
-		std::cout << " The x-position is: " << m_EventPos.x() << " and the y-position is: " << m_EventPos.y() << std::endl; 
+		m_ContextMenu->exec(event->globalPos());
 	}
-
-
-
-
-
 }

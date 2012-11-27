@@ -1,9 +1,33 @@
+/*
+	CADET - Center for Advances in Digital Entertainment Technologies
+	Copyright 2011 Fachhochschule Salzburg GmbH
+		http://www.cadet.at
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+*/
 #include "DataflowEngineManager.h"
 #include "SettingsManager.h"
+#include "UbSlider.h"
+#include "UbRadiobutton.h"
+#include "UbPathBlock.h"
+#include "UbSpinbox.h"
+#include "UbImageView.h"
 
 #include <algorithm>
 #include <QStringList>
 #include <QDir>
+
+
 
 using namespace _2Real;
 using namespace _2Real::app;
@@ -83,15 +107,15 @@ QStringList DataflowEngineManager::loadBundles()
 		}
 		catch ( NotFoundException& e)
 		{
-			std::cout << e.what() << " " << e.message() << std::endl;
+			//std::cout << e.what() << " " << e.message() << std::endl;
 		}
 		catch ( AlreadyExistsException& e)
 		{
-			std::cout << e.what()  << " " << e.message() << std::endl;
+			//std::cout << e.what()  << " " << e.message() << std::endl;
 		}
 		catch ( ... )
 		{
-			std::cout << "Other exception" << std::endl;
+			//std::cout << "Other exception" << std::endl;
 		}
 	}
 	return validBundleNames;
@@ -156,4 +180,52 @@ void	DataflowEngineManager::setGraphicsView( UbGraphicsView* view )
 UbGraphicsView* DataflowEngineManager::getGraphicsView()
 {
 	return m_GraphicsView;
+}
+
+void DataflowEngineManager::addInterfaceBlockId(int type)
+{
+	if ( m_InterfaceBlockIds.contains(type) )
+	{
+		m_InterfaceBlockIds[type] += 1;
+	} else 
+	{
+		m_InterfaceBlockIds[type] = 0;
+	}
+}
+
+UbObject* DataflowEngineManager::createInterfaceBlock( int type )
+{
+	UbObject* obj;
+	if ( type == SliderBlockType ) 
+	{
+		addInterfaceBlockId(type);
+		obj =  new UbSlider(0);
+	} else if ( type == SpinBoxBlockType )
+	{
+		addInterfaceBlockId(type);
+		obj = new UbSpinbox(0);
+	} else if ( type == ImageBlockType )
+	{
+		addInterfaceBlockId(type);
+		obj = new UbImageView(0);
+	} else if ( type == PathBlockType )
+	{
+		addInterfaceBlockId(type);
+		obj = new UbPathBlock(0);
+	} else if ( type == RadioButtonBlockType )
+	{
+		addInterfaceBlockId(type);
+		obj = new UbRadiobutton(0);
+	} else
+	{
+		obj = NULL;
+	}
+	if ( obj )
+		obj->setName(obj->getName()+QString("_")+QString::number(m_InterfaceBlockIds[type]));
+	return obj;
+}
+
+QMap<int,int>& DataflowEngineManager::getInterfaceBlockData()
+{
+	return m_InterfaceBlockIds;
 }

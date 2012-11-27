@@ -1,3 +1,20 @@
+/*
+	CADET - Center for Advances in Digital Entertainment Technologies
+	Copyright 2011 Fachhochschule Salzburg GmbH
+		http://www.cadet.at
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+*/
 #include <QFileDialog>
 #include <QObject>
 #include <QString>
@@ -8,12 +25,21 @@
 #include "UbXMLWriter.h"
 #include "UbXMLReader.h"
 #include "UbLink.h"
+
+#include "UbImageView.h"
+#include "UbPathBlock.h"
+#include "UbRadioButton.h"
+#include "UbSlider.h"
+#include "UbSpinbox.h"
+
+
 #include "helpers/_2RealException.h"
 
 using namespace Uber;
 MainWindow::MainWindow()
 	: m_SettingsDialog( nullptr ),
-	m_UiBuilderWindow( nullptr )
+	m_UiBuilderWindow( nullptr ),
+	m_InterfaceIdData(DataflowEngineManager::getInstance()->getInterfaceBlockData())
 {
 	QApplication::setOrganizationName("CADET");
 	QApplication::setOrganizationDomain("cadet.at");
@@ -117,7 +143,7 @@ void MainWindow::open()
 				}
 
 				QVector<Uber::UbNodeRef>::iterator iterOutlet = outlets.begin();
-				for (;iterOutlet!=outlets.end();++iter)
+				for (;iterOutlet!=outlets.end();++iterOutlet)
 				{
 					if ( (*iterOutlet)->getName() == outletId )
 					{
@@ -137,18 +163,107 @@ void MainWindow::open()
 				}
 			}
 		}
+		// Add UI Elements
+		QMap<QString, QPoint> uiData = xmlLoader->getInterfaceData();
+		QMap<QString, QPoint>::const_iterator uiIter = uiData.constBegin();
+		while ( uiIter!= uiData.constEnd() )
+		{
+			Uber::UbInterfaceBlock *interfaceBlock = 0;
+			QStringList list = uiIter.key().split("_");
+			if ( list.at(0) == "ImageView" )
+			{
+				interfaceBlock = new Uber::UbImageView(0);
+			} else if ( list.at(0) == "PathBlock" )
+			{
+				interfaceBlock = new Uber::UbPathBlock(0);
+			} else if ( list.at(0) == "Radiobutton" )
+			{
+				interfaceBlock = new Uber::UbRadiobutton(0);
+			} else if ( list.at(0) == "Slider" )
+			{
+				interfaceBlock = new Uber::UbSlider(0);
+			}  else if ( list.at(0) == "Spinbox" )
+			{
+				interfaceBlock = new Uber::UbSpinbox(0);
+			}
+			if ( interfaceBlock )
+			{
+				interfaceBlock->setName( uiIter.key() );
+				interfaceBlock->setPos(uiIter.value());
+				
+				//Ensure that IDs will be correct
+				if ( m_InterfaceIdData.contains(interfaceBlock->type()) )
+				{
+					if ( m_InterfaceIdData[interfaceBlock->type()] < list.back().toInt() )
+						m_InterfaceIdData[interfaceBlock->type()] = list.back().toInt();
+				} else 
+				{
+					m_InterfaceIdData[interfaceBlock->type()] = list.back().toInt();
+				}
+
+				DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->addItem(interfaceBlock);
+			}
+			++uiIter;
+		}
+		//// Add UI Links
+		QList<Ubercode::xml::UiLinkData>  uiLinkData = xmlLoader->getInterfaceLinkData();
+		QList<Ubercode::xml::UiLinkData>::iterator uiLinkIter = uiLinkData.begin();
+		for ( ;uiLinkIter!= uiLinkData.end(); ++uiLinkIter )
+		{
+			//Find Interface element with name  uiLinkIter->first
+			UbComposition* comp = DataflowEngineManager::getInstance()->getComposition();
+			UbGraphicsScene* scene = comp->getGraphicsScene();
+			UbObject *obj = scene->getNamedItem(uiLinkIter->first);
+			UbNodeRef nodeA = UbNodeRef();
+			UbNodeRef nodeB = UbNodeRef();
+			if ( obj )
+			{
+				UbInterfaceBlock *iBlock = static_cast<UbInterfaceBlock*>(obj);
+				nodeA = iBlock->getNode();
+				QString blockName = (uiLinkIter->second).first;
+				UbObject *block = scene->getNamedItem(blockName);
+				UbBundleBlock *b = static_cast<UbBundleBlock*>(block);
+				//ToDo: theoretically an inlet and an outlet could have the same id, so we should check for this
+				QVector<UbNodeRef> inlets = b->getInlets();
+				QVector<UbNodeRef> outlets = b->getOutlets();
+				for ( int i=0; i< inlets.size(); ++i )
+				{
+					if ( inlets[i]->getName()==(uiLinkIter->second).second )
+					{
+						nodeB = inlets[i];
+						break;
+					}
+				}
+
+				if (!nodeB){
+					for ( int i=0; i< outlets.size(); ++i )
+					{
+						if ( outlets[i]->getName()==(uiLinkIter->second).second )
+						{
+							nodeB = outlets[i];
+							break;
+						}
+					}
+				}
 
 
+				if ( nodeA && nodeB )
+				{
+					Uber::UbLinkController::getInstance()->tryConnecting(nodeA, nodeB);
+					//iBlock->blockIsConnected();
+				}
+			}
+		}
 		delete xmlLoader;
 	}
 
 	catch ( _2Real::XMLFormatException& e )
 	{
-		std::cout << e.what() << "The xml file you tried to open does not correspond to a _2Real one." << std::endl;
+		//std::cout << e.what() << "The xml file you tried to open does not correspond to a _2Real one." << std::endl;
 	}
 	catch (...)
 	{
-		std::cout << "A POCO exception was probably thrown." << std::endl;
+		//std::cout << "A POCO exception was probably thrown." << std::endl;
 	}
 }
 
@@ -175,7 +290,8 @@ void MainWindow::save()
 			else if ( 
 				( (*iter)->type() ==  Uber::ImageBlockType ) ||
 				( (*iter)->type() ==  Uber::SliderBlockType ) || 
-				( (*iter)->type() ==  Uber::SpinBoxBlockType ) )
+				( (*iter)->type() ==  Uber::SpinBoxBlockType ) ||
+				( (*iter)->type()   ==  Uber::PathBlockType  ))
 			{
 				ubXML->addInterfaceBlock(*dynamic_cast<UbInterfaceBlock*>(*iter) );
 			}

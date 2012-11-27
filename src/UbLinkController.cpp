@@ -1,3 +1,20 @@
+/*
+	CADET - Center for Advances in Digital Entertainment Technologies
+	Copyright 2011 Fachhochschule Salzburg GmbH
+		http://www.cadet.at
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+*/
 #include <QGraphicsSceneMouseEvent>
 #include <QEvent>
 #include <QObject>
@@ -11,6 +28,7 @@
 #include "UbPathBlock.h"
 #include "UbBundleBlock.h"
 #include "UbTypes.h"
+#include "UbLink.h"
 #include <string>
 
 namespace Uber {
@@ -32,20 +50,45 @@ namespace Uber {
 		m_Scene = scene;
 	}
 
-	void UbLinkController::addLink( UbNodeRef start, UbNodeRef end )
+	QVector<UbLinkRef>	UbLinkController::getLinksWithStartNode( UbNodeRef startNode )
 	{
-		UbLink *link = new UbLink( 0, m_Scene );
-		link->setNodes( start, end );
-		if ( m_Scene )
-			m_Scene->addItem( link );
+		QVector<UbLinkRef> links;
+		QVector<UbLinkRef>::iterator iter =  m_Links.begin();
+		for ( ;iter!=m_Links.end(); ++iter )
+		{
+			if ( (*iter)->getStartNode() == startNode )
+				links.push_back(*iter);
+		}
+		return links;
 	}
 
-	void UbLinkController::addLink( UbLink * link )
+	QVector<UbLinkRef>	UbLinkController::getLinksWithEndNode( UbNodeRef endNode )
 	{
-		//m_Links.append( link );
-		if ( m_Scene )
-			m_Scene->addItem( link );
+		QVector<UbLinkRef> links;
+		QVector<UbLinkRef>::iterator iter =  m_Links.begin();
+		for ( ;iter!=m_Links.end(); ++iter )
+		{
+			if ( (*iter)->getEndNode() == endNode )
+				links.push_back(*iter);
+		}
+		return links;
 	}
+
+	void UbLinkController::addLink( UbNodeRef start, UbNodeRef end )
+	{
+		UbLinkRef link( new UbLink( 0, m_Scene ));
+		link->setNodes( start, end );
+		m_Links.push_back(link);
+		//if ( m_Scene )
+		//	m_Scene->addItem( link );
+	}
+
+	//void UbLinkController::addLink( UbLink * link )
+	//{
+	//	//m_Links.append( link );
+	//	if ( m_Scene )
+	//		m_Scene->addItem( link );
+	//}
 
 	void UbLinkController::removeLink( UbLink* const link )
 	{
@@ -97,7 +140,7 @@ namespace Uber {
 				}
 				if ( nd )
 				{
-					m_CurrentLink = new UbLink( 0, m_Scene );
+					m_CurrentLink = UbLinkRef( new UbLink( 0, m_Scene ) );
 					m_CurrentLink->setStartNode(nd);
 					m_CurrentLink->getEndNode()->setPos(e->scenePos() );
 					m_CurrentLink->updatePath();
@@ -126,7 +169,7 @@ namespace Uber {
 				m_CurrentLink->updatePath();
 				return true;
 			} else {
-				std::cout << "Node are set" << std::endl;
+				//std::cout << "Node are set" << std::endl;
 			}
 		}
 		return false;
@@ -144,103 +187,112 @@ namespace Uber {
 				UbAbstractBlock *parent = static_cast<UbAbstractBlock*>( item->parentObject() );
 
 				UbNodeRef endNode = parent->getNodeUnderMouse();
-
-				if ( nodesCanBeConnected( startNode, endNode ) )
-				{
-					UbInletNodeRef inlet = getInletNode(startNode, endNode );
-					UbOutletNodeRef outlet = getOutletNode(startNode, endNode );
-					m_CurrentLink->setStartNode(outlet);
-					m_CurrentLink->setEndNode(inlet);
-					startNode->link(endNode.data());
+				if ( tryConnecting(startNode, endNode) )
 					return true;
-				} else if ( nodesHaveDifferentParents(startNode, endNode) )
-				{
-					if ( isBundleBlockNode( startNode ) ^ isBundleBlockNode( endNode ) )
-					{
-						if ( bothNodesAreOutlets(startNode, endNode ) )
-						{
-							//We have an output node and ui block
-							UbNodeRef blockNode = endNode;
-							UbNodeRef uiNode = startNode;
-							if ( isBundleBlockNode(startNode) )
-							{
-								blockNode = startNode;
-								uiNode	  = endNode;
-							}
-							//Check if they can be connected.
-
-							UbOutletNodeRef blockOutlet = qSharedPointerCast<UbOutletNode>(blockNode);
-							UbOutletNodeRef uiOutlet = qSharedPointerCast<UbOutletNode>(uiNode);
-							if ( canConnectOutputNodeToUiBlockOfType(blockOutlet,uiOutlet->parentObject()->type() ) )
-							{
-								//set handle for the node of the ui block
-								uiOutlet->setHandle(blockOutlet->getHandle());
-								QGraphicsObject *obj = uiOutlet->parentObject();
-								if ( obj->type() == ImageBlockType )
-								{
-									UbImageView* imgBlock  = static_cast<UbImageView*>(obj);
-									imgBlock->blockIsConnected();
-
-									//create link
-									m_CurrentLink->setStartNode( blockNode);
-									m_CurrentLink->setEndNode( uiNode);
-									return true;
-								}
-							}	
-						}
-						if ( bothNodesAreInlets( startNode, endNode ) )
-						{
-							//We have an input node and ui block
-							UbNodeRef blockNode = endNode;
-							UbNodeRef uiNode = startNode;
-							if ( isBundleBlockNode(startNode) )
-							{
-								blockNode = startNode;
-								uiNode	  = endNode;
-							}
-							//Check if they can be connected.
-							UbInletNodeRef blockInlet = qSharedPointerCast<UbInletNode>(blockNode);
-							UbInletNodeRef uiInlet = qSharedPointerCast<UbInletNode>(uiNode);
-
-							if ( canConnectInputNodeToUiBlockOfType(blockInlet,uiInlet->parentObject()->type() ) )
-							{
-								int type = uiInlet->parentObject()->type();
-								//set handle for the node of the ui block
-								uiInlet->setHandle(blockInlet->getHandle());
-								QGraphicsObject *obj = uiInlet->parentObject();
-								if ( obj->type() == Uber::SliderBlockType )
-								{
-									UbSlider* sliderBlock = static_cast<UbSlider*>(obj);
-									sliderBlock->blockIsConnected();
-								} else if ( obj->type() == Uber::SpinBoxBlockType )
-								{
-									UbSpinbox* spinboxBlock = static_cast<UbSpinbox*>(obj);
-									spinboxBlock->blockIsConnected();
-								} else if ( obj->type() == Uber::PathBlockType )
-								{
-									UbPathBlock* pathBlock = static_cast<UbPathBlock*>(obj);
-									pathBlock->blockIsConnected();
-								}
-								//create link
-								m_CurrentLink->setStartNode( blockNode);
-								m_CurrentLink->setEndNode( uiNode);
-								return true;
-							}	
-						}
-						return true;
-					}
-				}
 			}
-		//We didn't complete the linking, so remove the linkage.
-		if ( !m_CurrentLink->nodesAreSet() )
-		{
-			delete m_CurrentLink;
-		}
-		m_CurrentLink = 0;
+			//We didn't complete the linking, so remove the linkage.
+			if ( !m_CurrentLink->nodesAreSet() )
+			{
+				m_CurrentLink.clear();
+			}
+//			m_CurrentLink = 0;
 		}
 		return false;
 	}
+	bool UbLinkController::tryConnecting(UbNodeRef startNode, UbNodeRef endNode)
+	{
+		if ( nodesCanBeConnected( startNode, endNode ) )
+		{
+			UbInletNodeRef inlet = getInletNode(startNode, endNode );
+			UbOutletNodeRef outlet = getOutletNode(startNode, endNode );
+			m_CurrentLink->setStartNode(outlet);
+			m_CurrentLink->setEndNode(inlet);
+			startNode->link(endNode.data());
+			m_Links.push_back(m_CurrentLink);
+			return true;
+		} else if ( nodesHaveDifferentParents(startNode, endNode) )
+		{
+			if ( isBundleBlockNode( startNode ) ^ isBundleBlockNode( endNode ) )
+			{
+				if ( bothNodesAreOutlets(startNode, endNode ) )
+				{
+					//We have an output node and ui block
+					UbNodeRef blockNode = endNode;
+					UbNodeRef uiNode = startNode;
+					if ( isBundleBlockNode(startNode) )
+					{
+						blockNode = startNode;
+						uiNode	  = endNode;
+					}
+					//Check if they can be connected.
 
+					UbOutletNodeRef blockOutlet = qSharedPointerCast<UbOutletNode>(blockNode);
+					UbOutletNodeRef uiOutlet = qSharedPointerCast<UbOutletNode>(uiNode);
+					if ( canConnectOutputNodeToUiBlockOfType(blockOutlet,uiOutlet->parentObject()->type() ) )
+					{
+						//set handle for the node of the ui block
+						uiOutlet->setHandle(blockOutlet->getHandle());
+						QGraphicsObject *obj = uiOutlet->parentObject();
+						if ( obj->type() == ImageBlockType )
+						{
+							UbImageView* imgBlock  = static_cast<UbImageView*>(obj);
+							imgBlock->blockIsConnected();
+
+							//create link
+							m_CurrentLink = UbLinkRef( new UbLink( 0, m_Scene ) );
+							m_CurrentLink->setStartNode( blockNode);
+							m_CurrentLink->setEndNode( uiNode);
+							m_Links.push_back( m_CurrentLink );
+							return true;
+						}
+					}	
+				}
+				if ( bothNodesAreInlets( startNode, endNode ) )
+				{
+					//We have an input node and ui block
+					UbNodeRef blockNode = endNode;
+					UbNodeRef uiNode = startNode;
+					if ( isBundleBlockNode(startNode) )
+					{
+						blockNode = startNode;
+						uiNode	  = endNode;
+					}
+					//Check if they can be connected.
+					UbInletNodeRef blockInlet = qSharedPointerCast<UbInletNode>(blockNode);
+					UbInletNodeRef uiInlet = qSharedPointerCast<UbInletNode>(uiNode);
+
+					if ( canConnectInputNodeToUiBlockOfType(blockInlet,uiInlet->parentObject()->type() ) )
+					{
+						int type = uiInlet->parentObject()->type();
+						//set handle for the node of the ui block
+						uiInlet->setHandle(blockInlet->getHandle());
+						QGraphicsObject *obj = uiInlet->parentObject();
+						if ( obj->type() == Uber::SliderBlockType )
+						{
+							UbSlider* sliderBlock = static_cast<UbSlider*>(obj);
+							sliderBlock->blockIsConnected();
+						} else if ( obj->type() == Uber::SpinBoxBlockType )
+						{
+							UbSpinbox* spinboxBlock = static_cast<UbSpinbox*>(obj);
+							spinboxBlock->blockIsConnected();
+						} else if ( obj->type() == Uber::PathBlockType )
+						{
+							UbPathBlock* pathBlock = static_cast<UbPathBlock*>(obj);
+							pathBlock->blockIsConnected();
+						}
+						//create link
+						m_CurrentLink = UbLinkRef( new UbLink( 0, m_Scene ) );
+						m_CurrentLink->setStartNode( blockNode);
+						m_CurrentLink->setEndNode( uiNode);
+						m_Links.push_back( m_CurrentLink );
+						return true;
+					}	
+				}
+				//return true;
+			}
+		}// end
+		return false;
+	}
 	bool UbLinkController::nodesHaveDifferentParents( UbNodeRef nodeA, UbNodeRef nodeB )
 	{
 		if( nodeA->parentItem() != nodeB->parentItem() )
