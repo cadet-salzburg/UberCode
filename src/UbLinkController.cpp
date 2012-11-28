@@ -99,17 +99,21 @@ namespace Uber {
 		{
 			if ( ( *it )->getEndNode().data() == in && ( *it )->getStartNode().data() == out )
 			{
-
 				m_Scene->removeItem( ( *it ).data() );
-				delete ( *it ).data();
+				if ( m_CurrentLink==*it )
+				{
+					m_CurrentLink.clear();
+				}
 				it = m_Links.erase( it );
 				if ( in->type() != out->type() ) in->unlink( out );
 			}
 			else if ( ( *it )->getEndNode().data() == out && ( *it )->getStartNode().data() == in )
 			{
-
 				m_Scene->removeItem( ( *it ).data() );
-				delete ( *it ).data();
+				if ( m_CurrentLink==*it )
+				{
+					m_CurrentLink.clear();
+				}
 				it = m_Links.erase( it );
 
 				if ( in->type() != out->type() ) in->unlink( out );
@@ -125,7 +129,10 @@ namespace Uber {
 			if ( ( *it )->getEndNode() == node || ( *it )->getStartNode() == node )
 			{
 				m_Scene->removeItem( ( *it ).data() );
-				delete ( *it ).data();
+				if ( m_CurrentLink==*it )
+				{
+					m_CurrentLink.clear();
+				}
 				it = m_Links.erase( it );
 
 			}
@@ -135,22 +142,20 @@ namespace Uber {
 
 	void UbLinkController::removeLink( UbLink* const link )
 	{
-		m_Scene->removeItem( link );
-		delete link;
+		for ( QVector< UbLinkRef >::Iterator it = m_Links.begin(); it != m_Links.end(); )
+		{
+			if ( ( *it ).data() == link )
+			{
+				m_Scene->removeItem( ( *it ).data() );
+				if ( m_CurrentLink.data()==link )
+				{
+					m_CurrentLink.clear();
+				}
+				it = m_Links.erase( it );
+			}
+			else ++it;
+		}
 
-		//QList<UbLink*>::iterator iter = m_Links.begin();
-		//for ( ;iter!= m_Links.end(); ++iter )
-		//{
-		//	if ( *iter == link )
-		//	{
-		//		if ( m_Scene ) 
-		//			m_Scene->removeItem( link );
-		//		//ToDo: Do we actually need to hold a list of links??
-		//		delete *iter;
-		//		iter = m_Links.erase( iter, iter );
-		//		break;
-		//	}
-		//}
 	}
 
 	QGraphicsItem*	UbLinkController::itemAt(const QPointF &pos)
@@ -166,8 +171,7 @@ namespace Uber {
 
 	bool UbLinkController::processStartLink(QGraphicsSceneMouseEvent *e)
 	{
-		switch ( (int) e->button() )
-		{
+		switch ( (int) e->button() ){
 		case Qt::LeftButton:
 			if( eventHappenedAtNode(e))
 			{
@@ -177,23 +181,25 @@ namespace Uber {
 				{
 					UbMultiNodeContainer *parent = static_cast<UbMultiNodeContainer*>( item->parentObject() );
 					nd = parent->getNodeUnderMouse();
-				} else {
+				} 
+				else {
 					UbBundleBlock *parent = static_cast<UbBundleBlock*>( item->parentObject() );
 					nd = parent->getNodeUnderMouse();
 				}
 				if ( nd )
 				{
-					m_CurrentLink = UbLinkRef( new UbLink( 0, m_Scene ) );
+					UbLinkRef l( new UbLink( 0, m_Scene ) );
+					m_CurrentLink = l;
+					//m_CurrentLink = UbLinkRef( new UbLink( 0, m_Scene ) );
 					m_CurrentLink->setStartNode(nd);
 					m_CurrentLink->getEndNode()->setPos(e->scenePos() );
 					m_CurrentLink->updatePath();
-					//return true;
 				}
 				return true;
 			}
 			else return false;
+			break;
 		case Qt::RightButton:
-
 			if( eventHappenedAtNode( e ) )
 			{
 				QGraphicsItem *item = itemAt( e->scenePos() );
@@ -221,10 +227,11 @@ namespace Uber {
 							{
 								start->unlink( end.data() );
 							}
-							m_Scene->removeItem( ( *it ).data() );
-							delete ( *it ).data();
-							it = m_Links.erase( it );
-
+							removeLink(( *it ).data());
+							//m_Scene->removeItem( ( *it ).data() );
+							//delete ( *it ).data();
+							//it = m_Links.erase( it );
+							break;
 						}
 						else ++it;
 					}
@@ -232,6 +239,7 @@ namespace Uber {
 				return true;
 			}
 			else return false;
+			break;
 		default:
 			return false;
 		}
@@ -239,19 +247,15 @@ namespace Uber {
 
 	bool UbLinkController::processUpdateLink( QGraphicsSceneMouseEvent * e )
 	{
-		switch ( (int) e->button() )
+		if ( m_CurrentLink )
 		{
-		case Qt::LeftButton:
-			if ( m_CurrentLink )
+			if ( !m_CurrentLink->nodesAreSet() )
 			{
-				if ( !m_CurrentLink->nodesAreSet() )
-				{
-					m_CurrentLink->getEndNode()->setPos( e->scenePos() );
-					m_CurrentLink->updatePath();
-					return true;
-				} else {
-					//std::cout << "Node are set" << std::endl;
-				}
+				m_CurrentLink->getEndNode()->setPos( e->scenePos() );
+				m_CurrentLink->updatePath();
+				return true;
+			} else {
+				//std::cout << "Node are set" << std::endl;
 			}
 		}
 		return false;
