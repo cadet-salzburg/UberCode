@@ -37,6 +37,8 @@ namespace Uber {
 		QString						getBlockId(){ return m_BlockId; }
 		QVector<UbNodeRef> const&	getInlets() const;
 		QVector<UbNodeRef> const&	getOutlets() const;
+	protected:
+		virtual void				hoverMoveEvent ( QGraphicsSceneHoverEvent * event );
 	private:
 		void						arrangeNodes();
 		_2Real::app::BlockHandle	m_BlockHandle;

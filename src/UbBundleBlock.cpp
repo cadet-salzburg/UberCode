@@ -22,6 +22,7 @@
 #include "UbMultiInletNode.h"
 #include "app/_2RealEngine.h"
 #include "DataflowEngineManager.h"
+#include <QToolTip>
 
 using namespace _2Real;
 using namespace _2Real::app;
@@ -45,7 +46,8 @@ namespace Uber {
 			cout << e.message() << " " << e.what() << endl;
 		}
 		arrangeNodes();
-		setToolTip( QString::fromUtf8( m_BlockHandle.getBlockInfo().name.c_str() ) );
+		setAcceptHoverEvents( true ); 
+		//setToolTip( QString::fromUtf8( m_BlockHandle.getBlockInfo().name.c_str() ) );
 	}
 
 	UbBundleBlock::UbBundleBlock( QGraphicsItem *parent,  QString blockInstanceId )
@@ -71,7 +73,8 @@ namespace Uber {
 		{
 			throw std::exception("Cannot find any block instance with the specified Id.");
 		}
-		arrangeNodes();
+		//arrangeNodes();
+		setAcceptHoverEvents( true ); 
 	}
 
 	UbBundleBlock::~UbBundleBlock()
@@ -138,5 +141,10 @@ namespace Uber {
 	QVector<UbNodeRef> const& UbBundleBlock::getOutlets() const
 	{
 		return m_Outlets;
+	}
+	void UbBundleBlock::hoverMoveEvent ( QGraphicsSceneHoverEvent * event )
+	{
+		QPointF pos = event->lastScreenPos();
+		QToolTip::showText( QPoint(pos.x(),pos.y()), QString::fromUtf8(m_BlockHandle.getBlockInfo().name.c_str()) );
 	}
 }
