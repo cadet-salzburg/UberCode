@@ -32,10 +32,11 @@ namespace Uber {
 
 		enum Interaction
 		{
-			DELETE_BLOCK,
-			DELETE_LINK,
-			ADD_MULTI_INLET,
-			REMOVE_MULTI_INLET,
+			DELETE_BUNDLE_BLOCK,
+			DELETE_INTERFACE_BLOCK,
+			//DELETE_LINK,
+			//ADD_MULTI_INLET,
+			//REMOVE_MULTI_INLET,
 		};
 
 		Interaction			code;

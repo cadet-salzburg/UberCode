@@ -105,7 +105,7 @@ namespace Uber {
 		UbLinkController &ctrl = *UbLinkController::getInstance();
 
 		UbAction *action = static_cast< UbAction * >( a );
-		if ( UbAction::DELETE_BLOCK == action->code )
+		if ( UbAction::DELETE_BUNDLE_BLOCK == action->code )
 		{
 			UbBundleBlock * block = static_cast< UbBundleBlock * >( action->item1 );
 			UbBundleBlock const* b = block;
@@ -127,20 +127,12 @@ namespace Uber {
 			//block->getHandle().kill();
 
 		}
-		//else if ( UbAction::REMOVE_MULTI_INLET == action->code )
-		//{
-		//	std::cout << "ACTION: REMOVE" << std::endl;
-		//}
-		//else if ( UbAction::ADD_MULTI_INLET == action->code )
-		//{
-		//	std::cout << "ACTION: ADD" << std::endl;
-		//}
-		//else if ( UbAction::DELETE_LINK == action->code )
-		//{
-		//	UbNode * inlet = static_cast< UbNode * >( action->item1 );
-		//	UbNode * outlet = static_cast< UbNode * >( action->item2 );
-		//	ctrl.removeLink( inlet, outlet );
-		//}
+		if ( UbAction::DELETE_INTERFACE_BLOCK == action->code )
+		{
+			UbInterfaceBlock * block = static_cast< UbInterfaceBlock * >( action->item1 );
+			ctrl.removeLinksWith( block->getNode() );
+			scene.removeItem( block );
+		}
 	}
 
 	void UbGraphicsView::contextMenuEvent( QContextMenuEvent *event )
@@ -159,14 +151,26 @@ namespace Uber {
 
 				if ( BundleBlockType == ( **it ).type() )
 				{
-					//std::cout << "bundle block under mouse" << std::endl;
-
 					QString action = "Delete ";
 					UbBundleBlock *b = static_cast< UbBundleBlock * >( *it );
 					action.append( b->getBlockId() );
 
 					UbAction *a = new UbAction();
-					a->code = UbAction::DELETE_BLOCK;
+					a->code = UbAction::DELETE_BUNDLE_BLOCK;
+					a->item1 = *it;
+					a->item2 = nullptr;
+
+					QAction *deleteBlockAction( new QAction( action, this ) );
+					actions[ deleteBlockAction ] = a;
+				}
+				if ( InterfaceBlockType <= ( **it ).type() )
+				{
+					QString action = "Delete ";
+					UbInterfaceBlock *b = static_cast< UbInterfaceBlock * >( *it );
+					action.append( b->getName() );
+
+					UbAction *a = new UbAction();
+					a->code = UbAction::DELETE_INTERFACE_BLOCK;
 					a->item1 = *it;
 					a->item2 = nullptr;
 
