@@ -42,6 +42,7 @@ namespace Uber {
 		virtual bool			link( UbNode* node );
 
 		void					unlink( UbNode* node );
+		QList< UbNode * > const& getLinks() const { return mLinks; }
 
 		virtual UbObject*		getParentBlock();
 	protected:
@@ -50,5 +51,6 @@ namespace Uber {
 		virtual void			mousePressEvent ( QGraphicsSceneMouseEvent * e );
 	private:
 		QString					m_NodeName;
+		QList< UbNode * >		mLinks;
 	};
 }

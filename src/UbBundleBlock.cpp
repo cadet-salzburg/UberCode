@@ -21,6 +21,7 @@
 #include "UbOutletNode.h"
 #include "UbMultiInletNode.h"
 #include "app/_2RealEngine.h"
+#include "DataflowEngineManager.h"
 
 using namespace _2Real;
 using namespace _2Real::app;
@@ -28,8 +29,8 @@ using namespace std;
 
 namespace Uber {
 
-	UbBundleBlock::UbBundleBlock(QGraphicsItem *parent,  _2Real::app::BundleHandle handle, QString blockName)
-		:UbAbstractBlock(parent)
+	UbBundleBlock::UbBundleBlock(QGraphicsItem *parent,  _2Real::app::BundleHandle handle, QString blockName) :
+		UbAbstractBlock( parent )
 	{
 		try
 		{
@@ -73,9 +74,10 @@ namespace Uber {
 		arrangeNodes();
 	}
 
-	UbBundleBlock::~UbBundleBlock(void)
+	UbBundleBlock::~UbBundleBlock()
 	{
-
+		//std::cout << "goodbye" << std::endl;
+		//m_BlockHandle.kill();
 	}
 
 	void UbBundleBlock::arrangeNodes()
@@ -128,12 +130,12 @@ namespace Uber {
 		}
 	}
 
-	QVector<UbNodeRef> UbBundleBlock::getInlets()
+	QVector<UbNodeRef> const& UbBundleBlock::getInlets() const
 	{
 		return m_Inlets;
 	}
 
-	QVector<UbNodeRef> UbBundleBlock::getOutlets()
+	QVector<UbNodeRef> const& UbBundleBlock::getOutlets() const
 	{
 		return m_Outlets;
 	}

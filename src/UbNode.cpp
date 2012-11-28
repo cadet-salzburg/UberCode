@@ -59,6 +59,8 @@ namespace Uber {
 
 	void UbNode::unlink( UbNode* node )
 	{
+		std::cout << "unlinking" << std::endl;
+
 		if ( ( type() == InputNodeType ) && ( node->type() == OutputNodeType ) )
 		{
 			static_cast<UbInletNode*>(this)->getHandle().unlinkFrom( static_cast<UbOutletNode*>(node)->getHandle() );
@@ -79,10 +81,11 @@ namespace Uber {
 		{
 			//qSharedPointerCast<UbOutletNode>(this)
 			res = static_cast<UbInletNode*>(this)->getHandle().link( static_cast<UbOutletNode*>(node)->getHandle() );
-
+			mLinks.push_back( node );
 		} else if ( ( type() == OutputNodeType ) && ( node->type() == InputNodeType ) )
 		{
 			res = static_cast<UbOutletNode*>(this)->getHandle().link( static_cast<UbInletNode*>(node)->getHandle() );
+			mLinks.push_back( node );
 		}
 		return res;
 	}

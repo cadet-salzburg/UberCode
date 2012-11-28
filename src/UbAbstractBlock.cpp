@@ -73,7 +73,7 @@ namespace Uber {
 	void UbAbstractBlock::mousePressEvent( QGraphicsSceneMouseEvent * e )
 	{
 		//TODO: QT dragging seems to have glitches. Not sure if its a QT bug or not.
-		std::cout << "abstract block received a mouse event" << std::endl;
+		//std::cout << "abstract block received a mouse event" << std::endl;
 		m_CurrentPoint = m_PreviousPoint =  e->scenePos();  
 	}
 

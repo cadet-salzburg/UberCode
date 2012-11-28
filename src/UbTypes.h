@@ -34,6 +34,8 @@ namespace Uber {
 		SpinBoxBlockType		= QGraphicsItem::UserType + 13,
 		RadioButtonBlockType	= QGraphicsItem::UserType + 14,
 		MultiInputNodeContainer = QGraphicsItem::UserType + 15,
-		PathBlockType			= QGraphicsItem::UserType + 16
+		PathBlockType			= QGraphicsItem::UserType + 16,
+
+		//LinkType			=	QGraphicsItem::UserType + 17
 	};
 };

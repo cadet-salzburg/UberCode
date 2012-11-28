@@ -32,6 +32,10 @@ namespace Uber {
 		UbLink(QGraphicsItem *parent = 0,  QGraphicsScene *scene = 0);
 		virtual	~UbLink();
 
+		//enum { Type = LinkType  };
+
+		//virtual int			type() const { return Type; }
+
 		void				updatePath();
 		void				paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget );
 

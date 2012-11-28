@@ -24,6 +24,25 @@ limitations under the License.
 #include <QMenu>
 
 namespace Uber {
+
+	class UbAction : public QObject
+	{
+		Q_OBJECT
+	public:
+
+		enum Interaction
+		{
+			DELETE_BLOCK,
+			DELETE_LINK,
+			ADD_MULTI_INLET,
+			REMOVE_MULTI_INLET,
+		};
+
+		Interaction			code;
+		QGraphicsItem		*item1;
+		QGraphicsItem		*item2;
+	};
+
 	class UbGraphicsView : public QGraphicsView
 	{
 		Q_OBJECT
@@ -46,7 +65,11 @@ namespace Uber {
 		QPoint				m_EventPos;
 		QSignalMapper		*m_SignalMapper;
 		QMenu				*m_ContextMenu;
+
+		QSignalMapper		*mBlockSignals;
+		QMenu				*mBlockMenu;
 	private slots:
 		void				addInterfaceBlock( int type );
+		void				bundleBlockAction( QObject *action );
 	};
 }

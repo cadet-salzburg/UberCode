@@ -90,6 +90,44 @@ namespace Uber {
 	//		m_Scene->addItem( link );
 	//}
 
+	void UbLinkController::removeLink( UbNode *in, UbNode *out )
+	{
+		UbInletNode *inlet = static_cast< UbInletNode * >( in );
+		UbOutletNode *outlet = static_cast< UbOutletNode * >( out );
+
+		for ( QVector< UbLinkRef >::Iterator it = m_Links.begin(); it != m_Links.end(); )
+		{
+			if ( ( *it )->getEndNode().data() == in && ( *it )->getStartNode().data() == out )
+			{
+				it = m_Links.erase( it );
+				m_Scene->removeItem( ( *it ).data() );
+
+				if ( in->type() != out->type() ) in->unlink( out );
+			}
+			else if ( ( *it )->getEndNode().data() == out && ( *it )->getStartNode().data() == in )
+			{
+				it = m_Links.erase( it );
+				m_Scene->removeItem( ( *it ).data() );
+
+ 				if ( in->type() != out->type() ) in->unlink( out );
+			}
+			else ++it;
+		}
+	}
+
+	void UbLinkController::removeLinksWith( UbNodeRef node )
+	{
+		for ( QVector< UbLinkRef >::Iterator it = m_Links.begin(); it != m_Links.end(); )
+		{
+			if ( ( *it )->getEndNode() == node || ( *it )->getStartNode() == node )
+			{
+				it = m_Links.erase( it );
+				m_Scene->removeItem( ( *it ).data() );
+			}
+			else ++it;
+		}
+	}
+
 	void UbLinkController::removeLink( UbLink* const link )
 	{
 		m_Scene->removeItem( link );
@@ -123,8 +161,8 @@ namespace Uber {
 
 	bool UbLinkController::processStartLink(QGraphicsSceneMouseEvent *e)
 	{
-		//UbNodeRef item = 
-		switch ( (int) e->button() ) {
+		switch ( (int) e->button() )
+		{
 		case Qt::LeftButton:
 			if( eventHappenedAtNode(e))
 			{
@@ -148,18 +186,21 @@ namespace Uber {
 				}
 				return true;
 			}
-			break;
+			else return false;
 		case Qt::RightButton:
-			if( eventHappenedAtNode(e))
+
+			if( eventHappenedAtNode( e ) )
 			{
-				QGraphicsItem *item = itemAt(e->scenePos());
+				QGraphicsItem *item = itemAt( e->scenePos() );
 				UbNodeRef nd;
 				if ( item->parentObject()->type() == MultiInputNodeContainer )
 				{
-					UbMultiNodeContainer *parent = static_cast<UbMultiNodeContainer*>( item->parentObject() );
+					UbMultiNodeContainer *parent = static_cast< UbMultiNodeContainer * >( item->parentObject() );
 					nd = parent->getNodeUnderMouse();
-				} else {
-					UbBundleBlock *parent = static_cast<UbBundleBlock*>( item->parentObject() );
+				}
+				else
+				{
+					UbBundleBlock *parent = static_cast< UbBundleBlock* >( item->parentObject() );
 					nd = parent->getNodeUnderMouse();
 				}
 				if ( nd )
@@ -171,7 +212,7 @@ namespace Uber {
 							UbNodeRef start = ( *it )->getStartNode();
 							UbNodeRef end = ( *it )->getEndNode();
 							std::cout << "found a link" << std::endl;
-							if ( !( this->bothNodesAreInlets( start, end ) || this->bothNodesAreOutlets( start, end ) ) )
+							if ( !( bothNodesAreInlets( start, end ) || bothNodesAreOutlets( start, end ) ) )
 							{
 								start->unlink( end.data() );
 							}
@@ -183,9 +224,10 @@ namespace Uber {
 				}
 				return true;
 			}
-			break;
+			else return false;
+		default:
+			return false;
 		}
-		return false;
 	}
 
 	bool UbLinkController::processUpdateLink( QGraphicsSceneMouseEvent * e )
