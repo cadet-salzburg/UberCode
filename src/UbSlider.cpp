@@ -23,7 +23,6 @@ namespace Uber {
 	{
 		init();
 		setName(QString("Slider"));
-		connect( m_Slider, SIGNAL(valueChanged(int)), this, SLOT(setValue(int)));
 	}
 
 	UbSlider::~UbSlider(void)
@@ -50,16 +49,6 @@ namespace Uber {
 		update();
 	}
 
-	void UbSlider::initPropertyEditor()
-	{
-		m_PropertyEditor = new QtTreePropertyBrowser();
-		QtDoubleSpinBoxFactory *doubleSpinBoxFactory = new QtDoubleSpinBoxFactory(this);
-		m_DoubleManager = new QtDoublePropertyManager(this);
-		m_PropertyEditor->setFactoryForManager(m_DoubleManager, doubleSpinBoxFactory);
-		connect(m_DoubleManager, SIGNAL(valueChanged(QtProperty *, double)),
-			this, SLOT(valueChanged(QtProperty *, double)));
-	}
-
 	void UbSlider::arrangeNodes()
 	{
 		UbNodeRef node = m_Node.toStrongRef();
@@ -80,9 +69,5 @@ namespace Uber {
 				qSharedPointerCast<UbInletNode>(node)->getHandle().setValue( value );
 			}
 		}
-	}
-	void UbSlider::valueChanged(QtProperty *property, double value)
-	{
-
 	}
 }
