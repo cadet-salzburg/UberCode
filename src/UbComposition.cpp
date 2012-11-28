@@ -53,7 +53,7 @@ namespace Uber {
 			++it;
 		}
 	}
-	void UbComposition::addBlock( UbBundleBlock *block )
+	void UbComposition::addBlock( UbObject *block )
 	{
 		m_UbGraphicsScene->addItem(block);
 	}

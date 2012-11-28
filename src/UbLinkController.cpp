@@ -1,19 +1,19 @@
 /*
-	CADET - Center for Advances in Digital Entertainment Technologies
-	Copyright 2011 Fachhochschule Salzburg GmbH
-		http://www.cadet.at
+CADET - Center for Advances in Digital Entertainment Technologies
+Copyright 2011 Fachhochschule Salzburg GmbH
+http://www.cadet.at
 
-	Licensed under the Apache License, Version 2.0 (the "License");
-	you may not use this file except in compliance with the License.
-	You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-		http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-	Unless required by applicable law or agreed to in writing, software
-	distributed under the License is distributed on an "AS IS" BASIS,
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	See the License for the specific language governing permissions and
-	limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 */
 #include <QGraphicsSceneMouseEvent>
 #include <QEvent>
@@ -99,17 +99,20 @@ namespace Uber {
 		{
 			if ( ( *it )->getEndNode().data() == in && ( *it )->getStartNode().data() == out )
 			{
-				it = m_Links.erase( it );
-				m_Scene->removeItem( ( *it ).data() );
 
+				m_Scene->removeItem( ( *it ).data() );
+				delete ( *it ).data();
+				it = m_Links.erase( it );
 				if ( in->type() != out->type() ) in->unlink( out );
 			}
 			else if ( ( *it )->getEndNode().data() == out && ( *it )->getStartNode().data() == in )
 			{
-				it = m_Links.erase( it );
-				m_Scene->removeItem( ( *it ).data() );
 
- 				if ( in->type() != out->type() ) in->unlink( out );
+				m_Scene->removeItem( ( *it ).data() );
+				delete ( *it ).data();
+				it = m_Links.erase( it );
+
+				if ( in->type() != out->type() ) in->unlink( out );
 			}
 			else ++it;
 		}
@@ -121,8 +124,10 @@ namespace Uber {
 		{
 			if ( ( *it )->getEndNode() == node || ( *it )->getStartNode() == node )
 			{
-				it = m_Links.erase( it );
 				m_Scene->removeItem( ( *it ).data() );
+				delete ( *it ).data();
+				it = m_Links.erase( it );
+
 			}
 			else ++it;
 		}
@@ -216,8 +221,10 @@ namespace Uber {
 							{
 								start->unlink( end.data() );
 							}
-							m_Scene->removeItem( ( *it ).data() ); 
+							m_Scene->removeItem( ( *it ).data() );
+							delete ( *it ).data();
 							it = m_Links.erase( it );
+
 						}
 						else ++it;
 					}
@@ -232,15 +239,19 @@ namespace Uber {
 
 	bool UbLinkController::processUpdateLink( QGraphicsSceneMouseEvent * e )
 	{
-		if ( m_CurrentLink )
+		switch ( (int) e->button() )
 		{
-			if ( !m_CurrentLink->nodesAreSet() )
+		case Qt::LeftButton:
+			if ( m_CurrentLink )
 			{
-				m_CurrentLink->getEndNode()->setPos( e->scenePos() );
-				m_CurrentLink->updatePath();
-				return true;
-			} else {
-				//std::cout << "Node are set" << std::endl;
+				if ( !m_CurrentLink->nodesAreSet() )
+				{
+					m_CurrentLink->getEndNode()->setPos( e->scenePos() );
+					m_CurrentLink->updatePath();
+					return true;
+				} else {
+					//std::cout << "Node are set" << std::endl;
+				}
 			}
 		}
 		return false;
@@ -248,25 +259,29 @@ namespace Uber {
 
 	bool UbLinkController::processEndLink( QGraphicsSceneMouseEvent *e )
 	{
-		if ( m_CurrentLink && ( e->button() == Qt::LeftButton) )
+		switch ( (int) e->button() )
 		{
-			QGraphicsItem *item = itemAt(e->scenePos());
-			if ( eventHappenedAtNode( e ) )
+		case Qt::LeftButton:
+			if ( m_CurrentLink && ( e->button() == Qt::LeftButton) )
 			{
-				UbNodeRef startNode = m_CurrentLink->getStartNode();
-				//UbBundleBlock *parent = static_cast<UbBundleBlock*>( item->parentObject() );
-				UbAbstractBlock *parent = static_cast<UbAbstractBlock*>( item->parentObject() );
+				QGraphicsItem *item = itemAt(e->scenePos());
+				if ( eventHappenedAtNode( e ) )
+				{
+					UbNodeRef startNode = m_CurrentLink->getStartNode();
+					//UbBundleBlock *parent = static_cast<UbBundleBlock*>( item->parentObject() );
+					UbAbstractBlock *parent = static_cast<UbAbstractBlock*>( item->parentObject() );
 
-				UbNodeRef endNode = parent->getNodeUnderMouse();
-				if ( tryConnecting(startNode, endNode) )
-					return true;
+					UbNodeRef endNode = parent->getNodeUnderMouse();
+					if ( tryConnecting(startNode, endNode) )
+						return true;
+				}
+				//We didn't complete the linking, so remove the linkage.
+				if ( !m_CurrentLink->nodesAreSet() )
+				{
+					m_CurrentLink.clear();
+				}
+				//			m_CurrentLink = 0;
 			}
-			//We didn't complete the linking, so remove the linkage.
-			if ( !m_CurrentLink->nodesAreSet() )
-			{
-				m_CurrentLink.clear();
-			}
-//			m_CurrentLink = 0;
 		}
 		return false;
 	}
@@ -310,7 +325,7 @@ namespace Uber {
 							imgBlock->blockIsConnected();
 
 							//create link
-							m_CurrentLink = UbLinkRef( new UbLink( 0, m_Scene ) );
+							//m_CurrentLink = UbLinkRef( new UbLink( 0, m_Scene ) );
 							m_CurrentLink->setStartNode( blockNode);
 							m_CurrentLink->setEndNode( uiNode);
 							m_Links.push_back( m_CurrentLink );
@@ -352,7 +367,7 @@ namespace Uber {
 							pathBlock->blockIsConnected();
 						}
 						//create link
-						m_CurrentLink = UbLinkRef( new UbLink( 0, m_Scene ) );
+						//m_CurrentLink = UbLinkRef( new UbLink( 0, m_Scene ) );
 						m_CurrentLink->setStartNode( blockNode);
 						m_CurrentLink->setEndNode( uiNode);
 						m_Links.push_back( m_CurrentLink );

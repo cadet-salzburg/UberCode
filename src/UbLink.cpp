@@ -21,6 +21,7 @@
 #include "UbNode.h"
 #include "UbInletNode.h"
 #include "UbOutletNode.h"
+#include "UbImageView.h"
 
 namespace Uber {
 	UbLink::UbLink( QGraphicsItem *parent,  QGraphicsScene *scene )
@@ -33,6 +34,32 @@ namespace Uber {
 
 	UbLink::~UbLink()
 	{
+		if ( !this->isHardLink() )
+		{
+			if ( this->nodesAreSet() )
+			{
+				if ( m_StartNode->parentObject()->type() == ImageBlockType )
+				{
+					UbImageView *obj = static_cast<UbImageView*>(m_StartNode->parentObject());
+					obj->disconnect();
+				}
+				if ( m_EndNode->parentObject()->type() == ImageBlockType )
+				{
+					UbImageView *obj = static_cast<UbImageView*>(m_EndNode->parentObject());
+					obj->disconnect();
+				}
+			}
+
+
+			if ( m_StartNode->type()== OutputNodeType )
+			{
+				QGraphicsObject *parent = m_StartNode->parentObject();
+				if ( parent->type()==ImageBlockType )
+				{
+					//perform unlining
+				}
+			}
+		} 
 	}
 
 	void UbLink::updatePath()
@@ -54,6 +81,15 @@ namespace Uber {
 			outliner.setCapStyle( Qt::RoundCap );
 			setPath( outliner.createStroke(bezierPath) );
 		}
+	}
+
+	bool UbLink::isHardLink()
+	{
+		if ( m_StartNode->type() != m_EndNode->type() )
+		{
+			return true;
+		}
+		return false;
 	}
 
 	void UbLink::setStartNode( UbNodeRef start )

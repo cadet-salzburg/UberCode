@@ -29,7 +29,7 @@ namespace Uber {
 
 		UbGraphicsScene*	getGraphicsScene();
 		void	addBlock(QString strBlockName, QPointF pos );
-		void	addBlock( UbBundleBlock *block );
+		void	addBlock( UbObject *block );
 	private:
 		UbGraphicsScene*	m_UbGraphicsScene;
 	};

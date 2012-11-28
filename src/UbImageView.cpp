@@ -83,7 +83,15 @@ namespace Uber {
 			}
 		}
 	}
-
+	void UbImageView::disconnect()
+	{
+		if ( !m_Node.isNull() )
+		{
+			UbNodeRef node = m_Node.toStrongRef();
+			UbOutletNodeRef nn = qSharedPointerCast<UbOutletNode>(node );
+			nn->getHandle().unregisterFromNewData<UbImageView>(*this,&UbImageView::receiveData);
+		}
+	}
 	void UbImageView::updateData( _2Real::app::AppData const& data ) 
 	{
 		UbOutputBlock::updateData(data);
@@ -102,7 +110,11 @@ namespace Uber {
 			}
 			catch(_2Real::Exception& e)
 			{
-				//std::cout << e.message() << e.what() << std::endl;
+				std::cout << "The 2real exception was thrown" << std::endl;
+			}
+			catch ( ... )
+			{
+				std::cout << "Another exception was thrown" << std::endl;
 			}
 		}
 	}

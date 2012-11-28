@@ -36,6 +36,7 @@ namespace Uber {
 
 		virtual	int						type() const { return Type; }
 		virtual void					blockIsConnected();
+		virtual void					disconnect();
 		virtual void					updateData( _2Real::app::AppData const& data	);
 	protected:
 		virtual void					arrangeNodes();

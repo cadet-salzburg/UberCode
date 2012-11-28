@@ -76,7 +76,7 @@ namespace Uber {
 
 	UbBundleBlock::~UbBundleBlock()
 	{
-		//std::cout << "goodbye" << std::endl;
+		std::cout << "goodbye" << std::endl;
 		//m_BlockHandle.kill();
 	}
 

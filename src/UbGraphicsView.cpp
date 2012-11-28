@@ -124,7 +124,7 @@ namespace Uber {
 
 			// deleting this here causes problems for some reason
 			// delete b;
-			block->getHandle().kill();
+			//block->getHandle().kill();
 
 		}
 		//else if ( UbAction::REMOVE_MULTI_INLET == action->code )

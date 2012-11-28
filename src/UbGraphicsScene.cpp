@@ -79,6 +79,29 @@ namespace Uber {
 		QGraphicsScene::addItem(item);
 	}
 
+	void UbGraphicsScene::removeItem( UbObject * item )
+	{
+		QGraphicsScene::removeItem(item);
+		QList<UbObject*>::iterator iter = m_Items.begin();
+		for ( ;iter!=m_Items.end(); )
+		{
+			if ( *iter==item )
+			{
+				iter = m_Items.erase(iter);
+				if ( item->type()==BundleBlockType )
+				{
+					UbBundleBlock *obj = static_cast<UbBundleBlock*>(item);
+					obj->getHandle().kill();
+				}
+				delete item;
+				break;
+			}
+			else {
+				++iter;
+			}
+		} 
+	}
+
 	UbObject* UbGraphicsScene::getNamedItem( QString name )
 	{
 		QList<UbObject*>::iterator iter = m_Items.begin();
