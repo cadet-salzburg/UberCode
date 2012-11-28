@@ -23,16 +23,17 @@ limitations under the License.
 #include "UbRadiobutton.h"
 #include "UbPathBlock.h"
 #include "DataflowEngineManager.h"
+#include "UbMultiInletNode.h"
+#include "UbLinkController.h"
 
 namespace Uber {
-	UbGraphicsView::UbGraphicsView( QWidget * parent)
-		:QGraphicsView(parent)
+	UbGraphicsView::UbGraphicsView( QWidget * parent) :
+		QGraphicsView( parent ), mBlockSignals( nullptr ), mBlockMenu( nullptr )
 	{
 		initialize();
 		setMouseTracking(true);
 		createContextMenu();
-
-
+		//createBlockMenu();
 	}
 
 	UbGraphicsView::UbGraphicsView( QGraphicsScene * scene, QWidget * parent )
@@ -40,6 +41,7 @@ namespace Uber {
 	{
 		initialize();
 		createContextMenu();
+		//createBlockMenu();
 	}
 
 	void UbGraphicsView::initialize()
@@ -82,6 +84,7 @@ namespace Uber {
 		//
 		connect(m_SignalMapper, SIGNAL(mapped(int)), this, SLOT(addInterfaceBlock(int)));
 	}
+
 	void UbGraphicsView::resizeEvent( QResizeEvent * event )
 	{
 		//std::cout << "Resize event was called" << std::endl;
@@ -96,9 +99,171 @@ namespace Uber {
 		}
 	}
 
+	void UbGraphicsView::bundleBlockAction( QObject *a )
+	{
+		UbGraphicsScene &scene = *DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene();
+		UbLinkController &ctrl = *UbLinkController::getInstance();
+
+		UbAction *action = static_cast< UbAction * >( a );
+		if ( UbAction::DELETE_BLOCK == action->code )
+		{
+			UbBundleBlock * block = static_cast< UbBundleBlock * >( action->item1 );
+			UbBundleBlock const* b = block;
+
+			for ( QVector< UbNodeRef >::const_iterator inletIt = b->getInlets().begin(); inletIt != b->getInlets().end(); ++inletIt )
+			{
+				ctrl.removeLinksWith( *inletIt );
+			}
+
+			for ( QVector< UbNodeRef >::const_iterator outletIt = b->getOutlets().begin(); outletIt != b->getOutlets().end(); ++outletIt )
+			{
+				ctrl.removeLinksWith( *outletIt );
+			}
+
+			scene.removeItem( block );
+
+			// deleting this here causes problems for some reason
+			// delete b;
+			block->getHandle().kill();
+
+		}
+		//else if ( UbAction::REMOVE_MULTI_INLET == action->code )
+		//{
+		//	std::cout << "ACTION: REMOVE" << std::endl;
+		//}
+		//else if ( UbAction::ADD_MULTI_INLET == action->code )
+		//{
+		//	std::cout << "ACTION: ADD" << std::endl;
+		//}
+		//else if ( UbAction::DELETE_LINK == action->code )
+		//{
+		//	UbNode * inlet = static_cast< UbNode * >( action->item1 );
+		//	UbNode * outlet = static_cast< UbNode * >( action->item2 );
+		//	ctrl.removeLink( inlet, outlet );
+		//}
+	}
+
 	void UbGraphicsView::contextMenuEvent( QContextMenuEvent *event )
 	{
 		m_EventPos = event->pos();
-		m_ContextMenu->exec(event->globalPos());
+
+		bool showBlockMenu = false;
+		std::map< QAction *, UbAction * > actions;
+
+		QList< QGraphicsItem * > list = DataflowEngineManager::getInstance()->getComposition()->getGraphicsScene()->items();
+		for ( QList< QGraphicsItem * >::iterator it = list.begin(); it != list.end(); ++it )
+		{
+			if ( ( **it ).isUnderMouse() )
+			{
+				showBlockMenu = true;
+
+				if ( BundleBlockType == ( **it ).type() )
+				{
+					//std::cout << "bundle block under mouse" << std::endl;
+
+					QString action = "Delete ";
+					UbBundleBlock *b = static_cast< UbBundleBlock * >( *it );
+					action.append( b->getBlockId() );
+
+					UbAction *a = new UbAction();
+					a->code = UbAction::DELETE_BLOCK;
+					a->item1 = *it;
+					a->item2 = nullptr;
+
+					QAction *deleteBlockAction( new QAction( action, this ) );
+					actions[ deleteBlockAction ] = a;
+				}
+				//else if ( MultiInputNodeType == ( **it ).type() )
+				//{
+				//	//std::cout << "multi input node under mouse" << std::endl;
+
+				//	UbMultiInletNode *n = static_cast< UbMultiInletNode * >( *it );
+
+				//	QString actionAdd = "Add to ";
+				//	actionAdd.append( n->getName() );
+
+				//	UbAction *aAdd = new UbAction();
+				//	aAdd->code = UbAction::ADD_MULTI_INLET;
+				//	aAdd->item1 = *it;
+				//	aAdd->item2 = nullptr;
+
+				//	QAction *addToMultiinletAction( new QAction( actionAdd, this ) );
+				//	actions[ addToMultiinletAction ] = aAdd;
+
+				//	QString actionRemove = "Remove from ";
+				//	actionRemove.append( n->getName() );
+
+				//	UbAction *aRemove = new UbAction();
+				//	aRemove->code = UbAction::REMOVE_MULTI_INLET;
+				//	aRemove->item1 = *it;
+				//	aRemove->item2 = nullptr;
+
+				//	QAction *removeFromMultiinletAction( new QAction( actionRemove, this ) );
+				//	actions[ removeFromMultiinletAction ] = aRemove;
+				//}
+				//else if ( InputNodeType == ( **it ).type() )
+				//{
+				//	//std::cout << "input node under mouse" << std::endl;
+				//	UbInletNode *i = static_cast< UbInletNode * >( *it );
+				//	for ( QList< UbNode * >::const_iterator lIt = i->getLinks().constBegin(); lIt != i->getLinks().constEnd(); ++lIt )
+				//	{
+				//		QString action = "Unlink from ";
+				//		UbOutletNode *o = static_cast< UbOutletNode * >( *lIt );
+				//		action.append( o->getName() );
+
+				//		UbAction *a = new UbAction();
+				//		a->code = UbAction::DELETE_LINK;
+				//		a->item1 = i;
+				//		a->item2 = o;
+
+				//		QAction *addToMultiinletAction( new QAction( action, this ) );
+				//		actions[ addToMultiinletAction ] = a;
+				//	}
+				//}
+				//else if ( OutputNodeType == ( **it ).type() )
+				//{
+				//	//std::cout << "output node under mouse" << std::endl;
+				//	UbOutletNode *o = static_cast< UbOutletNode * >( *it );
+				//	for ( QList< UbNode * >::const_iterator lIt = o->getLinks().constBegin(); lIt != o->getLinks().constEnd(); ++lIt )
+				//	{
+				//		QString action = "Unlink from ";
+				//		UbInletNode *i = static_cast< UbInletNode * >( *lIt );
+				//		action.append( i->getName() );
+
+				//		UbAction *a = new UbAction();
+				//		a->code = UbAction::DELETE_LINK;
+				//		a->item1 = i;
+				//		a->item2 = o;
+
+				//		QAction *addToMultiinletAction( new QAction( action, this ) );
+				//		actions[ addToMultiinletAction ] = a;
+				//	}
+				//}
+			}
+		}
+
+		// ok, this whol context thing is pretty fucked up :/
+		// and i'm sure it could be done easier, however there's not enough time left
+
+		if ( showBlockMenu )
+		{
+			delete mBlockSignals;
+			delete mBlockMenu;
+			mBlockSignals = new QSignalMapper( this );
+			mBlockMenu = new QMenu( this );
+
+			mBlockMenu;
+
+			for ( std::map< QAction *, UbAction * >::iterator it = actions.begin(); it != actions.end(); ++it )
+			{
+				connect( it->first, SIGNAL( triggered() ), mBlockSignals, SLOT( map() ) );
+				mBlockMenu->addAction( it->first );
+				mBlockSignals->setMapping( it->first, static_cast< QObject * >( it->second ) );
+			}
+
+			connect( mBlockSignals, SIGNAL( mapped( QObject * ) ), this, SLOT( bundleBlockAction( QObject * ) ) );
+			mBlockMenu->exec( event->globalPos() );
+		}
+		else m_ContextMenu->exec( event->globalPos() );
 	}
 }

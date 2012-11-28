@@ -34,6 +34,8 @@ namespace Uber {
 		static	void				setScene( QGraphicsScene * scene );
 		void						addLink( UbNodeRef start, UbNodeRef end ); 
 		void						removeLink( UbLink* const link );
+		void						removeLinksWith( UbNodeRef node );
+		void						removeLink( UbNode *in, UbNode *out );
 		bool						eventFilter(QObject * obj, QEvent * e );
 		void						render();
 

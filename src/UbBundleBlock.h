@@ -35,8 +35,8 @@ namespace Uber {
 		virtual int					type() const { return Type; }
 		_2Real::app::BlockHandle	getHandle(){ return m_BlockHandle;}
 		QString						getBlockId(){ return m_BlockId; }
-		QVector<UbNodeRef>			getInlets();
-		QVector<UbNodeRef>			getOutlets();
+		QVector<UbNodeRef> const&	getInlets() const;
+		QVector<UbNodeRef> const&	getOutlets() const;
 	private:
 		void						arrangeNodes();
 		_2Real::app::BlockHandle	m_BlockHandle;

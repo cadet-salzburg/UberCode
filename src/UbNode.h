@@ -38,14 +38,19 @@ namespace Uber {
 		void					constructPath();
 
 		void					setName( QString name );
-		const QString&			getName() const;				
+		const QString&			getName() const;
 		virtual bool			link( UbNode* node );
+
+		void					unlink( UbNode* node );
+		QList< UbNode * > const& getLinks() const { return mLinks; }
 
 		virtual UbObject*		getParentBlock();
 	protected:
 		virtual void			hoverLeaveEvent ( QGraphicsSceneHoverEvent * event );
 		virtual void			hoverMoveEvent ( QGraphicsSceneHoverEvent * event );
+		virtual void			mousePressEvent ( QGraphicsSceneMouseEvent * e );
 	private:
 		QString					m_NodeName;
+		QList< UbNode * >		mLinks;
 	};
 }
