@@ -80,6 +80,7 @@ namespace Uber {
 	{
 		std::cout << "goodbye" << std::endl;
 		//m_BlockHandle.kill();
+		
 	}
 
 	void UbBundleBlock::arrangeNodes()

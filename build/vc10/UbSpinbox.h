@@ -41,7 +41,7 @@ namespace Uber {
 
 	public slots:
 		void						setValue(int value);
-
+		void						propertyValueChanged(QtProperty *property, int value);
 	protected:
 		virtual void				arrangeNodes();
 

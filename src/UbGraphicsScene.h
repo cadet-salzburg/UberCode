@@ -29,7 +29,7 @@ namespace Uber {
 		UbGraphicsScene();
 		~UbGraphicsScene();
 		void 					addItem( UbObject * item );
-		void					removeItem( UbObject* item );
+		void					removeUbObject( UbObject* item );
 		UbObject*				getNamedItem( QString name );
 	protected:
 		void					dragEnterEvent(QGraphicsSceneDragDropEvent* event);

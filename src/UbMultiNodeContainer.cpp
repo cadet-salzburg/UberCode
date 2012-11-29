@@ -19,6 +19,7 @@
 #include <QPen>
 #include <QPainter>
 #include "UbBundleBlock.h"
+#include "DataflowEngineManager.h"
 #include <iostream>
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -42,7 +43,7 @@ namespace Uber {
 
 	UbMultiNodeContainer::~UbMultiNodeContainer(void)
 	{
-
+		std::cout << "Deleting node container" << std::endl;
 	}
 
 	void UbMultiNodeContainer::paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget )
@@ -59,10 +60,12 @@ namespace Uber {
 	{
 		if ( m_Nodes.size() )
 		{	QRectF r;
-			QRectF  rectA	= m_Nodes.front()->boundingRect();
-			QPointF	centerA	= m_Nodes.front()->pos();
-			QRectF  rectB	= m_Nodes.back()->boundingRect();
-			QPointF	centerB	= m_Nodes.back()->pos();
+			UbNodeRef front = m_Nodes.front().toStrongRef();
+			UbNodeRef back = m_Nodes.back().toStrongRef();
+			QRectF  rectA	= front->boundingRect();
+			QPointF	centerA	= front->pos();
+			QRectF  rectB	= back->boundingRect();
+			QPointF	centerB	= back->pos();
 			r.setTopLeft( rectB.topLeft()+centerB );
 			r.setTopRight( rectB.topRight()+centerB );
 			r.setBottomLeft( rectA.bottomLeft()+centerA);
@@ -77,7 +80,7 @@ namespace Uber {
 		for ( int i=0; i< m_Handle.getSize(); ++i)
 		{
 			QPointF pos = (m_Percent/100.)*m_TargetPositions[i];
-			m_Nodes[i]->setPos(pos);
+			m_Nodes[i].toStrongRef()->setPos(pos);
 			setOpacity(m_Percent/100.);
 		}
 		update();
@@ -123,7 +126,7 @@ namespace Uber {
 			UbInletNodeRef node( new UbInletNode(this, m_Handle[i]));
 			m_TargetPositions.push_back(QPoint(0,-i*length/m_NumNodes-10));
 			node->setColor(QColor(130,130,130));
-			m_Nodes.push_back(node);
+			m_Nodes.push_back(node.toWeakRef());
 			if ( parentBlock )
 			{
 				parentBlock->m_Inlets.push_back(node);
@@ -135,10 +138,10 @@ namespace Uber {
 
 	Uber::UbNodeRef UbMultiNodeContainer::getNodeUnderMouse()
 	{
-		QVector<UbNodeRef>::iterator iter = m_Nodes.begin();
+		QVector<UbNodeWeakRef>::iterator iter = m_Nodes.begin();
 		for (; iter!=m_Nodes.end();++iter)
 		{
-			if ((*iter)->isUnderMouse() )
+			if ((*iter).toStrongRef()->isUnderMouse() )
 			{
 				return *iter;
 
@@ -147,7 +150,7 @@ namespace Uber {
 		return UbNodeRef();
 	}
 
-	QVector<UbNodeRef> UbMultiNodeContainer::getNodes()
+	QVector<UbNodeWeakRef> UbMultiNodeContainer::getNodes()
 	{
 		return m_Nodes;
 	}

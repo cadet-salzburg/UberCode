@@ -34,7 +34,7 @@ limitations under the License.
 namespace Uber {
 
 	UbLinkController*	UbLinkController::m_Instance = 0;
-	QGraphicsScene*		UbLinkController::m_Scene	 = 0;
+	UbGraphicsScene*		UbLinkController::m_Scene	 = 0;
 
 	UbLinkController* UbLinkController::getInstance()
 	{
@@ -45,7 +45,7 @@ namespace Uber {
 		return m_Instance;
 	}
 
-	void UbLinkController::setScene( QGraphicsScene * scene )
+	void UbLinkController::setScene( UbGraphicsScene * scene )
 	{
 		m_Scene = scene;
 	}

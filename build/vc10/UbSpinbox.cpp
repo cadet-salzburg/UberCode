@@ -77,6 +77,7 @@ namespace Uber {
 		m_IntManager->setValue(m_StepProperty,m_Step);
 		m_PropertyEditor->addProperty(m_StepProperty);
 	}
+
 	void UbSpinbox::arrangeNodes()
 	{
 		UbNodeRef node  = m_Node.toStrongRef();
@@ -86,19 +87,27 @@ namespace Uber {
 			node->setPos(pos);
 		}
 	}
+
 	void UbSpinbox::displayOptions()
 	{
 		m_PropertyEditor->show();
 	}
+
 	int UbSpinbox::getValue() const
 	{
 		return m_CurrentValue;
 	}
+
 	void UbSpinbox::setValue(int value)
 	{
 		if ( m_BlockIsConnected )
 		{
 			qSharedPointerCast<UbInletNode>(m_Node)->getHandle().setValue( uint(value) );
 		}
+	}
+
+	void	UbSpinbox::propertyValueChanged(QtProperty *property, int value)
+	{
+
 	}
 }

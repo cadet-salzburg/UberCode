@@ -79,7 +79,7 @@ namespace Uber {
 		QGraphicsScene::addItem(item);
 	}
 
-	void UbGraphicsScene::removeItem( UbObject * item )
+	void UbGraphicsScene::removeUbObject( UbObject * item )
 	{
 		int tt = item->type();
 		QGraphicsScene::removeItem(item);

@@ -56,7 +56,7 @@ namespace Uber {
 
 	UbMultiInletNode::~UbMultiInletNode(void)
 	{
-
+		std::cout << "Deleting  multinode" << std::endl;
 	}
 	void UbMultiInletNode::setHandle( const  _2Real::app::InletHandle& handle )
 	{ 
@@ -118,7 +118,6 @@ namespace Uber {
 		QRectF rect = UbNode::boundingRect();
 		if ( m_Handle.getSize()>0)
 		{
-			QVector<UbNodeRef> nodes = m_Container->getNodes();
 			QRectF rectContainer = m_Container->boundingRect();
 			////std::cout << "RectContainer" << rectContainer.x() << " " <<  rectContainer.y() << " " << rectContainer.width() << " " << rectContainer.height() << std::endl;
 			rect.setTopLeft(rectContainer.topLeft());

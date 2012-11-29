@@ -120,7 +120,7 @@ namespace Uber {
 				ctrl.removeLinksWith( *outletIt );
 			}
 
-			scene.removeItem( block );
+			scene.removeUbObject( block );
 
 			// deleting this here causes problems for some reason
 			// delete b;
@@ -131,7 +131,7 @@ namespace Uber {
 		{
 			UbInterfaceBlock * block = static_cast< UbInterfaceBlock * >( action->item1 );
 			ctrl.removeLinksWith( block->getNode() );
-			scene.removeItem( block );
+			scene.removeUbObject( block );
 		}
 		if ( UbAction::DISPLAY_INPUT_OPTIONS == action->code )
 		{

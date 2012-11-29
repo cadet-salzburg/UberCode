@@ -43,7 +43,7 @@ namespace Uber {
 		void								setRingWidth( qreal ringWidth );
 		void								addNodes();
 		UbNodeRef							getNodeUnderMouse();
-		QVector<UbNodeRef>					getNodes();				
+		QVector<UbNodeWeakRef>				getNodes();				
 	protected:
 		QColor								m_Color;
 		QPainterPath						m_ExpandedPath;
@@ -56,7 +56,7 @@ namespace Uber {
 		qreal								m_RingWidth;
 		qreal								m_RingRadius;
 		_2Real::app::InletHandle			m_Handle;
-		QVector<UbNodeRef>					m_Nodes;
+		QVector<UbNodeWeakRef>				m_Nodes;
 		QVector<QPointF>					m_TargetPositions;
 	public slots:
 		virtual void						createPath();

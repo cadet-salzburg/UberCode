@@ -18,7 +18,7 @@
 #pragma once
 #include <QObject>
 #include <QGraphicsItem>
-#include <QGraphicsScene>
+#include "UbGraphicsScene.h"
 #include "UbLink.h"
 #include "UbNode.h"
 #include "UbInletNode.h"
@@ -31,7 +31,7 @@ namespace Uber {
 		Q_OBJECT
 	public:
 		static	UbLinkController*	getInstance();
-		static	void				setScene( QGraphicsScene * scene );
+		static	void				setScene( UbGraphicsScene * scene );
 		void						addLink( UbNodeRef start, UbNodeRef end ); 
 		void						removeLink( UbLink* const link );
 		void						removeLinksWith( UbNodeRef node );
@@ -64,7 +64,7 @@ namespace Uber {
 		bool						eventHappenedAtNode( QGraphicsSceneMouseEvent * e );
 
 		static UbLinkController*	m_Instance;
-		static QGraphicsScene*		m_Scene;
+		static UbGraphicsScene*		m_Scene;
 
 		UbLinkRef					m_CurrentLink;
 		QVector<UbLinkRef>			m_Links;
