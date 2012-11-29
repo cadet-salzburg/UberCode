@@ -19,24 +19,29 @@
 #include <QPalette>
 namespace Uber {
 	UbSpinbox::UbSpinbox( QGraphicsItem *parent )
-		:UbInputBlock(parent)
+		:UbInputBlock(parent),
+		m_MinimumValue(3),
+		m_MaximumValue(15),
+		m_CurrentValue(3),
+		m_Step(2)
 	{
-		//m_Node = new UbInletNode(this);
 		init();
 		setName(QString("SpinBox"));
 		connect( m_SpinBox, SIGNAL(valueChanged(int)), this, SLOT(setValue(int)));
+		initPropertyEditor();
 	}
 
 	UbSpinbox::~UbSpinbox(void)
 	{
-
+		delete m_PropertyEditor;
 	}
 
 	void UbSpinbox::init()
 	{
 		m_SpinBox = new QSpinBox;
-		m_SpinBox->setMinimum(0);
-		m_SpinBox->setMaximum(1);
+		m_SpinBox->setMinimum(m_MinimumValue);
+		m_SpinBox->setMaximum(m_MaximumValue);
+		m_SpinBox->setSingleStep(m_Step);
 		m_ProxyWidget->setWidget(m_SpinBox);
 		m_ProxyWidget->setMinimumWidth(20);
 		QRectF  spinBoxRect = m_ProxyWidget->boundingRect();
@@ -50,21 +55,50 @@ namespace Uber {
 		constructPath();
 		update();
 	}
-
+	void UbSpinbox::initPropertyEditor()
+	{
+		m_PropertyEditor = new QtTreePropertyBrowser();
+		QtSpinBoxFactory *spinBoxFactory = new QtSpinBoxFactory(this);
+		m_IntManager = new QtIntPropertyManager(this);
+		m_PropertyEditor->setFactoryForManager(m_IntManager, spinBoxFactory);
+		connect(m_IntManager, SIGNAL(valueChanged(QtProperty *, int)), this, SLOT(propertyValueChanged(QtProperty *, int)));
+		//
+		m_ValueProperty= m_IntManager->addProperty(tr("Value"));
+		m_IntManager->setRange(m_ValueProperty, m_MinimumValue, m_MaximumValue);
+		m_IntManager->setValue(m_ValueProperty, m_CurrentValue);
+		m_PropertyEditor->addProperty(m_ValueProperty);
+		m_MinimumValueProperty = m_IntManager->addProperty(tr("Minimum"));
+		m_IntManager->setValue(m_MinimumValueProperty, m_MinimumValue);
+		m_PropertyEditor->addProperty(m_MinimumValueProperty);
+		m_MaximumValueProperty = m_IntManager->addProperty(tr("Maximum"));
+		m_IntManager->setValue(m_MaximumValueProperty,m_MaximumValue);
+		m_PropertyEditor->addProperty(m_MaximumValueProperty);
+		m_StepProperty = m_IntManager->addProperty(tr("Step"));
+		m_IntManager->setValue(m_StepProperty,m_Step);
+		m_PropertyEditor->addProperty(m_StepProperty);
+	}
 	void UbSpinbox::arrangeNodes()
 	{
 		UbNodeRef node  = m_Node.toStrongRef();
 		if ( node )
 		{
-			QPointF pos = QPointF(0, -m_Height/2.f) +  node->getHeight()*QPointF(0.f,2.f);
+			QPointF pos = QPointF(0, -m_Height/2.f) +  node->getHeight()*QPointF(0.f,0.8f);
 			node->setPos(pos);
 		}
+	}
+	void UbSpinbox::displayOptions()
+	{
+		m_PropertyEditor->show();
+	}
+	int UbSpinbox::getValue() const
+	{
+		return m_CurrentValue;
 	}
 	void UbSpinbox::setValue(int value)
 	{
 		if ( m_BlockIsConnected )
 		{
-			qSharedPointerCast<UbInletNode>(m_Node)->getHandle().setValue( value );
+			qSharedPointerCast<UbInletNode>(m_Node)->getHandle().setValue( uint(value) );
 		}
 	}
 }

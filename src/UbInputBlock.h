@@ -26,5 +26,7 @@ namespace Uber {
 		enum { Type = InputBlockType };
 
 		virtual	int				type() const { return Type; }
+		virtual void			displayOptions(){};
+		
 	};
 }

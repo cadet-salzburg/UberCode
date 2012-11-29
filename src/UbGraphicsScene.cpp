@@ -81,6 +81,7 @@ namespace Uber {
 
 	void UbGraphicsScene::removeItem( UbObject * item )
 	{
+		int tt = item->type();
 		QGraphicsScene::removeItem(item);
 		QList<UbObject*>::iterator iter = m_Items.begin();
 		for ( ;iter!=m_Items.end(); )

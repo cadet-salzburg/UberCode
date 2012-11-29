@@ -73,10 +73,9 @@ namespace Uber {
 		{
 			throw std::exception("Cannot find any block instance with the specified Id.");
 		}
-		//arrangeNodes();
+		arrangeNodes();
 		setAcceptHoverEvents( true ); 
 	}
-
 	UbBundleBlock::~UbBundleBlock()
 	{
 		std::cout << "goodbye" << std::endl;

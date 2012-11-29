@@ -304,6 +304,7 @@ namespace Uber {
 		{
 			if ( isBundleBlockNode( startNode ) ^ isBundleBlockNode( endNode ) )
 			{
+
 				if ( bothNodesAreOutlets(startNode, endNode ) )
 				{
 					//We have an output node and ui block
@@ -330,9 +331,14 @@ namespace Uber {
 
 							//create link
 							//m_CurrentLink = UbLinkRef( new UbLink( 0, m_Scene ) );
-							m_CurrentLink->setStartNode( blockNode);
-							m_CurrentLink->setEndNode( uiNode);
-							m_Links.push_back( m_CurrentLink );
+							if ( !m_CurrentLink )
+							{
+								addLink(blockNode, uiNode);
+							} else {
+								m_CurrentLink->setStartNode( blockNode);
+								m_CurrentLink->setEndNode( uiNode);
+								m_Links.push_back( m_CurrentLink );
+							}
 							return true;
 						}
 					}	
@@ -372,9 +378,14 @@ namespace Uber {
 						}
 						//create link
 						//m_CurrentLink = UbLinkRef( new UbLink( 0, m_Scene ) );
-						m_CurrentLink->setStartNode( blockNode);
-						m_CurrentLink->setEndNode( uiNode);
-						m_Links.push_back( m_CurrentLink );
+						if ( !m_CurrentLink )
+						{
+							addLink(blockNode, uiNode);
+						} else {
+							m_CurrentLink->setStartNode( blockNode);
+							m_CurrentLink->setEndNode( uiNode);
+							m_Links.push_back( m_CurrentLink );
+						}
 						return true;
 					}	
 				}
@@ -527,7 +538,7 @@ namespace Uber {
 	bool UbLinkController::canConnectInputNodeToUiBlockOfType( UbInletNodeRef node, int type )
 	{
 		std::string typen = node->getHandle().getTypename();
-		if ( ( ( node->getHandle().getTypename() == "int" ) && ( type == SliderBlockType ) ) 
+		if ( ( ( node->getHandle().getTypename() == "double" ) && ( type == SliderBlockType ) ) 
 			|| ( ( node->getHandle().getTypename() == "int" ) && ( type == SpinBoxBlockType ) ) 
 			|| ( ( node->getHandle().getTypename() == "string" ) && ( type == PathBlockType ) ) )
 		{

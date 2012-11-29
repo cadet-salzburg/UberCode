@@ -19,18 +19,25 @@
 #pragma once
 #include "UbInputBlock.h"
 #include "UbInletNode.h"
+#include "qtpropertymanager.h"
+#include "qteditorfactory.h"
+#include "qttreepropertybrowser.h"
 #include <QSpinBox>
 
 namespace Uber {
 	class UbSpinbox : public UbInputBlock
 	{
 		Q_OBJECT
+		Q_PROPERTY(int value READ getValue WRITE setValue)
 	public:
 		enum { Type = SpinBoxBlockType };
 		UbSpinbox( QGraphicsItem *parent );
 		virtual	~UbSpinbox(void);
 
 		virtual	int					type() const { return Type; }
+		void						initPropertyEditor();
+		int							getValue() const;
+		virtual void				displayOptions();
 
 	public slots:
 		void						setValue(int value);
@@ -41,5 +48,16 @@ namespace Uber {
 	private:
 		void						init();
 		QSpinBox*					m_SpinBox;
+		int							m_MinimumValue;
+		int							m_MaximumValue;
+		int							m_CurrentValue;
+		int							m_Step;
+
+		QtTreePropertyBrowser		*m_PropertyEditor;
+		QtIntPropertyManager		*m_IntManager;
+		QtProperty					*m_ValueProperty;
+		QtProperty					*m_MinimumValueProperty;
+		QtProperty					*m_MaximumValueProperty;
+		QtProperty					*m_StepProperty;
 	};
 }

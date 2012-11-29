@@ -61,7 +61,7 @@ MainWindow::MainWindow()
 	m_WorkbenchGraphicsView = new UbGraphicsView();
 	m_WorkbenchGraphicsView->setRenderHint(QPainter::Antialiasing);
 
-	QGraphicsScene* s = DataflowEngineManager::getInstance()->addComposition()->getGraphicsScene();
+	UbGraphicsScene* s = DataflowEngineManager::getInstance()->addComposition()->getGraphicsScene();
 	DataflowEngineManager::getInstance()->setGraphicsView(m_WorkbenchGraphicsView);
 	m_WorkbenchGraphicsView->setScene( s );
 	

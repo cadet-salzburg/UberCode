@@ -19,22 +19,27 @@
 #include <QPalette>
 namespace Uber {
 	UbSlider::UbSlider( QGraphicsItem *parent )
-		:UbInputBlock(parent)
+		:UbInputBlock(parent),
+		m_MinimumValue(-10.),
+		m_MaximumValue(40.),
+		m_CurrentValue(0.)
 	{
 		init();
 		setName(QString("Slider"));
+		connect( m_Slider, SIGNAL(sliderMoved(int)), this, SLOT(setValue(int)));
+		initPropertyEditor();
 	}
 
 	UbSlider::~UbSlider(void)
 	{
-
+		delete m_PropertyEditor;
 	}
 
 	void UbSlider::init()
 	{
 		m_Slider = new QSlider(Qt::Vertical);
-		m_Slider->setMinimum(0);
-		m_Slider->setMaximum(1);
+		m_Slider->setMinimum(m_MinimumValue*100);
+		m_Slider->setMaximum(m_MinimumValue*100);
 		m_ProxyWidget->setWidget(m_Slider);
 		m_ProxyWidget->setMinimumWidth(20);
 		QRectF  sliderRect = m_ProxyWidget->boundingRect();
@@ -49,6 +54,26 @@ namespace Uber {
 		update();
 	}
 
+	void UbSlider::initPropertyEditor()
+	{
+		m_PropertyEditor = new QtTreePropertyBrowser();
+		QtDoubleSpinBoxFactory *doubleSpinBoxFactory = new QtDoubleSpinBoxFactory(this);
+		m_DoubleManager = new QtDoublePropertyManager(this);
+		m_PropertyEditor->setFactoryForManager(m_DoubleManager, doubleSpinBoxFactory);
+		connect(m_DoubleManager, SIGNAL(valueChanged(QtProperty *, double)), this, SLOT(propertyValueChanged(QtProperty *, double)));
+		//
+		m_ValueProperty= m_DoubleManager->addProperty(tr("Value"));
+		m_DoubleManager->setRange(m_ValueProperty, -1000, 1000);
+		m_DoubleManager->setValue(m_ValueProperty, m_CurrentValue);
+		m_PropertyEditor->addProperty(m_ValueProperty);
+		m_MinimumValueProperty = m_DoubleManager->addProperty(tr("Minimum"));
+		m_DoubleManager->setValue(m_MinimumValueProperty, m_MinimumValue);
+		m_PropertyEditor->addProperty(m_MinimumValueProperty);
+		m_MaximumValueProperty = m_DoubleManager->addProperty(tr("Maximum"));
+		m_DoubleManager->setValue(m_MaximumValueProperty,m_MaximumValue);
+		m_PropertyEditor->addProperty(m_MaximumValueProperty);
+	}
+
 	void UbSlider::arrangeNodes()
 	{
 		UbNodeRef node = m_Node.toStrongRef();
@@ -58,16 +83,41 @@ namespace Uber {
 			node->setPos(pos);
 		}
 	}
-
+	void UbSlider::displayOptions()
+	{
+		m_PropertyEditor->show();
+	}
+	qreal UbSlider::getValue() const
+	{
+		return m_CurrentValue;
+	}
 	void UbSlider::setValue(int value)
 	{
-		if ( m_BlockIsConnected )
+		m_CurrentValue = value/100.;
+		m_DoubleManager->setValue(m_ValueProperty, m_CurrentValue);
+	}
+	void UbSlider::propertyValueChanged(QtProperty *property, double value)
+	{
+		if ( property == m_ValueProperty)
 		{
-			UbNodeRef node = m_Node.toStrongRef();
-			if ( node )
+			m_CurrentValue = value;
+			int newVal = value*100;
+			std::cout << "How Many " << m_CurrentValue << std::endl;
+			m_Slider->setValue(newVal);
+			if ( m_BlockIsConnected )
 			{
-				qSharedPointerCast<UbInletNode>(node)->getHandle().setValue( value );
+				UbNodeRef node = m_Node.toStrongRef();
+				if ( node )
+				{
+					qSharedPointerCast<UbInletNode>(node)->getHandle().setValue( m_CurrentValue );
+				}
 			}
+		} else if (property == m_MinimumValueProperty )
+		{
+			m_Slider->setMinimum((int)value*100);
+		} else if (property == m_MaximumValueProperty)
+		{
+			m_Slider->setMaximum((int)value*100);
 		}
 	}
 }

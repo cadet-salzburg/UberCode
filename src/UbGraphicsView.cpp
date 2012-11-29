@@ -133,6 +133,11 @@ namespace Uber {
 			ctrl.removeLinksWith( block->getNode() );
 			scene.removeItem( block );
 		}
+		if ( UbAction::DISPLAY_INPUT_OPTIONS == action->code )
+		{
+			UbInputBlock * block = static_cast< UbInputBlock * >( action->item1 );
+			block->displayOptions();
+		}
 	}
 
 	void UbGraphicsView::contextMenuEvent( QContextMenuEvent *event )
@@ -176,6 +181,18 @@ namespace Uber {
 
 					QAction *deleteBlockAction( new QAction( action, this ) );
 					actions[ deleteBlockAction ] = a;
+				}
+				if ( (InputBlockType < (**it).type() ) && ( RadioButtonBlockType > (**it).type() ) )
+				{
+					QString action = "Options";
+
+					UbAction *a = new UbAction();
+					a->code = UbAction::DISPLAY_INPUT_OPTIONS;
+					a->item1 = *it;
+					a->item2 = nullptr;
+
+					QAction *displayOptionsAction( new QAction( action, this ) );
+					actions[ displayOptionsAction ] = a;
 				}
 				//else if ( MultiInputNodeType == ( **it ).type() )
 				//{
